@@ -6,6 +6,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
@@ -19,6 +20,7 @@ import android.os.Build;
 public class MapActivity extends FragmentActivity {
 
 	private GoogleMap mMap;
+	private LocationListener Llistener;
 	
 	private LocationManager locationManager;
 	
@@ -29,6 +31,7 @@ public class MapActivity extends FragmentActivity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		setUpMap(mMap, null);
+		mMap.setMyLocationEnabled(true);
 		
 		
 	}
