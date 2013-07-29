@@ -31,7 +31,6 @@ public class MapActivity extends FragmentActivity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		setUpMap(mMap, null);
-		mMap.setMyLocationEnabled(true);
 		
 		
 	}
