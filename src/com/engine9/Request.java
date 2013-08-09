@@ -25,7 +25,6 @@ public class Request extends AsyncTask<String, String, String> {
 		// TODO Auto-generated method stub
 		try{
 			InputStream is = null;
-			int len = 500;
 			
 			try{
 				
