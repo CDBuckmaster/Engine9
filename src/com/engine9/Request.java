@@ -28,7 +28,9 @@ public class Request extends AsyncTask<String, String, String> {
 			int len = 500;
 			
 			try{
+				
 				URL url = new URL(arg0[0]);
+				
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 				conn.setReadTimeout(10000);
 		        conn.setConnectTimeout(15000);
@@ -37,12 +39,12 @@ public class Request extends AsyncTask<String, String, String> {
 		        
 		        conn.connect();
 		        int response = conn.getResponseCode();
-		        Log.d("DEBUG", "The webpage farted out: " + response);
+	
 		        is = conn.getInputStream();
 		        
 		        //FileInputStream fis = new FileInputStream("c:/sample.txt");
 		        String contentAsString = new Scanner(is,"UTF-8").useDelimiter("\\A").next();
-
+		        Log.e("DEBUG", "The webpage farted out: " + contentAsString);
 		        return contentAsString;
 			}
 			 finally {
@@ -51,6 +53,7 @@ public class Request extends AsyncTask<String, String, String> {
 		        } 
 			 }
 		} catch (IOException e){
+			Log.e("DEBUG", "Something Fucked up");
 			return "derp";
 		}
 	}

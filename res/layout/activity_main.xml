@@ -13,4 +13,14 @@
         android:layout_marginTop="23dp"
         android:text="Map" />
 
+    <Button
+        android:id="@+id/syncButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mapButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
+        android:text="Sync" />
+
 </RelativeLayout>

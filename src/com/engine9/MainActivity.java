@@ -24,6 +24,18 @@ public class MainActivity extends Activity {
 			}
 			
 		});
+		
+		Button sButton = (Button) findViewById(R.id.syncButton);
+		sButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				new Request().execute("http://www.google.com");
+				
+			}
+			
+		});
+		
 	}
 
 
