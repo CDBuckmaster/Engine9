@@ -18,6 +18,8 @@ import android.view.View;
 public class JourneyShow extends Activity {
 	
 	private DrawView cView;
+	private int drawCount = 3; //The amount of routes per view
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,8 +45,13 @@ public class JourneyShow extends Activity {
 			JSONObject json = new JSONObject((Map) JParser.pObject(result));
 			try {
 				JSONArray jArray = json.getJSONObject("TravelOptions").getJSONArray("Itineraries");
+				JSONArray cArray = new JSONArray();
 				for(int i = 0; i < jArray.length(); i++){
 					JSONObject j = jArray.getJSONObject(i);
+					cArray.put(j);
+					if(cArray.length() == drawCount){
+						cView.setDrawArray(cArray);
+					}
 					drawRoute(j);
 				}
 			} catch (JSONException e) {
@@ -57,13 +64,18 @@ public class JourneyShow extends Activity {
 	
 	public class DrawView extends View
 	{
+		private JSONArray drawArray;
 		public DrawView(Context context) {
 	        super(context);            
 	    }
-
+		
 	    @Override
-	    public void onDraw(Canvas canvas, JSONObject journey) {
+	    public void onDraw(Canvas canvas) {
 	    	
+	    }
+	    
+	    public void setDrawArray(JSONArray jAr){
+	    	drawArray = jAr;
 	    }
 	}
 	
