@@ -45,7 +45,7 @@ public class Request extends AsyncTask<String, String, String> {
 		        
 		        String contentAsString = new Scanner(is,"UTF-8").useDelimiter("\\A").next();
 		        is.close();
-		        Log.e("DEBUG", "The webpage farted out: " + contentAsString);
+		       // Log.e("DEBUG", "The webpage farted out: " + contentAsString);
 		        return contentAsString;
 			}
 			 finally {
@@ -53,8 +53,8 @@ public class Request extends AsyncTask<String, String, String> {
 		            is.close();
 		        } 
 			 }
-		} catch (IOException e){
-			Log.e("DEBUG", "Something Fucked up");
+		} catch (Exception e){
+			Log.e("DEBUG", e.toString());
 			return null;
 		}
 	}

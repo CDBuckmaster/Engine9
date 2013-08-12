@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				new Request().execute("http://www.google.com");
+				new Request().execute("https://opia.api.translink.com.au/v1/travel/rest/plan/LM%3ATrain%20Stations%3ARobina%20station/LM%3ATrain%20Stations%3ASouth%20Brisbane%20station?timeMode=0&at=Mon%2C+19+Aug+2013+06%3A59%3A12+GMT&walkSpeed=2&maximumWalkingDistanceM=1500&api_key=special-key");
 				
 			}
 			
