@@ -1,7 +1,10 @@
 package com.engine9;
 
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Vector;
+
+import org.json.simple.JSONObject;
 
 import com.engine9.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,7 +48,7 @@ public class MapActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 				
-				new MapRequest().execute("https://dl.dropboxusercontent.com/u/26635718/markers.xml");
+				new MapRequest().execute("https://dl.dropboxusercontent.com/u/26635718/markers.json");
 			}
 			
 		});
@@ -97,7 +100,10 @@ public class MapActivity extends FragmentActivity {
 		@Override
 		public void onPostExecute(String result)
 		{
-			addMarkers(MarkerParser.main(result));
+			for(Map j : JParser.main(result))
+			{
+				Log.e("test", j.get("latitude").toString());
+			}
 		}
 	}
 	
