@@ -18,10 +18,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 
-public class Request extends AsyncTask<String, String, InputStream> {
+public class Request extends AsyncTask<String, String, String> {
 
 	@Override
-	protected InputStream doInBackground(String... arg0) {
+	protected String doInBackground(String... arg0) {
 		// TODO Auto-generated method stub
 		try{
 			InputStream is = null;
@@ -42,10 +42,11 @@ public class Request extends AsyncTask<String, String, InputStream> {
 		        is = conn.getInputStream();
 		        
 		        //FileInputStream fis = new FileInputStream("c:/sample.txt");
-		        /*
+		        
 		        String contentAsString = new Scanner(is,"UTF-8").useDelimiter("\\A").next();
-		        Log.e("DEBUG", "The webpage farted out: " + contentAsString);*/
-		        return is;
+		        is.close();
+		        Log.e("DEBUG", "The webpage farted out: " + contentAsString);
+		        return contentAsString;
 			}
 			 finally {
 		        if (is != null) {
@@ -59,7 +60,7 @@ public class Request extends AsyncTask<String, String, InputStream> {
 	}
 	
 	@Override
-	 protected void onPostExecute(InputStream result) {
+	 protected void onPostExecute(String result) {
 		super.onPostExecute(result);
 	}
 

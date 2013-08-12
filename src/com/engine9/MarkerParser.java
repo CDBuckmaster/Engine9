@@ -1,20 +1,24 @@
 package com.engine9;
 
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.Vector;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.Attributes;
+
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
 public class MarkerParser {
 
-	public static Vector<LatLng> main(InputStream in){
+	public static Vector<LatLng> main(String input){
 		
 		final Vector<LatLng> markers = new Vector<LatLng>();
 		try {
@@ -26,8 +30,8 @@ public class MarkerParser {
 				
 			Boolean latb = false;
 			Boolean lonb = false;
-			Long latl;
-			Long lonl;
+			Double latl;
+			Double lonl;
 			
 			public void startElement(String uri, String localName,String qName, 
 	                Attributes attributes) throws SAXException {
@@ -42,10 +46,10 @@ public class MarkerParser {
 			public void characters(char ch[], int start, int length) throws SAXException {
 				
 				if(latb){
-					latl = Long.parseLong(new String(ch, start, length));
+					latl = Double.parseDouble(new String(ch, start, length));
 				}
 				if(lonb){
-					lonl = Long.parseLong(new String(ch, start, length));
+					lonl = Double.parseDouble(new String(ch, start, length));
 				}
 			}
 			
@@ -64,7 +68,7 @@ public class MarkerParser {
 			
 			};
 			
-			saxParser.parse(in, handler);
+			saxParser.parse(new InputSource(new StringReader(input)), handler);
 			return markers;
 		} catch (Exception e) {
 		       e.printStackTrace();

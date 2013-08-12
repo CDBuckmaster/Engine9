@@ -8,12 +8,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +48,7 @@ public class MapActivity extends FragmentActivity {
 			}
 			
 		});
+		
 		
 		
 	}
@@ -90,7 +93,7 @@ public class MapActivity extends FragmentActivity {
 	public class MapRequest extends Request
 	{
 		@Override
-		public void onPostExecute(InputStream result)
+		public void onPostExecute(String result)
 		{
 			addMarkers(MarkerParser.main(result));
 		}
@@ -98,7 +101,9 @@ public class MapActivity extends FragmentActivity {
 	
 	private void addMarkers(Vector<LatLng> v){
 		for (LatLng l : v){
-			mMap.addMarker(new MarkerOptions().position(l));
+			
+			mMap.addMarker(new MarkerOptions()
+			.position(l));
 		}
 	}
 }
