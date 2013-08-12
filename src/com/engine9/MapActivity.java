@@ -37,17 +37,19 @@ public class MapActivity extends FragmentActivity {
 		setContentView(R.layout.activity_map);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		setUpMap(mMap, null);
+		setUpMap( null);
 		
 		Button dButton = (Button) findViewById(R.id.download);
 		dButton.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
+				
 				new MapRequest().execute("https://dl.dropboxusercontent.com/u/26635718/markers.xml");
 			}
 			
 		});
+		
 		
 		
 		
@@ -81,12 +83,12 @@ public class MapActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	private void setUpMap(GoogleMap map, LatLng center) {
-        if (map == null) {
-        	map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-        	map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+	private void setUpMap(LatLng center) {
+        if (mMap == null) {
+        	mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+        	mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         	if(center != null){
-        	map.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15));}
+        	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15));}
         }
 	}
 	
