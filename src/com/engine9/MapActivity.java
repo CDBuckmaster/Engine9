@@ -29,6 +29,9 @@ import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
 
+
+/***
+ * Show the basic map and user can select*/
 public class MapActivity extends FragmentActivity {
 
 	private GoogleMap mMap;
