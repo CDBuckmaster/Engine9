@@ -69,7 +69,7 @@ class GroupActivity extends Activity {
 	}
 	
 	/**
-	 * Select several destination and make as a group*/
+	 * Select several destinations and make as a group*/
 	public void groupDestination(String s, LinkedHashMap<String, List<String>> destination) {
 		if (s == null || destination == null || destination.size() == 0) {
 			throw new NullPointerException();
