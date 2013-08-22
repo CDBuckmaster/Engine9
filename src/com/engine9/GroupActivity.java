@@ -17,6 +17,8 @@ class GroupActivity extends Activity {
 	
 	private LinkedHashMap<String, List<String>> destination =
 			new LinkedHashMap();
+	private LinkedHashMap<String, List<String>> destinationGroup = new
+			LinkedHashMap();
 	
 	private String s;
 	
@@ -66,6 +68,26 @@ class GroupActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Select several destination and make as a group*/
+	public void groupDestination(String s, LinkedHashMap<String, List<String>> destination) {
+		if (s == null || destination == null || destination.size() == 0) {
+			throw new NullPointerException();
+		}
+		destinationGroup.putAll(destination);
+	}
+	
+	/**
+	 * Remove a destination group*/
+	public void deleteGroup(String s) {
+		if (s == null) {
+			throw new NullPointerException();
+		}
+		if (destinationGroup.containsKey(s)) {
+			destinationGroup.remove(s);
+		}
+	}
+		
 	/**
 	 * Find the all services in particular place*/
 	public String showDestinationRoute(String s) {
