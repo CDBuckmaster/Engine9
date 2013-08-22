@@ -12,6 +12,11 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 
 	private Context context;
 	private Listing[] values;
+	
+	/*This class is used to translate an array of listing data into an array
+	 * of Views for a ViewList to use.  In this instance, it is being used
+	 * for TimeTableActivity
+	 */
 	public TimeAdapter(Context context, Listing[] values) {
 		super(context, R.layout.list_timetable, values);
 		this.values = values;
