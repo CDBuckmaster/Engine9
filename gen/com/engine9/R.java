@@ -7,6 +7,8 @@
 
 package com.engine9;
 
+import android.view.View;
+
 public final class R {
     public static final class attr {
         /** <p>Must be a floating point value, such as "<code>1.2</code>".
@@ -196,6 +198,7 @@ containing a value of this type.
         public static final int activity_main=0x7f030001;
         public static final int activity_map=0x7f030002;
         public static final int activity_start=0x7f030003;
+		public static final View activity_group = null;
     }
     public static final class string {
         public static final int app_name=0x7f060015;
