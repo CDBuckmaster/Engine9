@@ -40,10 +40,10 @@
         </activity>
         <activity
             android:name="com.engine9.TimetableActivity"
-            android:parentActivityName="com.engine9.MainActivity" >
+            android:parentActivityName="com.engine9.StopMapActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.engine9.MainActivity" />
+                android:value="com.engine9.StopMapActivity" />
         </activity>
         <activity
             android:name="com.engine9.MapActivity"
@@ -54,6 +54,13 @@
         </activity>
         <activity
             android:name="com.engine9.AbstractActivity"
+            android:parentActivityName="com.engine9.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.engine9.MainActivity" />
+        </activity>
+         <activity
+            android:name="com.engine9.StopMapActivity"
             android:parentActivityName="com.engine9.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
