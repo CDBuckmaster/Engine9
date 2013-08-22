@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 
 public class TimetableActivity extends Activity {
 	private String vehicleID;
@@ -34,10 +35,11 @@ public class TimetableActivity extends Activity {
 	/* The global store (save all timetable) allow user to search, but really depends on
 	 * Internet so that it might be slow */
 	private JsonObject jData;
-	private LinkedList times;
+	private LinkedList<Listing> times = new LinkedList<Listing>();
 
 	private Date time;
 	private DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+	private ListView timeList;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,6 +47,8 @@ public class TimetableActivity extends Activity {
 		Intent intent = getIntent();
 		String iurl = intent.getStringExtra("timeURL");
 		new TimeRequest().execute(iurl);
+		
+		timeList = (ListView) findViewById(R.id.list_view);
 	}
 
 	/**
@@ -115,12 +119,19 @@ public class TimetableActivity extends Activity {
 		JsonArray trips = st.get(0).getAsJsonObject().get("Trips").getAsJsonArray();
 		for(int i = 0; i < trips.size(); i++){
 			JsonObject trip = trips.get(i).getAsJsonObject();
-			Log.e("Departure", trip.get("DepartureTime").getAsString());
+			
 			JsonObject route = trip.getAsJsonObject("Route");
-			Log.e("Code", route.get("Code").getAsString());
-			Log.e("Direction", String.valueOf(route.get("Direction").getAsInt()));
+			
+			long d = Long.parseLong(trip.get("DepartureTime").getAsString().substring(6, 19)) + 1000;
+			Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt());
+			times.add(l);
+			
 		}
+		
+		TimeAdapter adapter = new TimeAdapter(getApplicationContext(), times.toArray(new Listing[times.size()]));
+		timeList.setAdapter(adapter);
 	}
+	
 
 	private class TimeRequest extends Request{
 		@Override
@@ -135,24 +146,4 @@ public class TimetableActivity extends Activity {
 		}
 	}
 	
-	private class Listing extends View{
-
-		private long time;
-		private String code;
-		private String direction;
-		
-		public Listing(Context context, long _time, String _code, int _direction) {
-			super(context);
-			time = _time;
-			code = _code;
-			direction = directionToString(_direction);
-		}
-		
-		private String directionToString(int dir){
-			String[] directions = {"North", "South", "East", "West", "Inbound", "Outbound", "Inward", "Outward",
-					"Upward", "Downward", "Clockwise", "Counterclockwise", "Direction1", "Direction2", ""};
-			return directions[dir];
-		}
-		
-	}
 }
