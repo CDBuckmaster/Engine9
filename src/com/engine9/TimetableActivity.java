@@ -52,10 +52,14 @@ public class TimetableActivity extends Activity {
 	}
 
 	/**
-	 * Add the vehicle timetable to the local device*/
-	private void addTimetable(String vehicleID, List<String> time) {
-		if (vehicleID == null || time == null || time.size() == 0) {
+	 * Add the vehicle timetable to the local device
+	 * @throws InvalidVehicleException */
+	private void addTimetable(String vehicleID, List<String> time) throws InvalidVehicleException {
+		if (vehicleID == null || vehicleID.length() == 0 || time == null || time.size() == 0) {
 			throw new NullPointerException();
+		}
+		if (vehicleID.length() > 4) {
+			throw new InvalidVehicleException();
 		}
 		
 		jData.add(vehicleID, (JsonElement) time);
@@ -66,10 +70,14 @@ public class TimetableActivity extends Activity {
 	}
 
 	/**
-	 * Find the timetable for the vehicle based on stop*/
-	private void findStopTimetable(String stopID) {
-		if (stopID == null) {
+	 * Find the timetable for the vehicle based on stop
+	 * @throws InvalidStopException */
+	private void findStopTimetable(String stopID) throws InvalidStopException {
+		if (stopID == null || stopID.length() == 0) {
 			throw new NullPointerException();
+		}
+		if (stopID.length() != 6 ) {
+			throw new InvalidStopException();
 		}
 
 		//Find the vehicle timetable whether in the local store
@@ -84,14 +92,18 @@ public class TimetableActivity extends Activity {
 	/**
 	 * Find the timetable for the vehicle based on service, structure same as stop timetable*/
 	private void findServiceTimetable(String serviceID) {
-		if (serviceID == null) {
+		if (serviceID == null || serviceID.length() == 0) {
 			throw new NullPointerException();
 		}
+		
+		
 
 		if (!jData.has(serviceID)) {
-
+			/* Send the request to the OPIA API to find the service. If no that
+			 * service in API, throw warning and ask user to enter a valid 
+			 * service. If the input is invalid, need to throw the warning as 
+			 * well*/
 		} else {
-			
 			jData.get(serviceID);
 		}
 	}
