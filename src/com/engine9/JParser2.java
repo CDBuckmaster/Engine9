@@ -1,17 +1,23 @@
 package com.engine9;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import java.io.FileReader;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 
 
 public class JParser2 {
 
-    public static JSONObject main(String arg) throws Exception {
+    public static JsonObject main(String arg) throws Exception {
      
     	
         try{
-        JSONObject json = (JSONObject) JSONSerializer.toJSON( arg ); 
-        return json;
+        	JsonParser parser = new JsonParser();
+        	JsonElement jsonElement = parser.parse(arg);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            return jsonObject;
         } catch(Exception e){
         	return null;
         }

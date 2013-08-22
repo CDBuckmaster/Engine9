@@ -8,9 +8,9 @@ import java.util.Map;
 import java.io.*;
 import java.util.Date;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 
 import com.engine9.R;
 import android.os.Bundle;
@@ -30,7 +30,7 @@ public class TimetableActivity extends Activity {
 	//private LinkedHashMap<String, List<String>> timetable = new LinkedHashMap();
 	/* The global store (save all timetable) allow user to search, but really depends on
 	 * Internet so that it might be slow */
-	private JSONObject jData;
+	private JsonObject jData;
 
 	private Date time;
 	private DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
@@ -49,12 +49,8 @@ public class TimetableActivity extends Activity {
 		if (vehicleID == null || time == null || time.size() == 0) {
 			throw new NullPointerException();
 		}
-		try {
-			jData.put(vehicleID, time);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		jData.add(vehicleID, (JsonElement) time);
 	}
 
 	public String toString() {
@@ -72,12 +68,8 @@ public class TimetableActivity extends Activity {
 		if (!jData.has(stopID)) {
 			//Need to search the database can then display (Maybe store locally as well)
 		} else {
-			try {
-				jData.get(stopID);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			jData.get(stopID);
+
 		}
 	}
 
@@ -91,12 +83,8 @@ public class TimetableActivity extends Activity {
 		if (!jData.has(serviceID)) {
 
 		} else {
-			try {
-				jData.get(serviceID);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			jData.get(serviceID);
 		}
 	}
 
@@ -118,23 +106,16 @@ public class TimetableActivity extends Activity {
 
 	}
 	
+	//Test function (will be modified later) that ouputs all relevant data from JSON file
 	private void findTimes(){
-		try {
-			//Log.e("DEBUG", jData.get("StopTimetables").toString());
-			JSONArray st = (JSONArray) jData.get("StopTimetables");
-			//JSONObject stop = jData.getJSONArray("StopTimetables").getJSONObject(0).getJSONObject("Stop");
-			/*
-			JSONArray trips = stop.getJSONArray("Trips");
-			for(int i = 0; i < trips.length(); i++){
-				JSONObject trip = trips.getJSONObject(i);
-				Log.e("Departure", trip.getString("DepartureTime"));
-				JSONObject route = trip.getJSONObject("Route");
-				Log.e("Code", trip.getString("Code"));
-				Log.e("Direction", String.valueOf(trip.getInt("Directions")));
-			}*/
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			Log.e("Error", "You fucked up son");
+		JsonArray st =jData.getAsJsonArray("StopTimetables");
+		JsonArray trips = st.get(0).getAsJsonObject().get("Trips").getAsJsonArray();
+		for(int i = 0; i < trips.size(); i++){
+			JsonObject trip = trips.get(i).getAsJsonObject();
+			Log.e("Departure", trip.get("DepartureTime").getAsString());
+			JsonObject route = trip.getAsJsonObject("Route");
+			Log.e("Code", route.get("Code").getAsString());
+			Log.e("Direction", String.valueOf(route.get("Direction").getAsInt()));
 		}
 	}
 
@@ -147,7 +128,7 @@ public class TimetableActivity extends Activity {
 				Log.e("Error", "fuck");
 				e.printStackTrace();
 			}
-			//findTimes();
+			findTimes();
 		}
 	}
 }
