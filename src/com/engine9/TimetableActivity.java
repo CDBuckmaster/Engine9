@@ -142,8 +142,11 @@ public class TimetableActivity extends Activity {
 	}
 	//Test function (will be modified later) that ouputs all relevant data from JSON file
 	private void findTimes(){
-		JsonArray st =jData.getAsJsonArray("StopTimetables");
-		JsonArray trips = st.get(0).getAsJsonObject().get("Trips").getAsJsonArray();
+		JsonArray st =jData.getAsJsonArray("StopTimetables"); //Get the Stop info
+		/*Get the particular trip info*/
+		JsonArray trips = st.get(0).getAsJsonObject().get("Trips").getAsJsonArray(); 
+		
+		/*Loop all the elements and get each single trip info*/
 		for(int i = 0; i < trips.size(); i++){
 			JsonObject trip = trips.get(i).getAsJsonObject();
 			
