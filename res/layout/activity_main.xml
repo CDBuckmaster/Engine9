@@ -4,23 +4,71 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/mapButton"
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
-        android:text="Map" />
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="15dp"
+        android:text="Timetable: Please enter the stop location"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:ems="10" />
 
     <Button
-        android:id="@+id/syncButton"
-        style="?android:attr/buttonStyleSmall"
+        android:id="@+id/time_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mapButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
-        android:text="Sync" />
+        android:layout_alignLeft="@+id/time_text"
+        android:layout_below="@+id/time_text"
+        android:layout_marginTop="23dp"
+        android:text="See Timetable" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/time_button"
+        android:layout_centerVertical="true"
+        android:text="Vehicle locations: Please enter the service number"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/visual_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="17dp"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/map_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/visual_text"
+        android:layout_below="@+id/visual_text"
+        android:layout_marginTop="19dp"
+        android:text="Map visual" />
+
+    <Button
+        android:id="@+id/abstract_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/map_button"
+        android:layout_alignBottom="@+id/map_button"
+        android:layout_toRightOf="@+id/time_button"
+        android:text="Abstract visual" />
 
 </RelativeLayout>

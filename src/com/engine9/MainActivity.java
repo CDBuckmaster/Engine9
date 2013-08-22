@@ -15,22 +15,33 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Button button = (Button) findViewById(R.id.mapButton);
-		button.setOnClickListener(new OnClickListener(){
+		Button tButton = (Button) findViewById(R.id.time_button);
+		tButton.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
-				startActivity(new Intent(com.engine9.MainActivity.this, com.engine9.MapActivity.class));	
+				startActivity(new Intent(com.engine9.MainActivity.this, com.engine9.TimetableActivity.class));	
 			}
 			
 		});
 		
-		Button sButton = (Button) findViewById(R.id.syncButton);
-		sButton.setOnClickListener(new OnClickListener(){
+		Button mButton = (Button) findViewById(R.id.map_button);
+		mButton.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
-				new Request().execute("https://opia.api.translink.com.au/v1/travel/rest/plan/LM%3ATrain%20Stations%3ARobina%20station/LM%3ATrain%20Stations%3ASouth%20Brisbane%20station?timeMode=0&at=Mon%2C+19+Aug+2013+06%3A59%3A12+GMT&walkSpeed=2&maximumWalkingDistanceM=1500&api_key=special-key");
+				startActivity(new Intent(com.engine9.MainActivity.this, com.engine9.MapActivity.class));
+				
+			}
+			
+		});
+		
+		Button aButton = (Button) findViewById(R.id.abstract_button);
+		aButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				startActivity(new Intent(com.engine9.MainActivity.this, com.engine9.AbstractActivity.class));
 				
 			}
 			
