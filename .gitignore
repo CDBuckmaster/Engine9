@@ -16,7 +16,7 @@ local.properties
 .loadpath
 project.properties
 R.java
-
+gen/com/engine9/R.java
 
 # External tool builders
 .externalToolBuilders/
