@@ -8,13 +8,15 @@ import java.util.Map;
 import java.io.*;
 import java.util.Date;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 import com.engine9.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -115,11 +117,37 @@ public class TimetableActivity extends Activity {
 	private void timeCountDown() {
 
 	}
+	
+	private void findTimes(){
+		try {
+			//Log.e("DEBUG", jData.get("StopTimetables").toString());
+			JSONArray st = (JSONArray) jData.get("StopTimetables");
+			//JSONObject stop = jData.getJSONArray("StopTimetables").getJSONObject(0).getJSONObject("Stop");
+			/*
+			JSONArray trips = stop.getJSONArray("Trips");
+			for(int i = 0; i < trips.length(); i++){
+				JSONObject trip = trips.getJSONObject(i);
+				Log.e("Departure", trip.getString("DepartureTime"));
+				JSONObject route = trip.getJSONObject("Route");
+				Log.e("Code", trip.getString("Code"));
+				Log.e("Direction", String.valueOf(trip.getInt("Directions")));
+			}*/
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			Log.e("Error", "You fucked up son");
+		}
+	}
 
 	private class TimeRequest extends Request{
 		@Override
 		public void onPostExecute(String result) {
-			jData = new JSONObject((Map) JParser.pObject(result));
+			try {
+				jData = JParser2.main(result);
+			} catch (Exception e) {
+				Log.e("Error", "fuck");
+				e.printStackTrace();
+			}
+			//findTimes();
 		}
 	}
 }
