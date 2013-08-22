@@ -3,8 +3,10 @@ package com.engine9;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.io.*;
 import java.util.Date;
 
@@ -15,6 +17,7 @@ import com.google.gson.JsonArray;
 import com.engine9.R;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -31,6 +34,7 @@ public class TimetableActivity extends Activity {
 	/* The global store (save all timetable) allow user to search, but really depends on
 	 * Internet so that it might be slow */
 	private JsonObject jData;
+	private LinkedList times;
 
 	private Date time;
 	private DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
@@ -105,7 +109,6 @@ public class TimetableActivity extends Activity {
 	private void timeCountDown() {
 
 	}
-	
 	//Test function (will be modified later) that ouputs all relevant data from JSON file
 	private void findTimes(){
 		JsonArray st =jData.getAsJsonArray("StopTimetables");
@@ -130,5 +133,26 @@ public class TimetableActivity extends Activity {
 			}
 			findTimes();
 		}
+	}
+	
+	private class Listing extends View{
+
+		private long time;
+		private String code;
+		private String direction;
+		
+		public Listing(Context context, long _time, String _code, int _direction) {
+			super(context);
+			time = _time;
+			code = _code;
+			direction = directionToString(_direction);
+		}
+		
+		private String directionToString(int dir){
+			String[] directions = {"North", "South", "East", "West", "Inbound", "Outbound", "Inward", "Outward",
+					"Upward", "Downward", "Clockwise", "Counterclockwise", "Direction1", "Direction2", ""};
+			return directions[dir];
+		}
+		
 	}
 }
