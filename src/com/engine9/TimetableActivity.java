@@ -2,6 +2,7 @@ package com.engine9;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.io.*;
 
 import com.engine9.R;
 import android.os.Bundle;
@@ -14,13 +15,17 @@ import android.widget.Button;
 
 public class TimetableActivity extends Activity {
 	private String vehicleID;
-	LinkedHashMap<String, List<String>> timetable = new LinkedHashMap();
+	private LinkedHashMap<String, List<String>> timetable = new LinkedHashMap();
+	
+	private String time;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_timetable);	
 	}
 	
+	/**
+	 * Add the vehicle timetable to the local device*/
 	private void addTimetable(String vehicleID, List<String> time) {
 		if (vehicleID == null || time == null || time.size() == 0) {
 			throw new NullPointerException();
@@ -32,27 +37,63 @@ public class TimetableActivity extends Activity {
 		return timetable.toString();
 	}
 	
-	private void findTimetable(String s) {
-		if (s == null) {
+	/**
+	 * Find the timetable for the vehicle based on stop*/
+	private void findStopTimetable(String stopID) {
+		if (stopID == null) {
 			throw new NullPointerException();
 		}
 		
 		//Find the vehicle timetable whether in the local store
-		if (!timetable.containsKey(s)) {
+		if (!timetable.containsKey(stopID)) {
 			//Need to search the database can then display (Maybe store locally as well)
 		} else {
-			timetable.get(s);
+			timetable.get(stopID);
 		}
 	}
 	
-	/***/
-	private void deleteTimetable(String s) {
-		if (s == null) {
+	/**
+	 * Find the timetable for the vehicle based on service, structure same as stop timetable*/
+	private void findServiceTimetable(String serviceID) {
+		if (serviceID == null) {
+			throw new NullPointerException();
+		}
+		
+		if (!timetable.containsKey(serviceID)) {
+			
+		} else {
+			timetable.get(serviceID);
+		}
+	}
+	
+	/**
+	 * Delete the timetable from local device*/
+	private void deleteStopTimetable(String timetableKey) {
+		if (timetableKey == null) {
 			throw new NullPointerException();
 		}
 		//Remove the timetable locally
-		if (timetable.containsKey(s)) {
-			timetable.remove(s);
+		if (timetable.containsKey(timetableKey)) {
+			timetable.remove(timetableKey);
 		} 
+	}
+	
+	/**
+	 * Count the time and highlight the service if approaching within 5 mim*/
+	private void timeCountDown() {
+		
+	}
+	
+	/**
+	 * Get the vehicle data from database*/
+	private void getVehicle() {
+		
+	}
+	
+	/**
+	 * Check the timetable data whether is service realtime or static. If the 
+	 * realtime data can be find, use that; show the static data otherwise*/
+	private void checkDataType() {
+		
 	}
 }
