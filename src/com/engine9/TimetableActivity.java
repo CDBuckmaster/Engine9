@@ -8,6 +8,7 @@ import java.util.Map;
 import java.io.*;
 import java.util.Date;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.engine9.R;
@@ -21,14 +22,23 @@ import android.widget.Button;
 
 public class TimetableActivity extends Activity {
 	private String vehicleID;
-	private LinkedHashMap<String, List<String>> timetable = new LinkedHashMap();
+	/* The local store (save some timetable) allow user to do the quick search, but only 
+	 * allow  around 10 places/service (can add the time limit so that if user did not use
+	 * for a while, delete that)*/
+	//private LinkedHashMap<String, List<String>> timetable = new LinkedHashMap();
+	/* The global store (save all timetable) allow user to search, but really depends on
+	 * Internet so that it might be slow */
+	private JSONObject jData;
 
 	private Date time;
 	private DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_timetable);	
+		setContentView(R.layout.activity_timetable);
+		Intent intent = getIntent();
+		String iurl = intent.getStringExtra("timeURL");
+		new TimeRequest().execute(iurl);
 	}
 
 	/**
@@ -37,11 +47,16 @@ public class TimetableActivity extends Activity {
 		if (vehicleID == null || time == null || time.size() == 0) {
 			throw new NullPointerException();
 		}
-		timetable.put(vehicleID, time);
+		try {
+			jData.put(vehicleID, time);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String toString() {
-		return timetable.toString();
+		return jData.toString();
 	}
 
 	/**
@@ -52,10 +67,15 @@ public class TimetableActivity extends Activity {
 		}
 
 		//Find the vehicle timetable whether in the local store
-		if (!timetable.containsKey(stopID)) {
+		if (!jData.has(stopID)) {
 			//Need to search the database can then display (Maybe store locally as well)
 		} else {
-			timetable.get(stopID);
+			try {
+				jData.get(stopID);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -66,10 +86,15 @@ public class TimetableActivity extends Activity {
 			throw new NullPointerException();
 		}
 
-		if (!timetable.containsKey(serviceID)) {
+		if (!jData.has(serviceID)) {
 
 		} else {
-			timetable.get(serviceID);
+			try {
+				jData.get(serviceID);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -80,9 +105,9 @@ public class TimetableActivity extends Activity {
 			throw new NullPointerException();
 		}
 		//Remove the timetable locally
-		if (timetable.containsKey(timetableKey)) {
+		/*if (timetable.containsKey(timetableKey)) {
 			timetable.remove(timetableKey);
-		} 
+		} */
 	}
 
 	/**
@@ -91,23 +116,10 @@ public class TimetableActivity extends Activity {
 
 	}
 
-	/**
-	 * Set which type of data will be display*/
-	private void dataDisplay() {
-
-	}
-
-	/**
-	 * Check the timetable data whether is service realtime or static. If the 
-	 * realtime data can be find, use that; show the static data otherwise*/
-	private void checkDataType() {
-
-	}
-
 	private class TimeRequest extends Request{
 		@Override
 		public void onPostExecute(String result) {
-			JSONObject jData = new JSONObject((Map) JParser.pObject(result));
+			jData = new JSONObject((Map) JParser.pObject(result));
 		}
 	}
 }
