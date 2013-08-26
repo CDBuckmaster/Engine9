@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class TimetableActivity extends Activity {
 	private String vehicleID;
@@ -40,6 +41,9 @@ public class TimetableActivity extends Activity {
 	private Date time;
 	private DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
 	private ListView timeList;
+	
+	//Temporary favourites array
+	private String[] favourites = {"412", "411"};
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,6 +53,17 @@ public class TimetableActivity extends Activity {
 		new TimeRequest().execute(iurl);
 		
 		timeList = (ListView) findViewById(R.id.list_view);
+		
+		Button favButton = (Button)findViewById(R.id.fav_button);
+		favButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				
+				
+			}
+			
+		});
 	}
 
 	/**
