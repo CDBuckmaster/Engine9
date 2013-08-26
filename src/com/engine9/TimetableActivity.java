@@ -80,14 +80,16 @@ public class TimetableActivity extends Activity {
 	/**
 	 * Find the timetable for the vehicle based on service, structure same as stop timetable*/
 	private void findServiceTimetable(String serviceID) {
-		if (serviceID == null) {
+		if (serviceID == null || serviceID.length() == 0) {
 			throw new NullPointerException();
 		}
 
 		if (!jData.has(serviceID)) {
-
+			/* Send the request to the OPIA API to find the service. If no that
+			 * service in API, throw warning and ask user to enter a valid 
+			 * service. If the input is invalid, need to throw the warning as 
+			 * well*/
 		} else {
-			
 			jData.get(serviceID);
 		}
 	}
