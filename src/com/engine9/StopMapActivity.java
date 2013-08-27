@@ -264,11 +264,15 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	 * 		A JsonObject containing stop information
 	 */
 	private void JsonToVector(JsonElement j){
-		//Log.e("DEBUG", String.valueOf(j.has("result")));
+		//Casts result as JsonArray
 		JsonArray result  = j.getAsJsonArray();
 		
+		//Loops through JsonObjects in result
 		for(int i = 0; i < result.size(); i++){
+			
 			JsonObject stop = result.get(i).getAsJsonObject();
+			
+			//Adds new stop data to stopVector
 			Stop s = new Stop(stop.get("StopId").getAsString(),
 					stop.get("Lat").getAsDouble(),
 					stop.get("Lng").getAsDouble(),
@@ -287,6 +291,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 					.title(s.address));
 			s.markerId = marker.getId();
 		}
+		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(stopVector.get(0).lat, stopVector.get(0).lon ), 15));
 	}
 	
 	/**
