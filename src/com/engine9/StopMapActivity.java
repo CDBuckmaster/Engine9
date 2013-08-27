@@ -17,6 +17,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import android.app.Dialog;
@@ -56,6 +57,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		Intent i = getIntent();
 		String sLocation = i.getStringExtra("location");
 		if(sLocation != null && sLocation != ""){
+			Log.e("debug", "http://deco3801-005.uqcloud.net/stops-from-location/?location=" +sLocation);
 			new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +sLocation);
 		}
 		//Check the Google Play Service whether is connected
@@ -127,8 +129,11 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				@Override
 				public boolean onMarkerClick(Marker m) {
 					for(Stop s : stopVector){
-						if(s.markerId == m.getId()){
+						if(s.markerId.equals(m.getId())){
 							//Open TimeTableActivity with new intent
+							Intent i = new Intent(com.engine9.StopMapActivity.this, com.engine9.TimetableActivity.class);
+							i.putExtra("timeURL", "http://deco3801-005.uqcloud.net/cache/network/rest/stop-timetables/?stopIds=" + s.stopId);
+							startActivity(i);
 							return true;
 						}
 					}
@@ -258,7 +263,17 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	 * 		A JsonObject containing stop information
 	 */
 	private void JsonToVector(JsonObject j){
-		Log.e("DEBUG", String.valueOf(j.has("result")));
+		//Log.e("DEBUG", String.valueOf(j.has("result")));
+		JsonArray result = j.getAsJsonArray("result");
+		
+		for(int i = 0; i < result.size(); i++){
+			JsonObject stop = result.get(i).getAsJsonObject();
+			Stop s = new Stop(stop.get("StopId").getAsString(),
+					stop.get("Lat").getAsDouble(),
+					stop.get("Lng").getAsDouble(),
+					stop.get("Description").getAsString());
+			stopVector.add(s);
+		}
 	}
 	
 	/**
@@ -284,6 +299,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 			try {
 				jData = JParser2.main(result);
 				JsonToVector(jData);
+				addStopsToMap();
 				
 			} catch (Exception e) {
 				Log.e("Error", "Parsing error");
