@@ -242,15 +242,19 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		
 	}
 	
-	/*
+	/**
 	 * Function that converts JsonObject (jData) into a vector (stopVector)
-	 * @param j A JsonObject containing stop information
+	 * 
+	 * @param j 
+	 * 		A JsonObject containing stop information
 	 */
 	private void JsonToVector(JsonObject j){
 		
 	}
 	
-	//Adds markers to map from stopVector
+	/**
+	 * Adds markers to map from stopVector
+	 * */
 	private void addStopsToMap(){
 		for(Stop s : stopVector){
 			Marker marker = mMap.addMarker(new MarkerOptions()

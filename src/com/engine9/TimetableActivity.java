@@ -71,7 +71,8 @@ public class TimetableActivity extends Activity {
 	 * 	   @throws InvalidPointerException 
 	 * 	        if the vehicleID is invalid
 	 *     @throws NullPointerException
-	 * 	        if the vehicleID or time is empty or null*/
+	 * 	        if the vehicleID or time is empty or null
+	 * */
 	private void addTimetable(String vehicleID, List<String> time) 
 			throws InvalidPointerException {
 		if (vehicleID == null || vehicleID.length() == 0 || time == null || time.size() == 0) {
@@ -90,7 +91,11 @@ public class TimetableActivity extends Activity {
 
 	/**
 	 * Find the timetable for the vehicle based on stop
-	 * @throws InvalidPointerException */
+	 * 		@throws InvalidPointerException 
+	 *			if the StopID is invalid
+	 * 		@throws NullPointerException
+	 * 			if no stopid input or just empty string
+	 * */
 	private void findStopTimetable(String stopID) throws InvalidPointerException {
 		if (stopID == null || stopID.length() == 0) {
 			throw new NullPointerException();
@@ -109,7 +114,8 @@ public class TimetableActivity extends Activity {
 	}
 
 	/**
-	 * Find the timetable for the vehicle based on service, structure same as stop timetable*/
+	 * Find the timetable for the vehicle based on service, structure same as stop timetable
+	 * */
 	private void findServiceTimetable(String serviceID) {
 		if (serviceID == null || serviceID.length() == 0) {
 			throw new NullPointerException();

@@ -90,6 +90,12 @@ public class MapActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Set initial map and use current location to should on the centre of screen.
+	 * 
+	 * @param center
+	 * 		the user's current location
+	 * */
 	private void setUpMap(LatLng center) {
 		if (mMap == null) {
 			mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -99,8 +105,12 @@ public class MapActivity extends FragmentActivity {
 		}
 	}
 
-	public class MapRequest extends Request
-	{
+	/**
+	 * It extends the Request class (which handles getRequests) the onPostExecute 
+	 * function is overwritten so that the returned JSON data can be handled 
+	 * specifically for this activity (to get User location info)
+	 * */
+	public class MapRequest extends Request {
 		@Override
 		public void onPostExecute(String result)
 		{
@@ -114,8 +124,7 @@ public class MapActivity extends FragmentActivity {
 	private void addMarkers(Vector<LatLng> v){
 		for (LatLng l : v){
 
-			mMap.addMarker(new MarkerOptions()
-			.position(l));
+			mMap.addMarker(new MarkerOptions().position(l));
 		}
 	}
 }
