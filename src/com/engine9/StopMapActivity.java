@@ -57,20 +57,19 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		
 		Intent i = getIntent();
 		String sLocation = i.getStringExtra("location");
-		if(sLocation != null && sLocation != ""){
-			Log.e("debug", "http://deco3801-005.uqcloud.net/stops-from-location/?location=" +sLocation);
+		if(sLocation != null && sLocation.length() != 0){
+			Log.e("debug", sLocation +"derp");
 			new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +sLocation);
 		}
 		//Check the Google Play Service whether is connected
 		else if(servicesConnected()){
 			//Create new Location Manager and set up location updates
 			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	        mLocationManager.requestLocationUpdates(mLocationManager.getBestProvider(new Criteria(), true),
+	        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
 	        		0, 0, this);
 	        
 	        //Tries to get the current location
-	        currentLocation = mLocationManager.getLastKnownLocation(mLocationManager.
-	        		getBestProvider(new Criteria(), true));
+	        currentLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 	        
 	        //Check whether the connection is over time 
 	        if(currentLocation != null && currentLocation.getTime() > Calendar.getInstance().
