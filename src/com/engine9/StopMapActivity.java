@@ -40,12 +40,12 @@ public class StopMapActivity extends FragmentActivity implements
 GooglePlayServicesClient.ConnectionCallbacks,
 GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 
-	private GoogleMap mMap;
-	private LocationClient mLocationClient;
-	private Location currentLocation;
-	private LocationManager mLocationManager;
-	private JsonObject jData;
-	private Vector<Stop> stopVector = new Vector<Stop>();
+	private GoogleMap mMap; //The Google Map used
+
+	private Location currentLocation; //The user's current location
+	private LocationManager mLocationManager; //Used for getting location
+	private JsonObject jData; //The Json data holding the stops
+	private Vector<Stop> stopVector = new Vector<Stop>(); //A vector for keeping stop info
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +53,18 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		setContentView(R.layout.activity_stop_map);
 		
 		//Check the Google Play Service whether is connected
-		if(!servicesConnected()){
-			Toast.makeText(this, "No GooglePlayServices", Toast.LENGTH_SHORT).show();
+		if(servicesConnected()){
+			
+			//Create new Location Manager and set up location updates
 			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	        mLocationManager.requestLocationUpdates(mLocationManager.getBestProvider(new Criteria(), true),
 	        		0, 0, this);
-
+	        
+	        //Tries to get the current location
 	        currentLocation = mLocationManager.getLastKnownLocation(mLocationManager.
 	        		getBestProvider(new Criteria(), true));
-	        //Check the connection whether is over time 
+	        
+	        //Check whether the connection is over time 
 	        if(currentLocation != null && currentLocation.getTime() > Calendar.getInstance().
 	        		getTimeInMillis() - 2 * 60 * 1000) {
 	        	
@@ -77,6 +80,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 					e.printStackTrace();
 				}
 				
+				//We only need the location once, so updates are stopped
 				mLocationManager.removeUpdates(this);
 	        }
 		}
@@ -246,6 +250,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		
 	}
 	
+	//Adds markers to map from stopVector
 	private void addStopsToMap(){
 		for(Stop s : stopVector){
 			Marker marker = mMap.addMarker(new MarkerOptions()
