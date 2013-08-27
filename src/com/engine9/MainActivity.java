@@ -20,9 +20,13 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+				/*
 				Intent i = new Intent(com.engine9.MainActivity.this, com.engine9.TimetableActivity.class);
 				i.putExtra("timeURL", "https://dl.dropboxusercontent.com/u/26635718/timetableMilton.json");
-				startActivity(i);	
+				startActivity(i);	*/
+				
+				Intent i = new Intent(com.engine9.MainActivity.this, com.engine9.StopMapActivity.class);
+				startActivity(i);
 			}
 			
 		});
