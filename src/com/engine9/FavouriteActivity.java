@@ -27,6 +27,8 @@ public class FavouriteActivity extends Activity {
 		favList.setAdapter(adapter);
 		
 		final EditText favText = (EditText) findViewById(R.id.fav_text); 
+		
+		//Adds new favourite to list, updates ListView
 		Button favButton = (Button) findViewById(R.id.ffav_button);
 		favButton.setOnClickListener(new OnClickListener(){
 

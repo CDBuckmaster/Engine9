@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+//Converts a Vector of strings into a list of strings
 public class FavouriteAdapter extends ArrayAdapter<String> {
 	
 	private Context context;
