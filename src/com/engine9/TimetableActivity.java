@@ -44,7 +44,7 @@ public class TimetableActivity extends Activity {
 	private ListView timeList;
 	
 	//Temporary favourites array
-	private String[] favourites = {"412", "411"};
+	//private String[] favourites = {"412", "411"};
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,7 +79,7 @@ public class TimetableActivity extends Activity {
 						
 						//Check if they are within the favourites array
 						Boolean listCheck = false;
-						for(String fav: favourites){
+						for(String fav: FavouriteManager.getFavourites(getApplicationContext())){
 							if(l.code.equals(fav)){
 								listCheck = true;
 							}
