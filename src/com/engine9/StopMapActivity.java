@@ -116,7 +116,11 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
         }
 	}
 	
-	//Detects if Google Play Services is available
+	/**
+	 * Return true if Google Play Services is available for the current situation, otherwise 
+	 * return false. The application need to connect to Google Play Services in order to getting
+	 * user's location and use that to find the stop or measure the route
+	 * */
 	private boolean servicesConnected() {
         // Check that Google Play services is available
         int resultCode =

@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+/**
+ * The main page to control the application
+ * */
 public class MainActivity extends Activity {
 
 	@Override
@@ -31,6 +34,7 @@ public class MainActivity extends Activity {
 			
 		});
 		
+		//Set the button to open the map
 		Button mButton = (Button) findViewById(R.id.map_button);
 		mButton.setOnClickListener(new OnClickListener(){
 

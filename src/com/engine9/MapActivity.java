@@ -31,12 +31,13 @@ import android.os.Build;
 
 
 /***
- * Show the basic map and user can select*/
+ * Show the basic map and user can select
+ * */
 public class MapActivity extends FragmentActivity {
 
 	private GoogleMap mMap;
 
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,21 +45,21 @@ public class MapActivity extends FragmentActivity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		setUpMap( null);
-		
+
 		Button dButton = (Button) findViewById(R.id.download);
 		dButton.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
-				
+
 				new MapRequest().execute("https://dl.dropboxusercontent.com/u/26635718/markers.json");
 			}
-			
+
 		});
-		
-		
-		
-		
+
+
+
+
 	}
 
 	/**
@@ -88,16 +89,16 @@ public class MapActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void setUpMap(LatLng center) {
-        if (mMap == null) {
-        	mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-        	mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        	if(center != null){
-        	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15));}
-        }
+		if (mMap == null) {
+			mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+			mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+			if(center != null){
+				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15));}
+		}
 	}
-	
+
 	public class MapRequest extends Request
 	{
 		@Override
@@ -109,10 +110,10 @@ public class MapActivity extends FragmentActivity {
 			}
 		}
 	}
-	
+
 	private void addMarkers(Vector<LatLng> v){
 		for (LatLng l : v){
-			
+
 			mMap.addMarker(new MarkerOptions()
 			.position(l));
 		}

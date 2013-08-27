@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+/**
+ * The class to get the journey from the Json file
+ * */
 public class JourneyStart extends Activity {
 	
 	@Override
