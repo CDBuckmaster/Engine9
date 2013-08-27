@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * The main page to control the application
@@ -29,6 +30,8 @@ public class MainActivity extends Activity {
 				startActivity(i);	
 				*/
 				Intent i = new Intent(com.engine9.MainActivity.this, com.engine9.StopMapActivity.class);
+				TextView tv = (TextView) findViewById(R.id.time_text);
+				i.putExtra("location", tv.getText().toString());
 				startActivity(i);
 			}
 			

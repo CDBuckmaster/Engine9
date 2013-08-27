@@ -21,6 +21,7 @@ import com.google.gson.JsonObject;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -52,8 +53,13 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stop_map);
 		
+		Intent i = getIntent();
+		String sLocation = i.getStringExtra("location");
+		if(sLocation != null && sLocation != ""){
+			new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +sLocation);
+		}
 		//Check the Google Play Service whether is connected
-		if(servicesConnected()){
+		else if(servicesConnected()){
 			//Create new Location Manager and set up location updates
 			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	        mLocationManager.requestLocationUpdates(mLocationManager.getBestProvider(new Criteria(), true),
