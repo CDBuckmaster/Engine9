@@ -8,12 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-<<<<<<< HEAD
-/*This class is used to translate an array of listing data into an array
-=======
+
  /** 
  * This class is used to translate an array of listing data into an array
->>>>>>> 44fe24194e9224a290360ffb88b96f0b2d2abe9f
  * of Views for a ViewList to use.  In this instance, it is being used
  * for TimeTableActivity
  */
@@ -22,20 +19,15 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 	private Context context;
 	private Listing[] values;
 	
-<<<<<<< HEAD
-	/*
-	 * @param context The context the ListView belongs to
-	 * @param values An array of Listing classes
-	 */
-=======
+
 	/**
 	 * Basic constructor for the time
 	 * 
 	 * 		@param context
-	 * 			where is being created
+	 * 			The context the ListView belongs to
 	 * 		@param values
-	 * 			An array of listing, all the info will be displayed*/
->>>>>>> 44fe24194e9224a290360ffb88b96f0b2d2abe9f
+	 * 			An array of Listing classes
+	 * */
 	public TimeAdapter(Context context, Listing[] values) {
 		super(context, R.layout.list_timetable, values);
 		this.values = values;
