@@ -79,7 +79,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+				Log.e("Error1", currentLocation.toString());
 				//We only need the location once, so updates are stopped
 				mLocationManager.removeUpdates(this);
 	        }
@@ -219,6 +219,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 			}
 			
 			currentLocation = location;
+			Log.e("Error2", currentLocation.toString());
 			mLocationManager.removeUpdates(this);
 		}
 		

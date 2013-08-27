@@ -7,12 +7,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 
-
+/*
+ * Class for parsing a Json string into a JsonObject
+ */
 public class JParser2 {
 
     public static JsonObject main(String arg) throws Exception {
      
-    	
+    	//Uses GSON classes to parse the string, has a possibility to cause
+    	//an exception
         try{
         	JsonParser parser = new JsonParser();
         	JsonElement jsonElement = parser.parse(arg);
