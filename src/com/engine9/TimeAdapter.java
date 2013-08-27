@@ -66,8 +66,8 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		TextView timeV = (TextView) row.findViewById(R.id.time);
 		codeV.setText(values.get(position).code);
 		directionV.setText(values.get(position).direction);
-		timeV.setText(String.valueOf((values.get(position).time - System.currentTimeMillis()/10)/ 60000));
-		Log.e("DEBUG", String.valueOf(System.currentTimeMillis()/10 + " " + values.get(position).time));
+		timeV.setText(String.valueOf((values.get(position).time * 10  - System.currentTimeMillis())/ 60000));
+		Log.e("DEBUG", String.valueOf(System.currentTimeMillis() + " " + values.get(position).time * 10));
 		return row;
 	}
 

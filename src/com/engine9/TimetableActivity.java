@@ -155,7 +155,7 @@ public class TimetableActivity extends Activity {
 			JsonObject route = trip.getAsJsonObject("Route");
 			
 			//Use the long type to store the departure time with its UTC time zone
-			long d = Long.parseLong(trip.get("DepartureTime").getAsString().substring(6, 18)) + 1000;
+			long d = Long.parseLong(trip.get("DepartureTime").getAsString().substring(6, 18));
 			//Get single service info and add to the list
 			Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt());
 			times.add(l);
