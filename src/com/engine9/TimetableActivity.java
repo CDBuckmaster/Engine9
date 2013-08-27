@@ -67,11 +67,11 @@ public class TimetableActivity extends Activity {
 	}
 
 	/**
-	 * Add the vehicle timetable to the local device
-	 * @throws InvalidPointerException 
-	 * 	if the vehicleID is invalid
-	 * @throws NullPointerException
-	 * 	if the vehicleID or time is empty or null*/
+	 * Add and store the vehicle timetable to the local device
+	 * 	   @throws InvalidPointerException 
+	 * 	        if the vehicleID is invalid
+	 *     @throws NullPointerException
+	 * 	        if the vehicleID or time is empty or null*/
 	private void addTimetable(String vehicleID, List<String> time) 
 			throws InvalidPointerException {
 		if (vehicleID == null || vehicleID.length() == 0 || time == null || time.size() == 0) {
@@ -129,10 +129,10 @@ public class TimetableActivity extends Activity {
 
 	/**
 	 * Delete the timetable from local device
-	 * @throws NullPointerException
-	 * 	if timetableKey is null or empty
-	 * @throws InvalidPointerException
-	 * 	if timetableKey is invalid*/
+	 *     @throws NullPointerException
+	 * 	       if timetableKey is null or empty
+	 *     @throws InvalidPointerException
+	 * 	       if timetableKey is invalid*/
 	private void deleteStopTimetable(String timetableKey) {
 		if (timetableKey == null || timetableKey.length() == 0) {
 			throw new NullPointerException();
@@ -151,24 +151,27 @@ public class TimetableActivity extends Activity {
 	
 	
 	//Test function (will be modified later) that ouputs all relevant data from JSON file
-	private void findTimes(){
+	private void findTimes() {
 		JsonArray st =jData.getAsJsonArray("StopTimetables"); //Get the Stop info
-		/*Get the particular trip info*/
+		//Get the particular trip info
 		JsonArray trips = st.get(0).getAsJsonObject().get("Trips").getAsJsonArray(); 
 		
-		/*Loop all the elements and get each single trip info*/
+		//Loop all the elements and get each single trip info
 		for(int i = 0; i < trips.size(); i++){
 			JsonObject trip = trips.get(i).getAsJsonObject();
 			
 			JsonObject route = trip.getAsJsonObject("Route");
 			
+			//Use the long type to store the departure time with its UTC time zone
 			long d = Long.parseLong(trip.get("DepartureTime").getAsString().substring(6, 19)) + 1000;
+			//Get single service info and add to the list
 			Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt());
 			times.add(l);
 			
 		}
 		
-		TimeAdapter adapter = new TimeAdapter(getApplicationContext(), times.toArray(new Listing[times.size()]));
+		TimeAdapter adapter = new TimeAdapter(getApplicationContext(), 
+				times.toArray(new Listing[times.size()]));
 		timeList.setAdapter(adapter);
 	}
 	
