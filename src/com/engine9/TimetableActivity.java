@@ -2,6 +2,7 @@ package com.engine9;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class TimetableActivity extends Activity {
 	/* The global store (save all timetable) allow user to search, but really depends on
 	 * Internet so that it might be slow */
 	private JsonObject jData;
-	private LinkedList<Listing> times = new LinkedList<Listing>();
+	private ArrayList<Listing> times = new ArrayList<Listing>();
 
 	private Date time;
 	private DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
@@ -59,7 +60,29 @@ public class TimetableActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				
+				if(times != null){
+					
+					ArrayList<Listing> removeList = new ArrayList<Listing>();
+					
+					TimeAdapter ta = (TimeAdapter) timeList.getAdapter();
+					
+					for(int i = 0; i < timeList.getCount(); i ++ ){
+						Listing l = (Listing) ta.getItem(i);
+						Boolean listCheck = false;
+						for(String fav: favourites){
+							if(l.code.equals(fav)){
+								listCheck = true;
+							}
+						}
+						if(!listCheck){
+							removeList.add(l);
+						}
+					}
+					for(int j = 0; j < removeList.size(); j++){
+						ta.remove(removeList.get(j));
+					}
+					ta.notifyDataSetChanged();
+				}
 				
 			}
 			
@@ -177,7 +200,7 @@ public class TimetableActivity extends Activity {
 		}
 		
 		TimeAdapter adapter = new TimeAdapter(getApplicationContext(), 
-				times.toArray(new Listing[times.size()]));
+				times);
 		timeList.setAdapter(adapter);
 	}
 	

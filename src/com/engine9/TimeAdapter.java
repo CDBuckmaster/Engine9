@@ -1,5 +1,7 @@
 package com.engine9;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +19,7 @@ import android.widget.TextView;
 public class TimeAdapter extends ArrayAdapter<Listing> {
 
 	private Context context;
-	private Listing[] values;
+	private ArrayList<Listing> values;
 	
 
 	/**
@@ -25,19 +27,19 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 	 * 
 	 * 		@param context
 	 * 			The context the ListView belongs to
-	 * 		@param values
+	 * 		@param times
 	 * 			An array of Listing classes
 	 * */
-	public TimeAdapter(Context context, Listing[] values) {
-		super(context, R.layout.list_timetable, values);
-		this.values = values;
+	public TimeAdapter(Context context, ArrayList<Listing> times) {
+		super(context, R.layout.list_timetable, times);
+		this.values = times;
 		this.context = context;
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return values.length;
+		return values.size();
 	}
 
 
@@ -61,10 +63,9 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		TextView codeV = (TextView) row.findViewById(R.id.code);
 		TextView directionV = (TextView) row.findViewById(R.id.direction);
 		TextView timeV = (TextView) row.findViewById(R.id.time);
-		
-		codeV.setText(values[position].code);
-		directionV.setText(values[position].direction);
-		timeV.setText(String.valueOf(values[position].time));
+		codeV.setText(values.get(position).code);
+		directionV.setText(values.get(position).direction);
+		timeV.setText(String.valueOf(values.get(position).time));
 		
 		return row;
 	}
