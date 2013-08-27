@@ -150,7 +150,7 @@ public class TimetableActivity extends Activity {
 	}
 	
 	
-	//Test function (will be modified later) that ouputs all relevant data from JSON file
+	//Test function (will be modified later) that outputs all relevant data from JSON file
 	private void findTimes() {
 		JsonArray st =jData.getAsJsonArray("StopTimetables"); //Get the Stop info
 		//Get the particular trip info
