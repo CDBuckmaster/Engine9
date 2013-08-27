@@ -60,6 +60,17 @@ public class MainActivity extends Activity {
 			
 		});
 		
+		Button fButton = (Button) findViewById(R.id.favourites_button);
+		fButton.setOnClickListener(new OnClickListener(){
+			
+			@Override
+			public void onClick(View arg0) {
+				startActivity(new Intent(com.engine9.MainActivity.this, com.engine9.FavouriteActivity.class));
+				
+			}
+			
+		});
+		
 	}
 
 
