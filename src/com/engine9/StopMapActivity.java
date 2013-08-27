@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import android.app.Dialog;
@@ -46,7 +47,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 
 	private Location currentLocation; //The user's current location
 	private LocationManager mLocationManager; //Used for getting location
-	private JsonObject jData; //The Json data holding the stops
+	private JsonElement jData; //The Json data holding the stops
 	private Vector<Stop> stopVector = new Vector<Stop>(); //A vector for keeping stop info
 	
 	@Override
@@ -262,9 +263,9 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	 * @param j 
 	 * 		A JsonObject containing stop information
 	 */
-	private void JsonToVector(JsonObject j){
+	private void JsonToVector(JsonElement j){
 		//Log.e("DEBUG", String.valueOf(j.has("result")));
-		JsonArray result = j.getAsJsonArray("result");
+		JsonArray result  = j.getAsJsonArray();
 		
 		for(int i = 0; i < result.size(); i++){
 			JsonObject stop = result.get(i).getAsJsonObject();

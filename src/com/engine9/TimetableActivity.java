@@ -36,7 +36,7 @@ public class TimetableActivity extends Activity {
 	//private LinkedHashMap<String, List<String>> timetable = new LinkedHashMap();
 	/* The global store (save all timetable) allow user to search, but really depends on
 	 * Internet so that it might be slow */
-	private JsonObject jData;
+	private JsonElement jData;
 	private ArrayList<Listing> times = new ArrayList<Listing>();
 
 	private Date time;
@@ -121,7 +121,7 @@ public class TimetableActivity extends Activity {
 			throw new InvalidPointerException();
 		}
 		
-		jData.add(vehicleID, (JsonElement) time);
+		//jData.add(vehicleID, (JsonElement) time);
 	}
 
 	public String toString() {
@@ -144,12 +144,13 @@ public class TimetableActivity extends Activity {
 		}
 
 		//Find the vehicle timetable whether in the local store
+		/*
 		if (!jData.has(stopID)) {
 			//Need to search the database can then display (Maybe store locally as well)
 		} else {
 			jData.get(stopID);
 
-		}
+		}*/
 	}
 
 	/**
@@ -161,15 +162,15 @@ public class TimetableActivity extends Activity {
 		}
 		
 		
-
+		/*
 		if (!jData.has(serviceID)) {
 			/* Send the request to the OPIA API to find the service. If no that
 			 * service in API, throw warning and ask user to enter a valid 
 			 * service. If the input is invalid, need to throw the warning as 
-			 * well*/
+			 * well*//*
 		} else {
 			jData.get(serviceID);
-		}
+		}*/
 	}
 
 	/**
@@ -197,7 +198,7 @@ public class TimetableActivity extends Activity {
 	
 	//Test function (will be modified later) that outputs all relevant data from JSON file
 	private void findTimes() {
-		JsonArray st =jData.getAsJsonArray("StopTimetables"); //Get the Stop info
+		JsonArray st =jData.getAsJsonObject().getAsJsonArray("StopTimetables"); //Get the Stop info
 		//Get the particular trip info
 		JsonArray trips = st.get(0).getAsJsonObject().get("Trips").getAsJsonArray(); 
 		
@@ -208,7 +209,7 @@ public class TimetableActivity extends Activity {
 			JsonObject route = trip.getAsJsonObject("Route");
 			
 			//Use the long type to store the departure time with its UTC time zone
-			long d = Long.parseLong(trip.get("DepartureTime").getAsString().substring(6, 19)) + 1000;
+			long d = Long.parseLong(trip.get("DepartureTime").getAsString().substring(7, 19)) + 1000;
 			//Get single service info and add to the list
 			Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt());
 			times.add(l);
