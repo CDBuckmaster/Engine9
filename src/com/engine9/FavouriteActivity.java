@@ -16,6 +16,8 @@ public class FavouriteActivity extends Activity {
 	
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_favourite);
+		
 		
 		favList = (ListView) findViewById(R.id.listView1);
 		adapter = new FavouriteAdapter(getApplicationContext(), 
