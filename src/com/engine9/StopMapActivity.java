@@ -54,7 +54,6 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		
 		//Check the Google Play Service whether is connected
 		if(servicesConnected()){
-			Log.e("DEBUG", "test");
 			//Create new Location Manager and set up location updates
 			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	        mLocationManager.requestLocationUpdates(mLocationManager.getBestProvider(new Criteria(), true),
@@ -73,13 +72,14 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				String address;
 				try {
 					address = gcd.getFromLocation(currentLocation.getLatitude(), 
-							currentLocation.getLongitude(), 1).get(0).toString();
-					//new StopRequest().execute()
+							currentLocation.getLongitude(), 1).get(0).getLocality();
+					Log.e("DEBUG", address);
+					
+					new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +address);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				Log.e("Error1", currentLocation.toString());
 				//We only need the location once, so updates are stopped
 				mLocationManager.removeUpdates(this);
 	        }
@@ -210,16 +210,18 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 			//Converts location to address string
 			String address;
 			try {
-				address = gcd.getFromLocation(location.getLatitude(), 
-						location.getLongitude(), 1).get(0).toString();
-				//new StopRequest().execute()
+				address = gcd.getFromLocation(currentLocation.getLatitude(), 
+						currentLocation.getLongitude(), 1).get(0).getLocality();
+				Log.e("DEBUG", address);
+				
+				new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +address);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 			currentLocation = location;
-			Log.e("Error2", currentLocation.toString());
+			
 			mLocationManager.removeUpdates(this);
 		}
 		
@@ -250,7 +252,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	 * 		A JsonObject containing stop information
 	 */
 	private void JsonToVector(JsonObject j){
-		
+		Log.e("DEBUG", String.valueOf(j.has("result")));
 	}
 	
 	/**

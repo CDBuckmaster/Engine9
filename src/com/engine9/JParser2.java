@@ -2,6 +2,8 @@ package com.engine9;
 
 import java.io.FileReader;
 
+import android.util.Log;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -22,6 +24,7 @@ public class JParser2 {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             return jsonObject;
         } catch(Exception e){
+        	Log.e("Error", arg);
         	return null;
         }
         
