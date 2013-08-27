@@ -179,7 +179,8 @@ public class TimetableActivity extends Activity {
 	/**
 	 * It extends the Request class (which handles getRequests)
 	 * the onPostExecute function is overwritten so that the returned JSON
-	 * data can be handled specifically for this activity*/
+	 * data can be handled specifically for this activity (to get Time info)
+	 * */
 	private class TimeRequest extends Request{
 		@Override
 		public void onPostExecute(String result) {

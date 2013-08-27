@@ -32,6 +32,9 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ * This class will hole the stop information and show them on the map
+ * */
 
 public class StopMapActivity extends FragmentActivity implements
 GooglePlayServicesClient.ConnectionCallbacks,
@@ -49,19 +52,25 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stop_map);
 		
+		//Check the Google Play Service whether is connected
 		if(!servicesConnected()){
 			Toast.makeText(this, "No GooglePlayServices", Toast.LENGTH_SHORT).show();
 			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	        mLocationManager.requestLocationUpdates(mLocationManager.getBestProvider(new Criteria(), true), 0, 0, this);
+	        mLocationManager.requestLocationUpdates(mLocationManager.getBestProvider(new Criteria(), true),
+	        		0, 0, this);
 
-	        currentLocation = mLocationManager.getLastKnownLocation(mLocationManager.getBestProvider(new Criteria(), true));
-	        if(currentLocation != null && currentLocation.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
+	        currentLocation = mLocationManager.getLastKnownLocation(mLocationManager.
+	        		getBestProvider(new Criteria(), true));
+	        //Check the connection whether is over time 
+	        if(currentLocation != null && currentLocation.getTime() > Calendar.getInstance().
+	        		getTimeInMillis() - 2 * 60 * 1000) {
 	        	
 	        	Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
 				//Converts location to address string
 				String address;
 				try {
-					address = gcd.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1).get(0).toString();
+					address = gcd.getFromLocation(currentLocation.getLatitude(), 
+							currentLocation.getLongitude(), 1).get(0).toString();
 					//new StopRequest().execute()
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -91,7 +100,12 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
     }*/
 	
 	
-	
+	/**
+	 * Initial the map on the screen
+	 * 
+	 * @param center
+	 * 		user's current location
+	 * */
 	private void setUpMap(LatLng center) {
         if (mMap == null) {
         	mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -141,16 +155,19 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
             return false;
         }
 
+	/**
+	 * If the user is offline or the connection is failure, try to connect the Service
+	 * again in order to solve the problem.
+	 * */
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		if (connectionResult.hasResolution()) {
             try {
                 // Start an Activity that tries to resolve the error
                 connectionResult.startResolutionForResult(
-                        this,
-                        9000);
+                        this, 9000);
                 /*
-                 * Thrown if Google Play services canceled the original
+                 * Thrown if Google Play services cancelled the original
                  * PendingIntent
                  */
             } catch (IntentSender.SendIntentException e) {
@@ -189,7 +206,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 			//Converts location to address string
 			String address;
 			try {
-				address = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1).get(0).toString();
+				address = gcd.getFromLocation(location.getLatitude(), 
+						location.getLongitude(), 1).get(0).toString();
 				//new StopRequest().execute()
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -237,6 +255,11 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		}
 	}
 	
+	/**
+	 * It extends the Request class (which handles getRequests)
+	 * the onPostExecute function is overwritten so that the returned JSON
+	 * data can be handled specifically for this activity (to get Stop info)
+	 * */
 	private class StopRequest extends Request{
 		@Override
 		public void onPostExecute(String result) {
@@ -251,7 +274,9 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		}
 	}
 	
-	
+	/**
+	 * The constructor to store stop info
+	 * */
 	private class Stop{
 		String markerId;
 		Double lat;
