@@ -8,17 +8,21 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+<<<<<<< HEAD
 
  /** 
  * This class is used to translate an array of listing data into an array
  * of Views for a ViewList to use.  In this instance, it is being used
  * for TimeTableActivity
  */
+=======
+>>>>>>> parent of 59a6fe7... Added StopMapActivity
 public class TimeAdapter extends ArrayAdapter<Listing> {
 
 	private Context context;
 	private Listing[] values;
 	
+<<<<<<< HEAD
 
 	/**
 	 * Basic constructor for the time
@@ -28,10 +32,17 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 	 * 		@param values
 	 * 			An array of Listing classes
 	 * */
+=======
+	/*This class is used to translate an array of listing data into an array
+	 * of Views for a ViewList to use.  In this instance, it is being used
+	 * for TimeTableActivity
+	 */
+>>>>>>> parent of 59a6fe7... Added StopMapActivity
 	public TimeAdapter(Context context, Listing[] values) {
 		super(context, R.layout.list_timetable, values);
 		this.values = values;
 		this.context = context;
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -46,12 +57,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-	 * @param position 
-	 */
+
 	@Override
 	public View getView(int position, View convert, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
