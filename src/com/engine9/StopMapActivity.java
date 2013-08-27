@@ -54,7 +54,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		
 		//Check the Google Play Service whether is connected
 		if(servicesConnected()){
-			
+			Log.e("DEBUG", "test");
 			//Create new Location Manager and set up location updates
 			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	        mLocationManager.requestLocationUpdates(mLocationManager.getBestProvider(new Criteria(), true),
@@ -79,7 +79,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+				Log.e("Error1", currentLocation.toString());
 				//We only need the location once, so updates are stopped
 				mLocationManager.removeUpdates(this);
 	        }
@@ -219,6 +219,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 			}
 			
 			currentLocation = location;
+			Log.e("Error2", currentLocation.toString());
 			mLocationManager.removeUpdates(this);
 		}
 		
