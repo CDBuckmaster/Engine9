@@ -5,7 +5,7 @@
     tools:context=".MainActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/fav_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -19,8 +19,8 @@
         android:id="@+id/time_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/fav_code"
+        android:layout_below="@+id/fav_code"
         android:ems="10" />
 
     <Button
@@ -41,18 +41,6 @@
         android:text="Vehicle locations: Please enter the service number"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
-        android:id="@+id/visual_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="17dp"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
-
     <Button
         android:id="@+id/map_button"
         android:layout_width="wrap_content"
@@ -70,5 +58,23 @@
         android:layout_alignBottom="@+id/map_button"
         android:layout_toRightOf="@+id/time_button"
         android:text="Abstract visual" />
+
+    <EditText
+        android:id="@+id/visual_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/time_button"
+        android:layout_below="@+id/time_button"
+        android:layout_marginTop="16dp"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/favourites_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/map_button"
+        android:layout_below="@+id/map_button"
+        android:layout_marginTop="38dp"
+        android:text="Favourites" />
 
 </RelativeLayout>

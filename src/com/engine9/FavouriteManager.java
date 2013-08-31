@@ -50,6 +50,7 @@ public class FavouriteManager {
 	 * 
 	 * */
 	public static void deleteFavourite(String fav, Context context){
+		new File(context.getFilesDir(), "favourites.txt");
 		try {
 			BufferedReader input = new BufferedReader(new InputStreamReader(
 					context.openFileInput("favourites.txt")));
@@ -77,7 +78,6 @@ public class FavouriteManager {
 	 * Get the favourite service from the file and construct them into list 
 	 * */
 	public static Vector<String> getFavourites(Context context){
-		
 		try{
 			Vector<String> retVector = new Vector<String>();
 			BufferedReader input = new BufferedReader(new InputStreamReader(
@@ -89,7 +89,8 @@ public class FavouriteManager {
 			
 			return retVector;
 		} catch(Exception e){
-			return null;
+			e.printStackTrace();
+			return new Vector<String>();
 		}
 	}
 	
