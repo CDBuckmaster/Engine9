@@ -134,7 +134,13 @@ public class TimetableActivity extends Activity {
 	private void timeCountDown() {
 
 	}
-	
+
+	/**
+	 * Get the favourites from user define
+	 * */
+	private void getFav(){
+		
+	}
 	
 	//Test function (will be modified later) that outputs all relevant data from JSON file
 	private void findTimes() {

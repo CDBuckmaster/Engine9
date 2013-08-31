@@ -9,8 +9,21 @@ import java.util.Vector;
 
 import android.content.Context;
 
+/*Control the file input output for the favourite*/
+
 public class FavouriteManager {
 
+	/**
+	 * Add the favourite service in to output file
+	 * 
+	 * @param fav
+	 * 		favourite service code
+	 * @param context
+	 * 		the 
+	 * 
+	 * @throws IOException
+	 * 		No output
+	 * */
 	public static void AddFavourite(String fav, Context context){
 		FileOutputStream outputStream;
 		try {
@@ -25,6 +38,17 @@ public class FavouriteManager {
 		
 	}
 	
+	/**
+	 * Delete the favourite service from the group
+	 * 
+	 * @param fav
+	 * 		favourite service code in exist file
+	 * @param context
+	 * 		the 
+	 * 
+	 * @throws
+	 * 
+	 * */
 	public static void deleteFavourite(String fav, Context context){
 		try {
 			BufferedReader input = new BufferedReader(new InputStreamReader(
@@ -49,6 +73,9 @@ public class FavouriteManager {
 		}
 	}
 	
+	/**
+	 * Get the favourite service from the file and construct them into list 
+	 * */
 	public static Vector<String> getFavourites(Context context){
 		
 		try{
