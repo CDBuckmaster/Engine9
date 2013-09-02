@@ -9,10 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+/*Add and save the favourite services*/
 public class FavouriteActivity extends Activity {
 
-	private ListView favList;
-	private  FavouriteAdapter adapter;
+	private ListView favList;  //create a list to store the favourite services
+	private FavouriteAdapter adapter; 
 	
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
