@@ -94,5 +94,23 @@ public class FavouriteManager {
 		}
 	}
 	
+	public static Boolean inFavourites(Context context, String fav){
+		try{
+			BufferedReader input = new BufferedReader(new InputStreamReader(
+					context.openFileInput("favourites.txt")));
+			String inputStr;
+			while((inputStr = input.readLine()) !=  null){
+				if(inputStr.equals(fav)){
+					return true;
+				}
+			}
+			
+			return false;
+		} catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	
 }

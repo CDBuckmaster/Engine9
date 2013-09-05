@@ -3,6 +3,7 @@ package com.engine9;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,8 +19,10 @@ import com.google.gson.JsonArray;
 import com.engine9.R;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -41,7 +44,11 @@ public class TimetableActivity extends Activity {
 
 	private Date time;
 	private DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+	
 	private ListView timeList;
+	private TimeAdapter adapter;
+	
+	private BroadcastReceiver br;
 	
 	//Temporary favourites array
 	//private String[] favourites = {"412", "411"};
@@ -104,6 +111,14 @@ public class TimetableActivity extends Activity {
 			
 		});
 	}
+	
+	@Override
+	protected void onStop(){
+		super.onStop();
+		if(br != null){
+			unregisterReceiver(br);
+		}
+	}
 
 	/**
 	 * Add and store the vehicle timetable to the local device
@@ -142,6 +157,22 @@ public class TimetableActivity extends Activity {
 		
 	}
 	
+	private void updateList(){
+		
+		ArrayList<Listing> toBeDeleted = new ArrayList<Listing>();
+		for(Listing l : times){
+			if((l.time* 10  - System.currentTimeMillis())/ 60000 < -5){
+				toBeDeleted.add(l);
+				
+			}
+		}
+		for(Listing li : toBeDeleted){
+			adapter.remove(li);
+			times.remove(li);
+		}
+		adapter.notifyDataSetChanged();
+	}
+	
 	//Test function (will be modified later) that outputs all relevant data from JSON file
 	private void findTimes() {
 		JsonArray st =jData.getAsJsonObject().getAsJsonArray("StopTimetables"); //Get the Stop info
@@ -157,12 +188,15 @@ public class TimetableActivity extends Activity {
 			//Use the long type to store the departure time with its UTC time zone
 			long d = Long.parseLong(trip.get("DepartureTime").getAsString().substring(6, 18));
 			//Get single service info and add to the list
-			Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt());
-			times.add(l);
+			if((d * 10  - System.currentTimeMillis())/ 60000 > -5)
+			{
+				Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt());
+				times.add(l);
+			}
 			
 		}
 		
-		TimeAdapter adapter = new TimeAdapter(getApplicationContext(), 
+		adapter = new TimeAdapter(getApplicationContext(), 
 				times);
 		timeList.setAdapter(adapter);
 	}
@@ -183,6 +217,19 @@ public class TimetableActivity extends Activity {
 				e.printStackTrace();
 			}
 			findTimes();
+			br = new BroadcastReceiver(){
+
+				@Override
+				public void onReceive(Context context, Intent intent) {
+					 if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
+						 updateList();
+					 }
+					
+				}
+				
+			};
+			
+			registerReceiver(br, new IntentFilter(Intent.ACTION_TIME_TICK));
 		}
 	}
 	

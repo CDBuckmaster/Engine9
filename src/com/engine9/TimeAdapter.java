@@ -6,9 +6,11 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -61,13 +63,29 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		View row = inflater.inflate(R.layout.list_timetable, parent, false);
+		
 		TextView codeV = (TextView) row.findViewById(R.id.code);
 		TextView directionV = (TextView) row.findViewById(R.id.direction);
 		TextView timeV = (TextView) row.findViewById(R.id.time);
-		codeV.setText(values.get(position).code);
+		
+		final String code = values.get(position).code;
+		codeV.setText(code);
+		
 		directionV.setText(values.get(position).direction);
 		timeV.setText(String.valueOf((values.get(position).time * 10  - System.currentTimeMillis())/ 60000));
-		Log.e("DEBUG", String.valueOf(System.currentTimeMillis() + " " + values.get(position).time * 10));
+		
+		Button favButton  = (Button) row.findViewById(R.id.add_fav_button);
+		favButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View view) {
+				if(!FavouriteManager.inFavourites(context, code)){
+					FavouriteManager.AddFavourite(code, context);
+				}
+				
+			}
+			
+		});
 		return row;
 	}
 
