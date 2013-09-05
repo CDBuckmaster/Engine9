@@ -103,6 +103,16 @@ public class TimetableActivity extends Activity {
 			ta.notifyDataSetChanged();
 		}
 	}
+	
+	public void onFavouriteButtonPush(View view) {
+		TextView tv = (TextView) view.findViewById(R.id.code);
+		
+		if(!FavouriteManager.inFavourites(getApplicationContext(), tv.getText().toString())){
+			FavouriteManager.AddFavourite(tv.getText().toString(), getApplicationContext());
+		}
+	}
+
+	
 	@Override
 	protected void onStop(){
 		super.onStop();
