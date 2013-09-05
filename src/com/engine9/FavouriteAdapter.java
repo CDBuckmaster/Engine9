@@ -6,8 +6,10 @@ import java.util.Vector;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 //Converts a Vector of strings into a list of strings
@@ -47,11 +49,34 @@ public class FavouriteAdapter extends ArrayAdapter<String> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		View row = inflater.inflate(R.layout.list_favourite, parent, false);
-		TextView favV = (TextView) row.findViewById(R.id.fav_text);
 		
+		
+		final TextView favV = (TextView) row.findViewById(R.id.fav_text);
+		
+		Button delB = (Button) row.findViewById(R.id.delete_fav);
+		
+		final String code;
 		if(favs.size() > 0){
-			favV.setText(favs.get(position));
+			code = favs.get(position);
+			favV.setText(code);
 		}
+		else
+		{
+			code = "";
+		}
+		
+		delB.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				FavouriteManager.deleteFavourite(code, context);
+				clear();
+				addAll(FavouriteManager.getFavourites(context));
+				notifyDataSetChanged();
+				
+			}
+			
+		});
 		return row;
 	}
 

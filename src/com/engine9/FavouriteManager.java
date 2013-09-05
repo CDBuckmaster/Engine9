@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.Vector;
 
 import android.content.Context;
+import android.util.Log;
 
 /*Control the file input output for the favourite*/
 
@@ -55,16 +56,18 @@ public class FavouriteManager {
 			BufferedReader input = new BufferedReader(new InputStreamReader(
 					context.openFileInput("favourites.txt")));
 			String inputStr;
-			StringBuffer stringBuffer = new StringBuffer();
+			String stringBuffer = "";
 			while((inputStr = input.readLine()) !=  null){
+				Log.d("DEBUG", inputStr);
 				if(inputStr != fav){
-					stringBuffer.append(inputStr + '\n');
+					stringBuffer += (inputStr + '\n');
 				}
 			}
 			input.close();
 			
 			FileOutputStream outputStream;
 			outputStream =context.openFileOutput("favourites.txt", Context.MODE_PRIVATE);
+			outputStream.write(stringBuffer.getBytes());
 			outputStream.close();
 			
 			
