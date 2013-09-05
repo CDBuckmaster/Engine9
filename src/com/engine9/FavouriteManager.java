@@ -59,7 +59,7 @@ public class FavouriteManager {
 			String stringBuffer = "";
 			while((inputStr = input.readLine()) !=  null){
 				Log.d("DEBUG", inputStr);
-				if(inputStr != fav){
+				if(!inputStr.equals(fav)){
 					stringBuffer += (inputStr + '\n');
 				}
 			}
