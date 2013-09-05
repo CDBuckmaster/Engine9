@@ -30,6 +30,7 @@
         android:layout_alignBaseline="@+id/map_button"
         android:layout_alignBottom="@+id/map_button"
         android:layout_toRightOf="@+id/time_button"
+        android:onClick="abstractButtonPush"
         android:text="Abstract visual" />
 
     <Button
@@ -39,6 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/map_button"
         android:layout_marginBottom="52dp"
+        android:onClick="favButtonPush"
         android:text="Favourites" />
 
     <TextView
@@ -68,6 +70,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/visual_text"
         android:layout_marginTop="23dp"
+        android:onClick="mapButtonPush"
         android:text="Map visual" />
 
     <Button
@@ -76,6 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/time_text"
         android:layout_below="@+id/time_text"
+        android:onClick="timeButtonPush"
         android:text="See Timetable" />
 
 </RelativeLayout>
