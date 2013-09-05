@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		Button tButton = (Button) findViewById(R.id.time_button);
 		tButton.setOnClickListener(new OnClickListener(){
 

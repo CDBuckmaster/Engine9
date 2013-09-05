@@ -47,7 +47,7 @@ public class FavouriteAdapter extends ArrayAdapter<String> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		View row = inflater.inflate(R.layout.list_favourite, parent, false);
-		TextView favV = (TextView) row.findViewById(R.id.fav_code);
+		TextView favV = (TextView) row.findViewById(R.id.fav_text);
 		
 		if(favs.size() > 0){
 			favV.setText(favs.get(position));
