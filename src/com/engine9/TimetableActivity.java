@@ -64,54 +64,45 @@ public class TimetableActivity extends Activity {
 		
 		timeList = (ListView) findViewById(R.id.list_view);
 		
-		//Button for showing only favourite services
-		Button favButton = (Button)findViewById(R.id.fav_button);
-		favButton.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				
-				//Check to see if times isn't empty
-				if(times.size() != 0){
-					
-					//A list to hold listing that will be deleted
-					ArrayList<Listing> removeList = new ArrayList<Listing>();
-					
-					//The adapter for the ListView
-					TimeAdapter ta = (TimeAdapter) timeList.getAdapter();
-					
-					//Loop through every listing
-					for(int i = 0; i < timeList.getCount(); i ++ ){
-						Listing l = (Listing) ta.getItem(i);
-						
-						//Check if they are within the favourites array
-						Boolean listCheck = false;
-						for(String fav: FavouriteManager.getFavourites(getApplicationContext())){
-							if(l.code.equals(fav)){
-								listCheck = true;
-							}
-						}
-						
-						//Add non-favourite lists to the removeList
-						if(!listCheck){
-							removeList.add(l);
-						}
-					}
-					
-					//Remove everything in removeList
-					for(int j = 0; j < removeList.size(); j++){
-						ta.remove(removeList.get(j));
-					}
-					
-					//Update ListView
-					ta.notifyDataSetChanged();
-				}
-				
-			}
-			
-		});
 	}
 	
+	public void favOnlyButtonPush() {
+		//Check to see if times isn't empty
+		if(times.size() != 0){
+			
+			//A list to hold listing that will be deleted
+			ArrayList<Listing> removeList = new ArrayList<Listing>();
+			
+			//The adapter for the ListView
+			TimeAdapter ta = (TimeAdapter) timeList.getAdapter();
+			
+			//Loop through every listing
+			for(int i = 0; i < timeList.getCount(); i ++ ){
+				Listing l = (Listing) ta.getItem(i);
+				
+				//Check if they are within the favourites array
+				Boolean listCheck = false;
+				for(String fav: FavouriteManager.getFavourites(getApplicationContext())){
+					if(l.code.equals(fav)){
+						listCheck = true;
+					}
+				}
+				
+				//Add non-favourite lists to the removeList
+				if(!listCheck){
+					removeList.add(l);
+				}
+			}
+			
+			//Remove everything in removeList
+			for(int j = 0; j < removeList.size(); j++){
+				ta.remove(removeList.get(j));
+			}
+			
+			//Update ListView
+			ta.notifyDataSetChanged();
+		}
+	}
 	@Override
 	protected void onStop(){
 		super.onStop();
@@ -157,9 +148,7 @@ public class TimetableActivity extends Activity {
 		
 	}
 	
-	public void favOnlyButtonPush() {
-		startActivity(new Intent(com.engine9.TimetableActivity.this, com.engine9.FavouriteActivity.class));
-	}
+
 	
 	private void updateList(){
 		
