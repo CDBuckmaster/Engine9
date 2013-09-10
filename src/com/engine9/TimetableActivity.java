@@ -157,6 +157,10 @@ public class TimetableActivity extends Activity {
 		
 	}
 	
+	public void favOnlyButtonPush() {
+		startActivity(new Intent(com.engine9.TimetableActivity.this, com.engine9.FavouriteActivity.class));
+	}
+	
 	private void updateList(){
 		
 		ArrayList<Listing> toBeDeleted = new ArrayList<Listing>();

@@ -18,6 +18,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:onClick="favOnlyButtonPush"
         android:text="Favourite routes only" />
 
 </RelativeLayout>
