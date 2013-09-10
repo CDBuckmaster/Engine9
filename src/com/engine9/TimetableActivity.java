@@ -66,7 +66,7 @@ public class TimetableActivity extends Activity {
 		
 	}
 	
-	public void favOnlyButtonPush() {
+	public void favOnlyButtonPush(View view) {
 		//Check to see if times isn't empty
 		if(times.size() != 0){
 			
