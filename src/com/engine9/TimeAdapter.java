@@ -23,6 +23,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 
 	private Context context;
 	private ArrayList<Listing> values;
+	private String code;
 	
 
 	/**
@@ -68,25 +69,20 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		TextView directionV = (TextView) row.findViewById(R.id.direction);
 		TextView timeV = (TextView) row.findViewById(R.id.time);
 		
-		final String code = values.get(position).code;
+		code = values.get(position).code;
 		codeV.setText(code);
 		
 		directionV.setText(values.get(position).direction);
 		timeV.setText(String.valueOf((values.get(position).time * 10  - System.currentTimeMillis())/ 60000));
 		
-		Button favButton  = (Button) row.findViewById(R.id.add_fav_button);
-		favButton.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View view) {
-				if(!FavouriteManager.inFavourites(context, code)){
-					FavouriteManager.AddFavourite(code, context);
-				}
-				
-			}
-			
-		});
+		
 		return row;
+	}
+	
+	public void onFavouriteButtonPush(View view) {
+		if(!FavouriteManager.inFavourites(context, code)){
+			FavouriteManager.AddFavourite(code, context);
+		}
 	}
 
 }
