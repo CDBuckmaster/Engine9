@@ -31,9 +31,12 @@ public class FavouriteActivity extends Activity {
 	}
 	
 	public void onAddButtonPush(View view) {
-		FavouriteManager.AddFavourite(favText.getText().toString(), getApplicationContext());
-		adapter.clear();
-		adapter.addAll(FavouriteManager.getFavourites(getApplicationContext()));
-		adapter.notifyDataSetChanged();
+		if (!FavouriteManager.inFavourites(getApplicationContext(), favText.getText().toString())) {
+			FavouriteManager.AddFavourite(favText.getText().toString(), getApplicationContext());
+			adapter.clear();
+			adapter.addAll(FavouriteManager.getFavourites(getApplicationContext()));
+			adapter.notifyDataSetChanged();
+		}
+		
 	}
 }
