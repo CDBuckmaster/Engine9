@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Vector;
 
-import org.json.simple.JSONObject;
 
 import com.engine9.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
