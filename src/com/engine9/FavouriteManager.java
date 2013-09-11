@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
@@ -72,6 +73,19 @@ public class FavouriteManager {
 			
 			
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void deleteAllFavourites(Context context){
+		
+		try {
+			FileOutputStream outputStream;
+			outputStream =context.openFileOutput("favourites.txt", Context.MODE_PRIVATE);
+			outputStream.write("".getBytes());
+			outputStream.close();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
