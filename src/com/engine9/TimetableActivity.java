@@ -50,6 +50,8 @@ public class TimetableActivity extends Activity {
 	
 	private BroadcastReceiver br;
 	
+	public TimeRequest tRequest;
+	
 	//Temporary favourites array
 	//private String[] favourites = {"412", "411"};
 
@@ -60,7 +62,8 @@ public class TimetableActivity extends Activity {
 		//Grab url from intent and make request
 		Intent intent = getIntent();
 		String iurl = intent.getStringExtra("timeURL");
-		new TimeRequest().execute(iurl);
+		tRequest = new TimeRequest();
+		tRequest.execute(iurl);
 		
 		timeList = (ListView) findViewById(R.id.list_view);
 		
@@ -210,7 +213,7 @@ public class TimetableActivity extends Activity {
 	 * the onPostExecute function is overwritten so that the returned JSON
 	 * data can be handled specifically for this activity (to get Time info)
 	 * */
-	private class TimeRequest extends Request{
+	public class TimeRequest extends Request{
 		@Override
 		public void onPostExecute(String result) {
 			try {

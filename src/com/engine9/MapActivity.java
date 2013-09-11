@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 
 
@@ -42,6 +43,8 @@ public class MapActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
+		Intent i = getIntent();
+		i.getStringExtra("route");
 		
 		
 		setUpMap( null);

@@ -49,7 +49,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 	@Override
 	public long getItemId(int arg0) {
 		// TODO Auto-generated method stub
-		return 0;
+		return arg0;
 	}
 	
 	/*
