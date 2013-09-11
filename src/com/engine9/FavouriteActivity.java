@@ -27,7 +27,7 @@ public class FavouriteActivity extends Activity {
 		Log.d("DEBUG", String.valueOf(adapter.getCount()));
 		favList.setAdapter(adapter);
 		
-		favText = (EditText) findViewById(R.id.fav_text); 
+		favText = (EditText) findViewById(R.id.fav_text1); 
 	}
 	
 	public void onAddButtonPush(View view) {
