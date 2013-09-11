@@ -48,7 +48,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	private Location currentLocation; //The user's current location
 	private LocationManager mLocationManager; //Used for getting location
 	private JsonElement jData; //The Json data holding the stops
-	private Vector<Stop> stopVector = new Vector<Stop>(); //A vector for keeping stop info
+	public Vector<Stop> stopVector = new Vector<Stop>(); //A vector for keeping stop info
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
