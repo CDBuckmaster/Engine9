@@ -15,7 +15,7 @@ local.properties
 .settings/
 .loadpath
 project.properties
-R.java
+gen/com/google/android/gms/R.java
 gen/com/engine9/R.java
 
 # External tool builders
