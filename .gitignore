@@ -215,11 +215,3 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-
-*.properties
-
-gen/com/engine9/R.java
-
-gen/com/engine9/R.java
-
-project.properties
