@@ -32,9 +32,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class TimetableActivity extends Activity {
-	
+	private String vehicleID;
+	/* The local store (save some timetable) allow user to do the quick search, but only 
+	 * allow  around 10 places/service (can add the time limit so that if user did not use
+	 * for a while, delete that)*/
+	//private LinkedHashMap<String, List<String>> timetable = new LinkedHashMap();
+	/* The global store (save all timetable) allow user to search, but really depends on
+	 * Internet so that it might be slow */
 	private JsonElement jData;
 	private ArrayList<Listing> times = new ArrayList<Listing>();
+
+	private Date time;
+	private DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
 	
 	private ListView timeList;
 	private TimeAdapter adapter;
@@ -43,6 +52,8 @@ public class TimetableActivity extends Activity {
 	
 	public TimeRequest tRequest;
 	
+	//Temporary favourites array
+	//private String[] favourites = {"412", "411"};
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -113,13 +124,45 @@ public class TimetableActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Add and store the vehicle timetable to the local device
+	 * 	   @throws InvalidPointerException 
+	 * 	        if the vehicleID is invalid
+	 *     @throws NullPointerException
+	 * 	        if the vehicleID or time is empty or null
+	 * */
+	private void addTimetable(String vehicleID, List<String> time) 
+			throws InvalidPointerException {
+		if (vehicleID == null || vehicleID.length() == 0 || time == null || time.size() == 0) {
+			throw new NullPointerException();
+		}
+		if (vehicleID.length() > 4) {
+			throw new InvalidPointerException();
+		}
+		
+		//jData.add(vehicleID, (JsonElement) time);
+	}
+
 	public String toString() {
 		return jData.toString();
 	}
 
 	/**
-	 * Update the timetable list 
+	 * Count the time and highlight the service if approaching within 5 mim
 	 * */
+	private void timeCountDown() {
+
+	}
+
+	/**
+	 * Get the favourites from user define
+	 * */
+	private void getFav(){
+		
+	}
+	
+
+	
 	private void updateList(){
 		
 		ArrayList<Listing> toBeDeleted = new ArrayList<Listing>();
