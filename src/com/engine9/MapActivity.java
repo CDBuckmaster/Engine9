@@ -233,19 +233,16 @@ public class MapActivity extends FragmentActivity {
 		List<LatLng> pList = line.getPoints();
 		Vector<StopInfo> stops = prevAndNextStop();
 		
-		
 		if(stops.get(0).equals(stops.get(1))){
+			Marker m = mMap.addMarker(new MarkerOptions()
+				.position(stops.get(0).m.getPosition())
+				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 			
-			mMap.addMarker(new MarkerOptions()
-			.position(stops.get(0).m.getPosition())
-			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-			);
-			//mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stops.get(0).m.getPosition(), 15));
+			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stops.get(0).m.getPosition(), 15));
+			m.showInfoWindow();
 		}
 		else
 		{
-			Log.e("DEBUG", String.valueOf(stops.get(0).m.getPosition()) + " " + String.valueOf(stops.get(1).m.getPosition()));
-			Log.e("DEBUG", String.valueOf(calcDistance(stops.get(0).m.getPosition(), stops.get(1).m.getPosition())));
 			
 			int start = findClosestPolylinePoint(stops.get(0).m.getPosition());
 			int end = findClosestPolylinePoint(stops.get(1).m.getPosition());
@@ -255,17 +252,26 @@ public class MapActivity extends FragmentActivity {
 			Double targetDist = distRatio * distBetween;
 			
 			Double currentDist = 0.0;
-			
-			for(int i = start; i < end; i++){
+			Log.e("DEBUG", String.valueOf(start) + " " + String.valueOf(end));
+			int j, k;
+			if(start < end){
+				j = start;
+				k = end;
+			}
+			else{
+				j = end;
+				k = start;
+			}
+			for(int i =j; i < k; i++){
 				
 				currentDist += calcDistance(pList.get(i), pList.get(i+1));
 				
 				if(currentDist >= targetDist){
-					mMap.addMarker(new MarkerOptions()
-							.position(pList.get(i))
-							.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-							);
-					//mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
+					Marker m2 = mMap.addMarker(new MarkerOptions()
+						.position(pList.get(i))
+						.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+					mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
+					m2.showInfoWindow();
 					break;
 				}
 			}
@@ -279,7 +285,7 @@ public class MapActivity extends FragmentActivity {
 		int c = 0;
 		Vector<StopInfo> retVect = new Vector<StopInfo>();
 		for(StopInfo i : markers){
-			Log.e("DEBUG", String.valueOf(System.currentTimeMillis()) + " " + String.valueOf(i.time));
+			
 			if(System.currentTimeMillis() < i.time){
 				if(c ==0){
 					retVect.add(i);
