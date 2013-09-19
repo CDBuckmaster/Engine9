@@ -65,22 +65,38 @@ public class MapActivity extends FragmentActivity {
 		setContentView(R.layout.activity_map);
 		Intent i = getIntent();
 		String iURL = i.getStringExtra("route");
-		String sURL = i.getStringExtra("stops");
+		final String sURL = i.getStringExtra("stops");
 		new MapRequest().execute(iURL);
 		new StopRequest().execute(sURL);
 		
 		setUpMap( null);
+		
+		Button aButton = (Button) findViewById(R.id.map_to_abstract_button);
+		aButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				Intent ia = new Intent(getApplicationContext(), AbstractActivity.class);
+				ia.putExtra("stops", sURL);
+				startActivity(ia);
+			}
+			
+		});
 
 	}
 	
 	protected void onPause(){
 		super.onPause();
-		cdt.cancel();
+		if(cdt != null){
+			cdt.cancel();
+		}
 	}
 	
 	protected void onStop(){
 		super.onPause();
-		cdt.cancel();
+		if(cdt != null){
+			cdt.cancel();
+		}
 	}
 	
 	/*protected void onResume(){

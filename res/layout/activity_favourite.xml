@@ -5,7 +5,7 @@
     android:onClick="onAddButtonPush" >
 
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/abstract_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fav_text" >

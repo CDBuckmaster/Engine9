@@ -21,7 +21,7 @@ public class FavouriteActivity extends Activity {
 		setContentView(R.layout.activity_favourite);
 		
 		
-		favList = (ListView) findViewById(R.id.listView1);
+		favList = (ListView) findViewById(R.id.abstract_list);
 		adapter = new FavouriteAdapter(getApplicationContext(), 
 				FavouriteManager.getFavourites(getApplicationContext()));
 		Log.d("DEBUG", String.valueOf(adapter.getCount()));

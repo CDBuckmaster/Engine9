@@ -24,7 +24,6 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 
 	private Context context;
 	private ArrayList<Listing> values;
-	
 
 	/**
 	 * Basic constructor for the time
