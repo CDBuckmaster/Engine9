@@ -61,6 +61,7 @@ public class MapActivity extends FragmentActivity {
 		String iURL = i.getStringExtra("route");
 		String sURL = i.getStringExtra("stops");
 		new MapRequest().execute(iURL);
+		new StopRequest().execute(sURL);
 		
 		setUpMap( null);
 
@@ -128,17 +129,20 @@ public class MapActivity extends FragmentActivity {
 		for (JsonElement j : sjData){
 			JsonObject jo = j.getAsJsonObject();
 			
-			LatLng l = new LatLng(jo.get("lat").getAsLong(), jo.get("lng").getAsLong());
+			LatLng l = new LatLng(jo.get("Lat").getAsDouble(), jo.get("Lng").getAsDouble());
+			
+			Log.e("debug", String.valueOf(l.latitude) + " " + String.valueOf(l.longitude));
 			
 			Marker m = mMap.addMarker(new MarkerOptions()
 			.position(l));
 			
-			Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 18));
+			Long t = Long.parseLong(jo.get("time").getAsString().substring(7, 19));
 			StopInfo sInfo = new StopInfo(m, t);
 			markers.add(sInfo);
 			
 			
 		}
+		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markers.get(0).m.getPosition(), 15));
 	}
 
 	/**
@@ -169,6 +173,7 @@ public class MapActivity extends FragmentActivity {
 		public void onPostExecute(String result)
 		{
 			try{
+				Log.e("DEBUG", result);
 				sjData = (JsonArray) JParser2.main(result);
 				addStops();
 			}

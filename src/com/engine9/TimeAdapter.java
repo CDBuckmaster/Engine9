@@ -69,6 +69,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		TextView directionV = (TextView) row.findViewById(R.id.direction);
 		TextView timeV = (TextView) row.findViewById(R.id.time);
 		
+		final String id = values.get(position).id;
 		final int type = values.get(position).type;
 		final String code = values.get(position).code;
 		codeV.setText(code);
@@ -95,6 +96,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 			public void onClick(View view) {
 				Intent i = new Intent(view.getContext(), MapActivity.class);
 				i.putExtra("route", "http://deco3801-005.uqcloud.net/cache/network/rest/route-map-path/?route=" + code + "&type=" + type);
+				i.putExtra("stops", "http://deco3801-005.uqcloud.net/stops-from-tripID/?tripID=" + id);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				view.getContext().startActivity(i);
 			}
