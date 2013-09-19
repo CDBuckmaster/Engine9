@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -47,7 +48,9 @@ public class MapActivity extends FragmentActivity {
 
 	private GoogleMap mMap;
 	private JsonObject jData;
+	private JsonArray sjData;
 	private Polyline line;
+	private Vector<StopInfo> markers = new Vector<StopInfo>();
 
 
 	@Override
@@ -56,6 +59,7 @@ public class MapActivity extends FragmentActivity {
 		setContentView(R.layout.activity_map);
 		Intent i = getIntent();
 		String iURL = i.getStringExtra("route");
+		String sURL = i.getStringExtra("stops");
 		new MapRequest().execute(iURL);
 		
 		setUpMap( null);
@@ -119,6 +123,23 @@ public class MapActivity extends FragmentActivity {
 			
 		}
 	}
+	
+	private void addStops(){
+		for (JsonElement j : sjData){
+			JsonObject jo = j.getAsJsonObject();
+			
+			LatLng l = new LatLng(jo.get("lat").getAsLong(), jo.get("lng").getAsLong());
+			
+			Marker m = mMap.addMarker(new MarkerOptions()
+			.position(l));
+			
+			Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 18));
+			StopInfo sInfo = new StopInfo(m, t);
+			markers.add(sInfo);
+			
+			
+		}
+	}
 
 	/**
 	 * It extends the Request class (which handles getRequests) the onPostExecute 
@@ -136,6 +157,22 @@ public class MapActivity extends FragmentActivity {
 			}
 			catch(Exception e){
 				
+				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
+				toast.show();
+			}
+		}
+	}
+	
+	public class StopRequest extends Request {
+		
+		@Override
+		public void onPostExecute(String result)
+		{
+			try{
+				sjData = (JsonArray) JParser2.main(result);
+				addStops();
+			}
+			catch(Exception e){
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
 				toast.show();
 			}
@@ -174,6 +211,27 @@ public class MapActivity extends FragmentActivity {
 	    }
 
 	    return poly;
+	}
+	
+	private double calcDistance(LatLng start, LatLng end){
+		Double dLng = end.longitude - start.longitude;
+		Double dLat = end.latitude - start.latitude;
+		
+		Double angle = Math.pow((Math.sin(dLat /2)), 2) + Math.cos(start.latitude) * Math.cos(end.latitude) * Math.pow((Math.sin(dLng /2)), 2);
+		Double cir = 2 * Math.atan2(Math.sqrt(angle), Math.sqrt(1-angle));
+		
+		return 6373 * cir;
+	}
+	
+	private class StopInfo
+	{
+		public Marker m;
+		public Long time;
+		
+		public StopInfo(Marker m, Long time){
+			this.m = m;
+			this.time = time;
+		}
 	}
 
 	
