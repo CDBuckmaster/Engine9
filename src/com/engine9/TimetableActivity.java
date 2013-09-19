@@ -196,7 +196,7 @@ public class TimetableActivity extends Activity {
 			//Get single service info and add to the list
 			if((d * 10  - System.currentTimeMillis())/ 60000 > -5)
 			{
-				Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt());
+				Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt(), route.get("Vehicle").getAsInt());
 				times.add(l);
 			}
 			

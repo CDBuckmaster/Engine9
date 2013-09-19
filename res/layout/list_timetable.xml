@@ -43,4 +43,11 @@
         android:text="@+id/time"
         android:textSize="30px" />
 
+    <Button
+        android:id="@+id/to_map_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See map" />
+
 </LinearLayout>

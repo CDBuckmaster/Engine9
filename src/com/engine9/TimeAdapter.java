@@ -3,6 +3,7 @@ package com.engine9;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +69,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		TextView directionV = (TextView) row.findViewById(R.id.direction);
 		TextView timeV = (TextView) row.findViewById(R.id.time);
 		
+		final int type = values.get(position).type;
 		final String code = values.get(position).code;
 		codeV.setText(code);
 		
@@ -85,6 +87,17 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 				
 			}
 			
+		});
+		
+		Button mapButton = (Button) row.findViewById(R.id.to_map_button);
+		mapButton.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View view) {
+				Intent i = new Intent(view.getContext(), MapActivity.class);
+				i.putExtra("route", "http://deco3801-005.uqcloud.net/cache/network/rest/route-map-path/?route=" + code + "&type=" + type);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				view.getContext().startActivity(i);
+			}
 		});
 		return row;
 	}

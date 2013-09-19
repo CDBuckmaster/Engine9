@@ -1,6 +1,8 @@
 package com.engine9;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -12,21 +14,29 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 
 
@@ -36,6 +46,8 @@ import android.os.Build;
 public class MapActivity extends FragmentActivity {
 
 	private GoogleMap mMap;
+	private JsonObject jData;
+	private Polyline line;
 
 
 	@Override
@@ -43,8 +55,8 @@ public class MapActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		Intent i = getIntent();
-		i.getStringExtra("route");
-		
+		String iURL = i.getStringExtra("route");
+		new MapRequest().execute(iURL);
 		
 		setUpMap( null);
 
@@ -95,6 +107,18 @@ public class MapActivity extends FragmentActivity {
 				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15));}
 		}
 	}
+	
+	private void addPolyline(){
+		for (JsonElement p : jData.get("Paths").getAsJsonArray())
+		{
+			JsonObject po = p.getAsJsonObject();
+			line = mMap.addPolyline(new PolylineOptions()
+			.addAll(decodePoly(po.get("Path").getAsString()))
+			.width(5)
+			.color(Color.RED));
+			
+		}
+	}
 
 	/**
 	 * It extends the Request class (which handles getRequests) the onPostExecute 
@@ -105,8 +129,51 @@ public class MapActivity extends FragmentActivity {
 		@Override
 		public void onPostExecute(String result)
 		{
-			
+			try{
+				jData = (JsonObject) JParser2.main(result);
+				addPolyline();
+				
+			}
+			catch(Exception e){
+				
+				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
+				toast.show();
+			}
 		}
+	}
+	/*
+	 * Decode algorithm by Jeffrey Sambells
+	 */
+	private List<LatLng> decodePoly(String encoded) {
+	    List<LatLng> poly = new ArrayList<LatLng>();
+	    int index = 0, len = encoded.length();
+	    int lat = 0, lng = 0;
+
+	    while (index < len) {
+	        int b, shift = 0, result = 0;
+	        do {
+	            b = encoded.charAt(index++) - 63;
+	            result |= (b & 0x1f) << shift;
+	            shift += 5;
+	        } while (b >= 0x20);
+	        int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+	        lat += dlat;
+
+	        shift = 0;
+	        result = 0;
+	        do {
+	            b = encoded.charAt(index++) - 63;
+	            result |= (b & 0x1f) << shift;
+	            shift += 5;
+	        } while (b >= 0x20);
+	        int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+	        lng += dlng;
+
+	        LatLng p = new LatLng((lat/ 1E5),(lng / 1E5));
+	        poly.add(p);
+	    }
+
+	    return poly;
 	}
 
 	
