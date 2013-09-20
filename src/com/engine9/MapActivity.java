@@ -11,6 +11,7 @@ import com.engine9.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -51,6 +52,8 @@ public class MapActivity extends FragmentActivity {
 	private JsonArray sjData;
 	private Polyline line;
 	private Vector<StopInfo> markers = new Vector<StopInfo>();
+	private Boolean sReady = false;
+	private Boolean pReady = false;
 
 
 	@Override
@@ -131,12 +134,12 @@ public class MapActivity extends FragmentActivity {
 			
 			LatLng l = new LatLng(jo.get("Lat").getAsDouble(), jo.get("Lng").getAsDouble());
 			
-			Log.e("debug", String.valueOf(l.latitude) + " " + String.valueOf(l.longitude));
 			
 			Marker m = mMap.addMarker(new MarkerOptions()
-			.position(l));
+			.position(l)
+			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 			
-			Long t = Long.parseLong(jo.get("time").getAsString().substring(7, 19));
+			Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 19));
 			StopInfo sInfo = new StopInfo(m, t);
 			markers.add(sInfo);
 			
@@ -157,6 +160,10 @@ public class MapActivity extends FragmentActivity {
 			try{
 				jData = (JsonObject) JParser2.main(result);
 				addPolyline();
+				pReady = true;
+				if(sReady && pReady){
+					updateBusPosition();
+				}
 				
 			}
 			catch(Exception e){
@@ -173,9 +180,12 @@ public class MapActivity extends FragmentActivity {
 		public void onPostExecute(String result)
 		{
 			try{
-				Log.e("DEBUG", result);
 				sjData = (JsonArray) JParser2.main(result);
 				addStops();
+				sReady = true;
+				if(sReady && pReady){
+					updateBusPosition();
+				}
 			}
 			catch(Exception e){
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
@@ -216,6 +226,105 @@ public class MapActivity extends FragmentActivity {
 	    }
 
 	    return poly;
+	}
+	
+	private void updateBusPosition(){
+		
+		List<LatLng> pList = line.getPoints();
+		Vector<StopInfo> stops = prevAndNextStop();
+		
+		
+		if(stops.get(0).equals(stops.get(1))){
+			
+			mMap.addMarker(new MarkerOptions()
+			.position(stops.get(0).m.getPosition())
+			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+			);
+			//mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stops.get(0).m.getPosition(), 15));
+		}
+		else
+		{
+			Log.e("DEBUG", String.valueOf(stops.get(0).m.getPosition()) + " " + String.valueOf(stops.get(1).m.getPosition()));
+			Log.e("DEBUG", String.valueOf(calcDistance(stops.get(0).m.getPosition(), stops.get(1).m.getPosition())));
+			
+			int start = findClosestPolylinePoint(stops.get(0).m.getPosition());
+			int end = findClosestPolylinePoint(stops.get(1).m.getPosition());
+			
+			Double distBetween = calcPolylineDistance(start, end);
+			Double distRatio = ((double) (stops.get(1).time - System.currentTimeMillis())) / ((double) (stops.get(1).time - stops.get(0).time));
+			Double targetDist = distRatio * distBetween;
+			
+			Double currentDist = 0.0;
+			
+			for(int i = start; i < end; i++){
+				
+				currentDist += calcDistance(pList.get(i), pList.get(i+1));
+				
+				if(currentDist >= targetDist){
+					mMap.addMarker(new MarkerOptions()
+							.position(pList.get(i))
+							.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+							);
+					//mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
+					break;
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	private Vector<StopInfo> prevAndNextStop(){
+		int c = 0;
+		Vector<StopInfo> retVect = new Vector<StopInfo>();
+		for(StopInfo i : markers){
+			Log.e("DEBUG", String.valueOf(System.currentTimeMillis()) + " " + String.valueOf(i.time));
+			if(System.currentTimeMillis() < i.time){
+				if(c ==0){
+					retVect.add(i);
+					retVect.add(i);
+					return retVect;
+				}
+				else{
+					retVect.add(markers.get(c - 1));
+					retVect.add(i);
+					return retVect;
+				}
+			}
+			c++;
+		}
+		
+		retVect.add(markers.get(markers.size()));
+		retVect.add(markers.get(markers.size()));
+		return retVect;
+		
+	}
+	
+	private int findClosestPolylinePoint(LatLng position){
+		List<LatLng> pList = line.getPoints();
+		Double closest = 99999.0;
+		int closestP = 0;
+		for(int i = 0; i < pList.size(); i ++){
+			Double dist = calcDistance(position, pList.get(i));
+			if(dist < closest){
+				closest = dist;
+				closestP = i;
+			}
+		}
+		
+		return closestP;
+	}
+	
+	private double calcPolylineDistance(int pos1, int pos2){
+		List<LatLng> pList = line.getPoints();
+		Double dist = 0.0;
+		
+		for(int i = pos1; i < pos2; i ++){
+			dist += calcDistance(pList.get(i), pList.get(i+1));
+		}
+		
+		return dist;
 	}
 	
 	private double calcDistance(LatLng start, LatLng end){
