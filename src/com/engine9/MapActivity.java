@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -54,6 +55,8 @@ public class MapActivity extends FragmentActivity {
 	private Vector<StopInfo> markers = new Vector<StopInfo>();
 	private Boolean sReady = false;
 	private Boolean pReady = false;
+	private CountDownTimer cdt;
+	private Marker vehicle;
 
 
 	@Override
@@ -68,10 +71,22 @@ public class MapActivity extends FragmentActivity {
 		
 		setUpMap( null);
 
-
-
-
 	}
+	
+	protected void onPause(){
+		super.onPause();
+		cdt.cancel();
+	}
+	
+	protected void onStop(){
+		super.onPause();
+		cdt.cancel();
+	}
+	
+	/*protected void onResume(){
+		super.onResume();
+		cdt.start();
+	}*/
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
@@ -163,6 +178,22 @@ public class MapActivity extends FragmentActivity {
 				pReady = true;
 				if(sReady && pReady){
 					updateBusPosition();
+					cdt = new CountDownTimer(10000, 10000){
+
+						@Override
+						public void onFinish() {
+							cdt.start();
+							
+						}
+
+						@Override
+						public void onTick(long arg0) {
+							vehicle.remove();
+							updateBusPosition();
+							
+						}
+						
+					}.start();
 				}
 				
 			}
@@ -185,6 +216,22 @@ public class MapActivity extends FragmentActivity {
 				sReady = true;
 				if(sReady && pReady){
 					updateBusPosition();
+					cdt = new CountDownTimer(10000, 10000){
+
+						@Override
+						public void onFinish() {
+							cdt.start();
+							
+						}
+
+						@Override
+						public void onTick(long arg0) {
+							vehicle.remove();
+							updateBusPosition();
+							
+						}
+						
+					}.start();
 				}
 			}
 			catch(Exception e){
@@ -234,12 +281,12 @@ public class MapActivity extends FragmentActivity {
 		Vector<StopInfo> stops = prevAndNextStop();
 		
 		if(stops.get(0).equals(stops.get(1))){
-			Marker m = mMap.addMarker(new MarkerOptions()
+			vehicle = mMap.addMarker(new MarkerOptions()
 				.position(stops.get(0).m.getPosition())
 				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 			
 			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stops.get(0).m.getPosition(), 15));
-			m.showInfoWindow();
+			vehicle.showInfoWindow();
 		}
 		else
 		{
@@ -267,11 +314,11 @@ public class MapActivity extends FragmentActivity {
 				currentDist += calcDistance(pList.get(i), pList.get(i+1));
 				
 				if(currentDist >= targetDist){
-					Marker m2 = mMap.addMarker(new MarkerOptions()
+					vehicle = mMap.addMarker(new MarkerOptions()
 						.position(pList.get(i))
 						.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 					mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
-					m2.showInfoWindow();
+					vehicle.showInfoWindow();
 					break;
 				}
 			}
