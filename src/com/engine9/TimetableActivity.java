@@ -17,6 +17,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 
 import com.engine9.R;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -49,6 +51,7 @@ public class TimetableActivity extends Activity {
 	private TimeAdapter adapter;
 	
 	private BroadcastReceiver br;
+	private Boolean registered = false;
 	
 	public TimeRequest tRequest;
 	
@@ -67,6 +70,37 @@ public class TimetableActivity extends Activity {
 		
 		timeList = (ListView) findViewById(R.id.list_view);
 		
+	}
+	
+	protected void onResume(Bundle savedInstanceState){
+		super.onResume();
+		
+		if(tRequest.getStatus() == AsyncTask.Status.FINISHED){
+			registered = true;
+		}
+		
+		registerReceiver(br, new IntentFilter(Intent.ACTION_TIME_TICK));
+	}
+	
+	protected void onPause(Bundle savedInstanceState){
+		super.onPause();
+		
+		 if(tRequest != null && tRequest.getStatus() != AsyncTask.Status.FINISHED) {
+			 	tRequest.cancel(true);
+		    }
+	}
+	
+	protected void onStop(Bundle savedInstanceState){
+		super.onStop();
+		
+		if(tRequest != null && tRequest.getStatus() != AsyncTask.Status.FINISHED) {
+		 	tRequest.cancel(true);
+	    }
+		
+		if(br != null && !registered){
+			unregisterReceiver(br);
+			registered = false;
+		}
 	}
 	
 	public void favOnlyButtonPush(View view) {
@@ -115,14 +149,6 @@ public class TimetableActivity extends Activity {
 		}
 	}
 
-	
-	@Override
-	protected void onStop(){
-		super.onStop();
-		if(br != null){
-			unregisterReceiver(br);
-		}
-	}
 
 	/**
 	 * Add and store the vehicle timetable to the local device
@@ -196,7 +222,8 @@ public class TimetableActivity extends Activity {
 			//Get single service info and add to the list
 			if((d * 10  - System.currentTimeMillis())/ 60000 > -5)
 			{
-				Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt());
+				Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt(), 
+						route.get("Vehicle").getAsInt(), trip.get("TripId").getAsString());
 				times.add(l);
 			}
 			
@@ -236,6 +263,7 @@ public class TimetableActivity extends Activity {
 			};
 			
 			registerReceiver(br, new IntentFilter(Intent.ACTION_TIME_TICK));
+			registered = true;
 		}
 	}
 	

@@ -13,11 +13,4 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:scrollbars="vertical" />
 
-    <Button
-        android:id="@+id/download"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Download" />
-
 </FrameLayout>
