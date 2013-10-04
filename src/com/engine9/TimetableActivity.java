@@ -34,18 +34,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class TimetableActivity extends Activity {
-	private String vehicleID;
-	/* The local store (save some timetable) allow user to do the quick search, but only 
-	 * allow  around 10 places/service (can add the time limit so that if user did not use
-	 * for a while, delete that)*/
-	//private LinkedHashMap<String, List<String>> timetable = new LinkedHashMap();
-	/* The global store (save all timetable) allow user to search, but really depends on
-	 * Internet so that it might be slow */
-	private JsonElement jData;
-	private ArrayList<Listing> times = new ArrayList<Listing>();
-
-	private Date time;
-	private DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+	private JsonElement jData; //To store the timetable based on the route
+	private ArrayList<Listing> times = new ArrayList<Listing>(); 
 	
 	private ListView timeList;
 	private TimeAdapter adapter;
@@ -103,6 +93,9 @@ public class TimetableActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Set the favourite button function
+	 * */
 	public void favOnlyButtonPush(View view) {
 		//Check to see if times isn't empty
 		if(times.size() != 0){
@@ -141,6 +134,7 @@ public class TimetableActivity extends Activity {
 		}
 	}
 	
+
 	public void onFavouriteButtonPush(View view) {
 		TextView tv = (TextView) view.findViewById(R.id.code);
 		
@@ -149,53 +143,20 @@ public class TimetableActivity extends Activity {
 		}
 	}
 
-
-	/**
-	 * Add and store the vehicle timetable to the local device
-	 * 	   @throws InvalidPointerException 
-	 * 	        if the vehicleID is invalid
-	 *     @throws NullPointerException
-	 * 	        if the vehicleID or time is empty or null
-	 * */
-	private void addTimetable(String vehicleID, List<String> time) 
-			throws InvalidPointerException {
-		if (vehicleID == null || vehicleID.length() == 0 || time == null || time.size() == 0) {
-			throw new NullPointerException();
-		}
-		if (vehicleID.length() > 4) {
-			throw new InvalidPointerException();
-		}
-		
-		//jData.add(vehicleID, (JsonElement) time);
-	}
-
 	public String toString() {
 		return jData.toString();
 	}
 
 	/**
-	 * Count the time and highlight the service if approaching within 5 mim
+	 * Update the timetable
 	 * */
-	private void timeCountDown() {
-
-	}
-
-	/**
-	 * Get the favourites from user define
-	 * */
-	private void getFav(){
-		
-	}
-	
-
-	
 	private void updateList(){
 		
 		ArrayList<Listing> toBeDeleted = new ArrayList<Listing>();
 		for(Listing l : times){
+			/* If the bus leaves the stop over 5 min, add to the remove list */
 			if((l.time* 10  - System.currentTimeMillis())/ 60000 < -5){
 				toBeDeleted.add(l);
-				
 			}
 		}
 		for(Listing li : toBeDeleted){

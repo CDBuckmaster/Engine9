@@ -26,6 +26,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+/**
+ * The Abstract map allow use to have a quick view for the next few stops info.
+ * It allows user to have a quick check the stop that he/she wants whether it is
+ * approaching. 
+ * */
 public class AbstractActivity extends Activity {
 	
 	private JsonArray jData;
@@ -94,7 +99,11 @@ public class AbstractActivity extends Activity {
 		}
 	}
 	
-	
+	/**
+	 * It extends the Request class (which handles getRequests)
+	 * the onPostExecute function is overwritten so that the returned JSON
+	 * data can be handled specifically for this activity (to get Stop info)
+	 * */
 	public class AbstractRequest extends Request{
 		@Override
 		public void onPostExecute(String result)
@@ -127,10 +136,14 @@ public class AbstractActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Get the all future stops based on route
+	 * */
 	private void loadStops(){
 		for (JsonElement j : jData){
 			JsonObject jo = j.getAsJsonObject();
 			
+			/* Get stops location information */
 			LatLng pos = new LatLng(jo.get("Lat").getAsDouble(), jo.get("Lng").getAsDouble());
 			Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 19));
 			String des = jo.get("des").getAsString();
