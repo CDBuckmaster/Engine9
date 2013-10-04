@@ -100,10 +100,12 @@ public class MapActivity extends FragmentActivity {
 		}
 	}
 	
-	/*protected void onResume(){
+	protected void onResume(){
 		super.onResume();
-		cdt.start();
-	}*/
+		if(cdt != null){
+			cdt.start();
+		}
+	}
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
