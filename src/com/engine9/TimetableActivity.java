@@ -32,6 +32,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TimetableActivity extends Activity {
 	private JsonElement jData; //To store the timetable based on the route
@@ -209,6 +210,8 @@ public class TimetableActivity extends Activity {
 			} catch (Exception e) {
 				Log.e("Error", "Parsing error");
 				e.printStackTrace();
+				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
+				toast.show();
 			}
 			findTimes();
 			br = new BroadcastReceiver(){

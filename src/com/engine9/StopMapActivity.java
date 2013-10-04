@@ -309,6 +309,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 			} catch (Exception e) {
 				Log.e("Error", "Parsing error");
 				e.printStackTrace();
+				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
+				toast.show();
 			}
 		}
 	}
