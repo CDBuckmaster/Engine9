@@ -193,6 +193,8 @@ public class MapActivity extends FragmentActivity {
 				addPolyline();
 				pReady = true;
 				if(sReady && pReady){
+					sReady = false;
+					pReady = false;
 					updateBusPosition();
 					cdt = new CountDownTimer(10000, 10000){
 
@@ -231,6 +233,8 @@ public class MapActivity extends FragmentActivity {
 				addStops();
 				sReady = true;
 				if(sReady && pReady){
+					sReady = false;
+					pReady = false;
 					updateBusPosition();
 					cdt = new CountDownTimer(10000, 10000){
 
@@ -293,6 +297,7 @@ public class MapActivity extends FragmentActivity {
 	
 	private void updateBusPosition(){
 		
+		Log.e("DEBUG", "test");
 		List<LatLng> pList = line.getPoints();
 		Vector<StopInfo> stops = prevAndNextStop();
 		
@@ -315,29 +320,45 @@ public class MapActivity extends FragmentActivity {
 			Double targetDist = distRatio * distBetween;
 			
 			Double currentDist = 0.0;
+			Log.e("DEBUG", String.valueOf(stops.get(0).m.getPosition().longitude - stops.get(1).m.getPosition().longitude));
 			Log.e("DEBUG", String.valueOf(start) + " " + String.valueOf(end));
 			int j, k;
 			if(start < end){
 				j = start;
 				k = end;
+				for(int i =k; i > j; i--){
+					
+					currentDist += calcDistance(pList.get(i), pList.get(i-1));
+					
+					if(currentDist >= targetDist){
+						vehicle = mMap.addMarker(new MarkerOptions()
+							.position(pList.get(i - 1))
+							.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+						mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
+						vehicle.showInfoWindow();
+						break;
+					}
+				}
 			}
 			else{
 				j = end;
 				k = start;
-			}
-			for(int i =j; i < k; i++){
-				
-				currentDist += calcDistance(pList.get(i), pList.get(i+1));
-				
-				if(currentDist >= targetDist){
-					vehicle = mMap.addMarker(new MarkerOptions()
-						.position(pList.get(i))
-						.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-					mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
-					vehicle.showInfoWindow();
-					break;
+				for(int i =j; i < k; i++){
+					
+					currentDist += calcDistance(pList.get(i), pList.get(i+1));
+					
+					if(currentDist >= targetDist){
+						vehicle = mMap.addMarker(new MarkerOptions()
+							.position(pList.get(i + 1))
+							.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+						mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
+						vehicle.showInfoWindow();
+						break;
+					}
 				}
 			}
+			
+			
 		}
 		
 		
@@ -356,7 +377,17 @@ public class MapActivity extends FragmentActivity {
 					return retVect;
 				}
 				else{
-					retVect.add(markers.get(c - 1));
+					if(markers.get(c -1).time < i.time){
+						retVect.add(markers.get(c - 1));
+					}
+					else if(c != markers.size() - 1){
+						retVect.add(markers.get(c + 1));
+					}
+					else
+					{
+						break;
+					}
+					
 					retVect.add(i);
 					return retVect;
 				}
