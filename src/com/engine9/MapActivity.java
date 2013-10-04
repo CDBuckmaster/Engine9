@@ -28,6 +28,7 @@ import android.os.CountDownTimer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -188,6 +189,12 @@ public class MapActivity extends FragmentActivity {
 	 * specifically for this activity (to get User location info)
 	 * */
 	public class MapRequest extends Request {
+		ProgressDialog dialog;
+		@Override
+		public void onPreExecute(){
+			dialog= ProgressDialog.show(MapActivity.this, "Downloading map info","Please wait a moment", true);
+		}
+		
 		@Override
 		public void onPostExecute(String result)
 		{
@@ -223,10 +230,17 @@ public class MapActivity extends FragmentActivity {
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
 				toast.show();
 			}
+			
+			dialog.dismiss();
 		}
 	}
 	
 	public class StopRequest extends Request {
+		ProgressDialog dialog;
+		@Override
+		public void onPreExecute(){
+			dialog= ProgressDialog.show(MapActivity.this, "Downloading map info","Please wait a moment", true);
+		}
 		
 		@Override
 		public void onPostExecute(String result)
@@ -261,6 +275,7 @@ public class MapActivity extends FragmentActivity {
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
 				toast.show();
 			}
+			dialog.dismiss();
 		}
 	}
 	/*

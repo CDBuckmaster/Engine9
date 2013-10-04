@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -299,6 +300,12 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	 * data can be handled specifically for this activity (to get Stop info)
 	 * */
 	private class StopRequest extends Request{
+		ProgressDialog dialog;
+		@Override
+		public void onPreExecute(){
+			dialog= ProgressDialog.show(StopMapActivity.this, "Downloading stops","Please wait a moment", true);
+		}
+		
 		@Override
 		public void onPostExecute(String result) {
 			try {
@@ -312,6 +319,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
 				toast.show();
 			}
+			dialog.dismiss();
 		}
 	}
 	

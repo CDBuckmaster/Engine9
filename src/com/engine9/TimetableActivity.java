@@ -21,6 +21,7 @@ import com.engine9.R;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -203,6 +204,12 @@ public class TimetableActivity extends Activity {
 	 * data can be handled specifically for this activity (to get Time info)
 	 * */
 	public class TimeRequest extends Request{
+		ProgressDialog dialog;
+		@Override
+		public void onPreExecute(){
+			dialog= ProgressDialog.show(TimetableActivity.this, "Downloading timetable","Please wait a moment", true);
+		}
+		
 		@Override
 		public void onPostExecute(String result) {
 			try {
@@ -228,6 +235,7 @@ public class TimetableActivity extends Activity {
 			
 			registerReceiver(br, new IntentFilter(Intent.ACTION_TIME_TICK));
 			registered = true;
+			dialog.dismiss();
 		}
 	}
 	

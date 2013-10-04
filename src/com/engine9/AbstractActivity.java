@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -59,7 +60,7 @@ public class AbstractActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent ia = new Intent(getApplicationContext(), AbstractActivity.class);
+				Intent ia = new Intent(getApplicationContext(), MapActivity.class);
 				ia.putExtra("stops", sURL);
 				ia.putExtra("route", iURL);
 				
@@ -105,6 +106,12 @@ public class AbstractActivity extends Activity {
 	 * data can be handled specifically for this activity (to get Stop info)
 	 * */
 	public class AbstractRequest extends Request{
+		ProgressDialog dialog;
+		@Override
+		public void onPreExecute(){
+			dialog= ProgressDialog.show(AbstractActivity.this, "Downloading stops","Please wait a moment", true);
+		}
+		
 		@Override
 		public void onPostExecute(String result)
 		{
@@ -132,6 +139,8 @@ public class AbstractActivity extends Activity {
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
 				toast.show();
 			}
+			
+			dialog.dismiss();
 			
 		}
 	}
