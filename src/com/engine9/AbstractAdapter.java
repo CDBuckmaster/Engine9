@@ -61,7 +61,9 @@ public class AbstractAdapter extends ArrayAdapter<AbstractInfo> {
 			time.setTextColor(Color.RED);
 		}
 		
+		area.setText(current.description);
 		//row.setBackgroundColor(Color.RED);
+		/*
 		Geocoder gcd = new Geocoder(getContext(), Locale.getDefault());
 		try {
 			area.setText( gcd.getFromLocation(current.position.latitude, 
@@ -70,7 +72,7 @@ public class AbstractAdapter extends ArrayAdapter<AbstractInfo> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		*/
 		
 		return row;
 	}

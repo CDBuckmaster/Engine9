@@ -92,8 +92,8 @@ public class AbstractActivity extends Activity {
 					@Override
 					public void onReceive(Context context, Intent intent) {
 						 if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
-							 //adapter.highlightSet = false;
-							 //adapter.notifyDataSetChanged();
+							 adapter.highlightSet = false;
+							 adapter.notifyDataSetChanged();
 						 }
 						
 					}
@@ -117,8 +117,9 @@ public class AbstractActivity extends Activity {
 			
 			LatLng pos = new LatLng(jo.get("Lat").getAsDouble(), jo.get("Lng").getAsDouble());
 			Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 19));
+			String des = jo.get("des").getAsString();
 			
-			AbstractInfo ai = new AbstractInfo(pos, t);
+			AbstractInfo ai = new AbstractInfo(pos, t, des);
 			
 			stops.add(ai);
 		}

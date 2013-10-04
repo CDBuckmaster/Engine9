@@ -7,9 +7,11 @@ public class AbstractInfo
 {
 	public LatLng position;
 	public Long time;
+	public String description;
 	
-	public AbstractInfo(LatLng position, Long time){
+	public AbstractInfo(LatLng position, Long time, String description){
 		this.position = position;
 		this.time = time;
+		this.description = description;
 	}
 }
