@@ -70,6 +70,14 @@ public class AbstractActivity extends Activity {
 		}
 	}
 	
+	protected void onResume(){
+		super.onResume();
+		if(br != null && !registered){
+			registered = true;
+			registerReceiver(br, new IntentFilter(Intent.ACTION_TIME_TICK));
+		}
+	}
+	
 	
 	public class AbstractRequest extends Request{
 		@Override
@@ -78,13 +86,14 @@ public class AbstractActivity extends Activity {
 			try{
 				jData = (JsonArray) JParser2.main(result);
 				loadStops();
+				
 				br =  new BroadcastReceiver(){
 
 					@Override
 					public void onReceive(Context context, Intent intent) {
 						 if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
-							 adapter.highlightSet = false;
-							 adapter.notifyDataSetChanged();
+							 //adapter.highlightSet = false;
+							 //adapter.notifyDataSetChanged();
 						 }
 						
 					}
