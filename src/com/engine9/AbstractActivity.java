@@ -42,10 +42,26 @@ public class AbstractActivity extends Activity {
 		
 		stopsList = (ListView) findViewById(R.id.abstract_list);
 		
+		
 		Intent i = getIntent();
-		String sURL = i.getStringExtra("stops");
+		final String sURL = i.getStringExtra("stops");
+		final String iURL = i.getStringExtra("route");
 		ar = new AbstractRequest();
 		ar.execute(sURL);
+		
+		Button aButton = (Button) findViewById(R.id.abstract_to_map_button);
+		aButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				Intent ia = new Intent(getApplicationContext(), AbstractActivity.class);
+				ia.putExtra("stops", sURL);
+				ia.putExtra("route", iURL);
+				
+				startActivity(ia);
+			}
+			
+		});
 		}
 	
 	protected void onStop(){

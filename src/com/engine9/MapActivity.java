@@ -64,7 +64,7 @@ public class MapActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		Intent i = getIntent();
-		String iURL = i.getStringExtra("route");
+		final String iURL = i.getStringExtra("route");
 		final String sURL = i.getStringExtra("stops");
 		new MapRequest().execute(iURL);
 		new StopRequest().execute(sURL);
@@ -78,6 +78,7 @@ public class MapActivity extends FragmentActivity {
 			public void onClick(View arg0) {
 				Intent ia = new Intent(getApplicationContext(), AbstractActivity.class);
 				ia.putExtra("stops", sURL);
+				ia.putExtra("route", iURL);
 				startActivity(ia);
 			}
 			
