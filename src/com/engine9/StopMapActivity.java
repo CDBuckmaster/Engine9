@@ -23,6 +23,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
@@ -68,6 +69,11 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stop_map);
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Translink");
+		actionBar.setDisplayHomeAsUpEnabled(false);
 		
 		/*cdt = new CountDownTimer(3000, 3000){
 

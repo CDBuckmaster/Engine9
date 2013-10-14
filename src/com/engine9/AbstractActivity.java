@@ -13,6 +13,7 @@ import com.google.gson.JsonObject;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -21,6 +22,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -45,6 +48,12 @@ public class AbstractActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_abstract);
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Current Journey");
+		actionBar.setDisplayHomeAsUpEnabled(false);
 		
 		stopsList = (ListView) findViewById(R.id.abstract_list);
 		
@@ -166,6 +175,29 @@ public class AbstractActivity extends Activity {
 		
 		adapter = new AbstractAdapter(getApplicationContext(), stops);
 		stopsList.setAdapter(adapter);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.stop_map_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_map:
+	        	startActivity(new Intent(AbstractActivity.this, StopMapActivity.class));
+	            return true;
+	        case R.id.action_favourite:
+	        	startActivity(new Intent(AbstractActivity.this, FavouriteActivity.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 
 }

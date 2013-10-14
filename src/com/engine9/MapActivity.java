@@ -25,12 +25,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,6 +66,13 @@ public class MapActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Cuurent Journey");
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		
 		Intent i = getIntent();
 		final String iURL = i.getStringExtra("route");
 		final String sURL = i.getStringExtra("stops");
@@ -111,14 +120,14 @@ public class MapActivity extends FragmentActivity {
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	/*@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
-	}
+	}*/
 
-
+	/*
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -134,7 +143,7 @@ public class MapActivity extends FragmentActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 
 	/**
 	 * Set initial map and use current location to should on the centre of screen.
@@ -485,6 +494,29 @@ public class MapActivity extends FragmentActivity {
 			this.m = m;
 			this.time = time;
 		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.stop_map_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_map:
+	        	startActivity(new Intent(MapActivity.this, StopMapActivity.class));
+	            return true;
+	        case R.id.action_favourite:
+	        	startActivity(new Intent(MapActivity.this, FavouriteActivity.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 
 	

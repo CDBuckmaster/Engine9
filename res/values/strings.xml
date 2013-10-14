@@ -5,6 +5,7 @@
 	<string name='search_hint'>hint</string>
 	<string name="search_label">labeling</string>
 	<string name="favourite">Open favourites</string>
+	<string name="map">Map</string>
 	<string name="pos">Done</string>
 	<string name="neg">Cancel</string>
 </resources>

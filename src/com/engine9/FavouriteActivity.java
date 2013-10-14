@@ -1,8 +1,13 @@
 package com.engine9;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -23,6 +28,13 @@ public class FavouriteActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favourite);
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Grouping");
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		
 		//FavouriteManager.deleteAllFavourites(getApplicationContext());
 		favList = (ListView) findViewById(R.id.abstract_list);
 		adapter = new FavouriteAdapter(getApplicationContext(), 
@@ -51,6 +63,26 @@ public class FavouriteActivity extends Activity {
 		});
 		
 		//favText = (EditText) findViewById(R.id.fav_text1); 
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.stop_map_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_map:
+	        	startActivity(new Intent(FavouriteActivity.this, StopMapActivity.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 	
 	/*public void onAddButtonPush(View view) {
