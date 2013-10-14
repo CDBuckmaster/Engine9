@@ -23,6 +23,7 @@ public class FavouriteActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favourite);
+		//FavouriteManager.deleteAllFavourites(getApplicationContext());
 		favList = (ListView) findViewById(R.id.abstract_list);
 		adapter = new FavouriteAdapter(getApplicationContext(), 
 				FavouriteManager.getFavourites(getApplicationContext()));

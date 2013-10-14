@@ -84,13 +84,22 @@ public class FavouriteAdapter extends ArrayAdapter<FavouriteInfo> {
 		TextView routeV = (TextView) row.findViewById(R.id.fav_route);
 		routeV.setText(favs.get(position).route);
 		
+		TextView description = (TextView) row.findViewById(R.id.fav_description);
+		if(!favs.get(position).description.equals(" ")){
+			description.setText(favs.get(position).description);
+			description.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			description.setVisibility(View.GONE);
+		}
+		
 		Button colourB = (Button) row.findViewById(R.id.fav_colour);
 		colourB.setFocusable(false);
 		String c = favs.get(position).colour;
-		if(c.length() != 0){
+		if(c.length() > 1){
 			colourB.setVisibility(View.VISIBLE);
 			if(c.equals("red")){
-				Log.e("DEBUG", "red");
 				colourB.setBackgroundColor(0xFFF53F3F);
 			}
 			if(c.equals("orange")){

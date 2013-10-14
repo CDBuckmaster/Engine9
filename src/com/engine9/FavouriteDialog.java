@@ -18,7 +18,7 @@ public class FavouriteDialog extends DialogFragment {
 
 	public String title = "Service: ";
 	public FavouriteInfo fi;
-	public String colour = "";
+	public String colour = " ";
 	public FavouriteAdapter adapter;
 	private Button selectedButton;
 	
@@ -175,7 +175,7 @@ public class FavouriteDialog extends DialogFragment {
 					selectedButton = lBlue;
 				}
 				else{
-					colour = "";
+					colour = " ";
 					android.view.ViewGroup.LayoutParams pa =	selectedButton.getLayoutParams();
 					pa.height = dpToPixels(48);
 					selectedButton.setLayoutParams(pa);
@@ -242,16 +242,17 @@ public class FavouriteDialog extends DialogFragment {
 		});
 		
 		final TextView description = (TextView) v.findViewById(R.id.description_text);
+		description.setText(fi.description);
 		
 		thisDialog =  new AlertDialog.Builder(getActivity()).setTitle(title)
 				.setView(v)
                .setPositiveButton(R.string.pos, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                       if(colour.length() > 0){
-                    	   FavouriteManager.setColour(getActivity(), fi.name, colour);
-                       }
-                       if(description.getText().length() > 0){
-                    	   FavouriteManager.setDescription(getActivity(), fi.name, (String) description.getText());
+                	   FavouriteManager.setColour(getActivity(), fi.name, colour);
+                       if(description.getText().toString().indexOf("|") == -1 &&
+                    		    description.getText().toString().indexOf(":") == -1)
+                       {
+                    	   FavouriteManager.setDescription(getActivity(), fi.name, description.getText().toString());
                        }
                        adapter.clear();
                        adapter.addAll(FavouriteManager.getFavourites(getActivity()));

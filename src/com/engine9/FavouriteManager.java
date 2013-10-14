@@ -30,7 +30,7 @@ public class FavouriteManager {
 		FileOutputStream outputStream;
 		try {
 			outputStream =context.openFileOutput("favourites.txt", Context.MODE_APPEND);
-			outputStream.write(("Name:" + fav + "|" + "Route:" + route + '\n').getBytes());
+			outputStream.write(("Name:" + fav + "|" + "Route:" + route + "|Colour: |Description: " + '\n').getBytes());
 			outputStream.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -164,11 +164,11 @@ public class FavouriteManager {
 					stringBuffer += (inputStr + '\n');
 				}
 				else{
-					Boolean colourSet = false;
+					//Boolean colourSet = false;
 					int count = 0;
 					for(String s : parts){
-						if(s.split(":")[0] == "Colour"){
-							colourSet = true;
+						if(s.split(":")[0].equals("Colour")){
+							//colourSet = true;
 							stringBuffer += "Colour:" + colour;
 							if(count < parts.length - 1){
 								stringBuffer += "|";
@@ -181,9 +181,10 @@ public class FavouriteManager {
 							}
 						}
 					}
+					/*
 					if(!colourSet){
 						stringBuffer += "Colour:" + colour;
-					}
+					}*/
 					stringBuffer += '\n';
 				}
 			}
@@ -214,11 +215,11 @@ public class FavouriteManager {
 					stringBuffer += (inputStr + '\n');
 				}
 				else{
-					Boolean descriptionSet = false;
+					//Boolean descriptionSet = false;
 					int count = 0;
 					for(String s : parts){
-						if(s.split(":")[0] == "Description"){
-							descriptionSet = true;
+						if(s.split(":")[0].equals("Description")){
+							//descriptionSet = true;
 							stringBuffer += "Description:" + description;
 							if(count < parts.length - 1){
 								stringBuffer += "|";
@@ -233,9 +234,9 @@ public class FavouriteManager {
 						}
 						count ++;
 					}
-					if(!descriptionSet){
+					/*if(!descriptionSet){
 						stringBuffer += "Description:" + description;
-					}
+					}*/
 					stringBuffer += '\n';
 				}
 			}
