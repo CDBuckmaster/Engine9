@@ -45,7 +45,7 @@ import android.os.Build;
 
 
 /***
- * Show the basic map and user can select
+ * Show the position for the vehicle during the trip
  * */
 public class MapActivity extends FragmentActivity {
 
@@ -151,6 +151,9 @@ public class MapActivity extends FragmentActivity {
 		}
 	}
 	
+	/**
+	 * Add the service route on the map
+	 * */
 	private void addPolyline(){
 		for (JsonElement p : jData.get("Paths").getAsJsonArray())
 		{
@@ -163,6 +166,9 @@ public class MapActivity extends FragmentActivity {
 		}
 	}
 	
+	/**
+	 * Add service stop on the map
+	 * */
 	private void addStops(){
 		for (JsonElement j : sjData){
 			JsonObject jo = j.getAsJsonObject();
@@ -278,9 +284,9 @@ public class MapActivity extends FragmentActivity {
 			dialog.dismiss();
 		}
 	}
-	/*
+	/**
 	 * Decode algorithm by Jeffrey Sambells
-	 */
+	 * */
 	private List<LatLng> decodePoly(String encoded) {
 	    List<LatLng> poly = new ArrayList<LatLng>();
 	    int index = 0, len = encoded.length();
@@ -313,6 +319,9 @@ public class MapActivity extends FragmentActivity {
 	    return poly;
 	}
 	
+	/**
+	 * Update the service location during the trip
+	 * */
 	private void updateBusPosition(){
 		
 		Log.e("DEBUG", "test");
@@ -419,6 +428,9 @@ public class MapActivity extends FragmentActivity {
 		
 	}
 	
+	/**
+	 * Get the shortest route for user
+	 * */
 	private int findClosestPolylinePoint(LatLng position){
 		List<LatLng> pList = line.getPoints();
 		Double closest = 99999.0;
@@ -434,6 +446,9 @@ public class MapActivity extends FragmentActivity {
 		return closestP;
 	}
 	
+	/**
+	 * Calculate the distance between two points
+	 * */
 	private double calcPolylineDistance(int pos1, int pos2){
 		List<LatLng> pList = line.getPoints();
 		Double dist = 0.0;
@@ -445,6 +460,9 @@ public class MapActivity extends FragmentActivity {
 		return dist;
 	}
 	
+	/**
+	 * Show the disance for user
+	 * */
 	private double calcDistance(LatLng start, LatLng end){
 		Double dLng = end.longitude - start.longitude;
 		Double dLat = end.latitude - start.latitude;
@@ -455,6 +473,9 @@ public class MapActivity extends FragmentActivity {
 		return 6373 * cir;
 	}
 	
+	/**
+	 * Show the stops on the map
+	 * */
 	private class StopInfo
 	{
 		public Marker m;
