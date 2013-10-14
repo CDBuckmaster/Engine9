@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class AbstractAdapter extends ArrayAdapter<AbstractInfo> {
@@ -62,6 +63,32 @@ public class AbstractAdapter extends ArrayAdapter<AbstractInfo> {
 		}
 		
 		area.setText(current.description);
+		
+		Button line = (Button) row.findViewById(R.id.abstract_line);
+		if(position == 0){
+			if(System.currentTimeMillis() < current.time){
+				line.setBackgroundResource(R.drawable.bluedotlinedown);
+			}
+			else{
+				line.setBackgroundResource(R.drawable.greydotlinedown);
+			}
+		}
+		else if(position == stops.size() - 1){
+			if(System.currentTimeMillis() < current.time){
+				line.setBackgroundResource(R.drawable.bluedotlineup);
+			}
+			else{
+				line.setBackgroundResource(R.drawable.greydotlineup);
+			}
+		}
+		else{
+			if(System.currentTimeMillis() < current.time){
+				line.setBackgroundResource(R.drawable.bluedotlinemid);
+			}
+			else{
+				line.setBackgroundResource(R.drawable.greydot);
+			}
+		}
 		//row.setBackgroundColor(Color.RED);
 		/*
 		Geocoder gcd = new Geocoder(getContext(), Locale.getDefault());

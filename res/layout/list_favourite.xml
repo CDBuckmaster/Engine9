@@ -24,9 +24,9 @@
             <Button
                 android:id="@+id/delete_fav"
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete" />
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/starfull" />
 
             <TextView
                 android:id="@+id/fav_text"

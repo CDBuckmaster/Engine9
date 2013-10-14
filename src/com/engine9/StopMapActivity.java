@@ -15,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -409,7 +410,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		for(Stop s : stopVector){
 			Marker marker = mMap.addMarker(new MarkerOptions()
 					.position(new LatLng(s.lat, s.lon))
-					.title(s.address));
+					.title(s.address)
+					.icon(BitmapDescriptorFactory.fromResource(R.drawable.greybus)));
 			s.markerId = marker.getId();
 		}
 		if(moveCamera){
