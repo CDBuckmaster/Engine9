@@ -34,13 +34,16 @@ public class FavouriteActivity extends Activity {
 			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 					int pos, long arg3) {
 				// TODO Auto-generated method stub
-				Log.d("DEBUG", "TEST");
+				try{
 				FavouriteDialog fd = new FavouriteDialog();
 				fd.fi = FavouriteManager.getFavourites(getApplicationContext()).get(pos);
 				fd.title += fd.fi.name;
 				fd.adapter = adapter;
 				fd.show(getFragmentManager(), "edit");
-				
+				}
+				catch(Exception e){
+					
+				}
 				return false;
 			}
 			

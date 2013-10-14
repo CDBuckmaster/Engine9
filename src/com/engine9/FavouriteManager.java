@@ -103,7 +103,7 @@ public class FavouriteManager {
 			String inputStr;
 			while((inputStr = input.readLine()) !=  null){
 				//retVector.add(inputStr);
-				
+				Log.d("DEBUG", inputStr);
 				String[] parts = inputStr.split("\\|");
 				FavouriteInfo fi = new FavouriteInfo();
 				for(String s : parts){
