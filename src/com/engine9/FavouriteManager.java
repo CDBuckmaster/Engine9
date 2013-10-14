@@ -202,6 +202,27 @@ public class FavouriteManager {
 		}
 	}
 	
+	public static String getColour(Context context, String fav){
+		try{
+			BufferedReader input = new BufferedReader(new InputStreamReader(
+					context.openFileInput("favourites.txt")));
+			String inputStr;
+			while((inputStr = input.readLine()) !=  null){
+				String[] parts = inputStr.split("\\|");
+				String[] p = parts[0].split(":");
+				if(p[1].equals(fav)){
+					parts = parts[2].split(":");
+					return parts[1];
+				}
+			}
+			
+			return " ";
+		} catch(Exception e){
+			e.printStackTrace();
+			return " ";
+		}
+	}
+	
 	public static void setDescription(Context context, String fav, String description){
 		new File(context.getFilesDir(), "favourites.txt");
 		try {

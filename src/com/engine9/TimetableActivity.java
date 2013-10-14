@@ -30,6 +30,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -60,7 +62,25 @@ public class TimetableActivity extends Activity {
 		tRequest = new TimeRequest();
 		tRequest.execute(iurl);
 		
+		TextView description = (TextView) findViewById(R.id.time_description);
+		description.setText(intent.getStringExtra("description"));
+		
 		timeList = (ListView) findViewById(R.id.list_view);
+		timeList.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View view, int pos,
+					long arg3) {
+				Listing l = times.get(pos);
+				Intent i = new Intent(view.getContext(), MapActivity.class);
+				i.putExtra("route", "http://deco3801-005.uqcloud.net/cache/network/rest/route-map-path/?route=" + l.code + "&type=" + l.type);
+				i.putExtra("stops", "http://deco3801-005.uqcloud.net/stops-from-tripID/?tripID=" + l.id);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				view.getContext().startActivity(i);
+				
+			}
+			
+		});
 		
 	}
 	

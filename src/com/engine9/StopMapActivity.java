@@ -69,13 +69,15 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stop_map);
 		
-		/*cdt = new CountDownTimer(10000, 10000){
+		/*cdt = new CountDownTimer(3000, 3000){
 
 			@Override
 			public void onFinish() {
 				//updateStops();
+				
 				LatLng mapPosition = mMap.getCameraPosition().target;
 				Double radius = calculateRadius();
+				Log.e("DEBUG", mapPosition.toString() + " radius: " + radius.toString());
 				new StopRequest2().execute("http://deco3801-005.uqcloud.net/stops-from-latlon/?lat="+ 
 						mapPosition.latitude + "&lon=" + mapPosition.longitude + "&radius=" + radius);
 				
@@ -211,6 +213,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 							//Open TimeTableActivity with new intent
 							Intent i = new Intent(com.engine9.StopMapActivity.this, com.engine9.TimetableActivity.class);
 							i.putExtra("timeURL", "http://deco3801-005.uqcloud.net/cache/network/rest/stop-timetables/?stopIds=" + s.stopId);
+							i.putExtra("description", s.address);
 							startActivity(i);
 							return true;
 						}
@@ -353,7 +356,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	private void JsonToVector(JsonElement j){
 		//Casts result as JsonArray
 		JsonArray result  = j.getAsJsonArray();
-		
+		stopVector = new Vector<Stop>();
 		//Loops through JsonObjects in result
 		for(int i = 0; i < result.size(); i++){
 			
@@ -371,14 +374,16 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	/**
 	 * Adds markers to map from stopVector
 	 * */
-	private void addStopsToMap(){
+	private void addStopsToMap(Boolean moveCamera){
 		for(Stop s : stopVector){
 			Marker marker = mMap.addMarker(new MarkerOptions()
 					.position(new LatLng(s.lat, s.lon))
 					.title(s.address));
 			s.markerId = marker.getId();
 		}
+		if(moveCamera){
 		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(stopVector.get(0).lat, stopVector.get(0).lon ), 15));
+		}
 	}
 	
 	/**
@@ -398,7 +403,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 			try {
 				jData = JParser2.main(result);
 				JsonToVector(jData);
-				addStopsToMap();
+				addStopsToMap(true);
 				
 			} catch (Exception e) {
 				Log.e("Error", "Parsing error");
@@ -418,7 +423,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				jData = JParser2.main(result);
 				JsonToVector(jData);
 				mMap.clear();
-				addStopsToMap();
+				addStopsToMap(false);
 				
 			} catch (Exception e) {
 				Log.e("Error", "Parsing error");

@@ -1,6 +1,8 @@
 package com.engine9;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.Context;
 import android.content.Intent;
@@ -65,8 +67,11 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		View row = inflater.inflate(R.layout.list_timetable, parent, false);
 		
 		TextView codeV = (TextView) row.findViewById(R.id.code);
+		codeV.setFocusable(false);
 		TextView directionV = (TextView) row.findViewById(R.id.direction);
+		directionV.setFocusable(false);
 		TextView timeV = (TextView) row.findViewById(R.id.time);
+		timeV.setFocusable(false);
 		
 		final String id = values.get(position).id;
 		final int type = values.get(position).type;
@@ -74,10 +79,32 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		final String route = values.get(position).route;
 		codeV.setText(code);
 		
-		directionV.setText(values.get(position).direction);
-		timeV.setText(String.valueOf((values.get(position).time * 10  - System.currentTimeMillis())/ 60000));
+		directionV.setText(route);
+		Long time = (values.get(position).time * 10  - System.currentTimeMillis())/ 60000;
+		if(time == 0){
+			timeV.setText("Now");
+		}
+		else if(time < 0){
+			timeV.setText("Due");
+		}
+		else if(time > 300){
+			Date date = new  Date(values.get(position).time * 10);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+			timeV.setText(dateFormat.format(date));
+		}
+		else if(time > 60){
+			int hours = (int) (time/60);
+			int minutes = (int) (time%60);
+			timeV.setText(String.valueOf(hours) + " hours " + String.valueOf(minutes) + " mins");
+		}
+		else
+		{
+			timeV.setText(String.valueOf(time) + " mins");
+		}
+		
 		
 		Button favButton  = (Button) row.findViewById(R.id.add_fav_button);
+		favButton.setFocusable(false);
 		favButton.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -90,7 +117,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 			
 		});
 		
-		Button mapButton = (Button) row.findViewById(R.id.to_map_button);
+		/*Button mapButton = (Button) row.findViewById(R.id.to_map_button);
 		mapButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View view) {
@@ -100,7 +127,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				view.getContext().startActivity(i);
 			}
-		});
+		});*/
 		return row;
 	}
 	
