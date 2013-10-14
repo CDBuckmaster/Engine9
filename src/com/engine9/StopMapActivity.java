@@ -93,7 +93,6 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 					Log.e("DEBUG", String.valueOf(calcDistance(mapPosition, previousPosition)));
 					if(calcDistance(mapPosition, previousPosition)> 1000){
 						
-						previousPosition = mapPosition;
 						int radius = (int) calculateRadius();
 						if(radius > 2500){
 							radius = 2500;
@@ -105,7 +104,6 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				}
 				else{
 					LatLng mapPosition = mMap.getCameraPosition().target;
-					previousPosition = mapPosition;
 					int radius = (int) calculateRadius();
 					if(radius > 2000){
 						radius = 2000;
@@ -460,6 +458,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		}
 		if(moveCamera){
 		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(stopVector.get(0).lat, stopVector.get(0).lon ), 15));
+		previousPosition = mMap.getCameraPosition().target;
 		}
 	}
 	
@@ -509,11 +508,14 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				addStopsToMap(false);
 				
 			} catch (Exception e) {
-				if(result.length() > 0){
-				Log.e("Error", result);}
-				e.printStackTrace();
-				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
-				toast.show();
+				if(result != null){
+					if(result.length() > 0){
+						Log.e("Error", result);
+						e.printStackTrace();
+						Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
+						toast.show();
+					}
+				}	
 			}
 			
 		}
