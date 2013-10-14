@@ -86,7 +86,7 @@ public class AbstractAdapter extends ArrayAdapter<AbstractInfo> {
 				line.setBackgroundResource(R.drawable.bluedotlinemid);
 			}
 			else{
-				line.setBackgroundResource(R.drawable.greydot);
+				line.setBackgroundResource(R.drawable.greydotlinemid);
 			}
 		}
 		//row.setBackgroundColor(Color.RED);

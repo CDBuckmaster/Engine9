@@ -89,13 +89,13 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 					LatLng mapPosition = mMap.getCameraPosition().target;
 					//Log.e("DEBUG", String.valueOf(calcDistance(mapPosition, previousPosition)));
 					
-					
-					if(calcDistance(mapPosition, previousPosition)> 2000){
+					Log.e("DEBUG", String.valueOf(calcDistance(mapPosition, previousPosition)));
+					if(calcDistance(mapPosition, previousPosition)> 1000){
 						
 						previousPosition = mapPosition;
 						int radius = (int) calculateRadius();
-						if(radius > 2000){
-							radius = 2000;
+						if(radius > 2500){
+							radius = 2500;
 						}
 						Log.e("DEBUG", mapPosition.toString() + " radius: " + String.valueOf(radius));
 						new StopRequest2().execute("http://deco3801-005.uqcloud.net/stops-from-latlon/?lat="+ 
@@ -393,12 +393,14 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		for(int i = 0; i < result.size(); i++){
 			
 			JsonObject stop = result.get(i).getAsJsonObject();
+			//JsonObject route = stop.get("0").getAsJsonObject();
 			
 			//Adds new stop data to stopVector
 			Stop s = new Stop(stop.get("StopId").getAsString(),
 					stop.get("Lat").getAsDouble(),
 					stop.get("Lng").getAsDouble(),
-					stop.get("Description").getAsString());
+					stop.get("Description").getAsString(),
+					2);
 			stopVector.add(s);
 		}
 	}
@@ -408,11 +410,27 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	 * */
 	private void addStopsToMap(Boolean moveCamera){
 		for(Stop s : stopVector){
-			Marker marker = mMap.addMarker(new MarkerOptions()
-					.position(new LatLng(s.lat, s.lon))
-					.title(s.address)
-					.icon(BitmapDescriptorFactory.fromResource(R.drawable.greybus)));
-			s.markerId = marker.getId();
+			if(s.vehicle == 2){
+				Marker marker = mMap.addMarker(new MarkerOptions()
+						.position(new LatLng(s.lat, s.lon))
+						.title(s.address)
+						.icon(BitmapDescriptorFactory.fromResource(R.drawable.greybus)));
+				s.markerId = marker.getId();
+			}
+			else if(s.vehicle == 3){
+				Marker marker = mMap.addMarker(new MarkerOptions()
+				.position(new LatLng(s.lat, s.lon))
+				.title(s.address)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.greytrain)));
+				s.markerId = marker.getId();
+			}
+			else if(s.vehicle == 4){
+				Marker marker = mMap.addMarker(new MarkerOptions()
+				.position(new LatLng(s.lat, s.lon))
+				.title(s.address)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.greyferry)));
+				s.markerId = marker.getId();
+			}
 		}
 		if(moveCamera){
 		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(stopVector.get(0).lat, stopVector.get(0).lon ), 15));
@@ -439,7 +457,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				addStopsToMap(true);
 				
 			} catch (Exception e) {
-				Log.e("Error", "Parsing error");
+				Log.e("Error", result);
 				e.printStackTrace();
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
 				toast.show();
@@ -465,7 +483,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				addStopsToMap(false);
 				
 			} catch (Exception e) {
-				Log.e("Error", "Parsing error");
+				if(result.length() > 0){
+				Log.e("Error", result);}
 				e.printStackTrace();
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
 				toast.show();
@@ -483,12 +502,14 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		Double lon;
 		String stopId;
 		String address;
+		int vehicle;
 		
-		public Stop(String stopId, Double lat, Double lon, String address){
+		public Stop(String stopId, Double lat, Double lon, String address, int vehicle){
 			this.stopId = stopId;
 			this.lat = lat;
 			this.lon = lon;
 			this.address = address;
+			this.vehicle = vehicle;
 		}
 	}
 	

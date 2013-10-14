@@ -169,8 +169,8 @@ public class MapActivity extends FragmentActivity {
 			JsonObject po = p.getAsJsonObject();
 			line = mMap.addPolyline(new PolylineOptions()
 			.addAll(decodePoly(po.get("Path").getAsString()))
-			.width(5)
-			.color(Color.RED));
+			.width(10)
+			.color(Color.CYAN));
 			
 		}
 	}
@@ -187,7 +187,7 @@ public class MapActivity extends FragmentActivity {
 			
 			Marker m = mMap.addMarker(new MarkerOptions()
 			.position(l)
-			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+			.icon(BitmapDescriptorFactory.fromResource(R.drawable.bluebus)));
 			
 			Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 19));
 			StopInfo sInfo = new StopInfo(m, t);
@@ -340,7 +340,7 @@ public class MapActivity extends FragmentActivity {
 		if(stops.get(0).equals(stops.get(1))){
 			vehicle = mMap.addMarker(new MarkerOptions()
 				.position(stops.get(0).m.getPosition())
-				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
 			
 			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stops.get(0).m.getPosition(), 15));
 			vehicle.showInfoWindow();
