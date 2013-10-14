@@ -70,7 +70,7 @@ public class MapActivity extends FragmentActivity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle("Cuurent Journey");
+		actionBar.setTitle("Current Journey");
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		
 		Intent i = getIntent();
