@@ -137,6 +137,7 @@ public class TimetableActivity extends Activity {
 			TimeAdapter ta = (TimeAdapter) timeList.getAdapter();
 				
 			if(!favsOnly){
+				favsOnly = true;
 				view.setBackgroundResource(R.drawable.staroutline);
 				
 				//A list to hold listing that will be deleted
@@ -169,6 +170,7 @@ public class TimetableActivity extends Activity {
 				ta.notifyDataSetChanged();
 			}
 			else{
+				favsOnly = false;
 				view.setBackgroundResource(R.drawable.starfull);
 				ta.clear();
 				ta.addAll(times);
