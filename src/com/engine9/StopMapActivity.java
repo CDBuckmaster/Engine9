@@ -62,7 +62,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		           (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		    SearchView searchView =(SearchView) findViewById(R.id.search);
 		    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-		    
+		    searchView.setIconifiedByDefault(false);
 		Intent i = getIntent();
 		
 		
