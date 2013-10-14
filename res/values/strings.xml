@@ -2,5 +2,6 @@
 
     <string name="app_name">Engine9</string>
     <string name="download_error">There was an error requesting data, would you like to try again?</string>
-
+	<string name='search_hint'>hint</string>
+	<string name="search_label">labeling</string>
 </resources>

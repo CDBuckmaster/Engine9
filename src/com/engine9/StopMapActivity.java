@@ -23,6 +23,7 @@ import com.google.gson.JsonObject;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -32,8 +33,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 /**
@@ -55,8 +58,21 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stop_map);
-		
+		SearchManager searchManager =
+		           (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		    SearchView searchView =(SearchView) findViewById(R.id.search);
+		    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		    
 		Intent i = getIntent();
+		
+		
+		if (Intent.ACTION_SEARCH.equals(i.getAction())) {
+		      String query = i.getStringExtra(SearchManager.QUERY);
+		     
+		      doMySearch(query);
+		    }
+		
+		
 		String sLocation = i.getStringExtra("location");
 		if(sLocation != null && sLocation.length() != 0){
 			Log.e("debug", sLocation +"derp");
@@ -95,6 +111,9 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		}
 		
 		setUpMap( null);
+	}
+	private void doMySearch(String query) {
+		new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +query);
 	}
 	/*
 	@Override
