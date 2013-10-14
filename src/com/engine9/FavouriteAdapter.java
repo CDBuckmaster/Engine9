@@ -81,6 +81,9 @@ public class FavouriteAdapter extends ArrayAdapter<FavouriteInfo> {
 			
 		});
 		
+		TextView routeV = (TextView) row.findViewById(R.id.fav_route);
+		routeV.setText(favs.get(position).route);
+		
 		Button colourB = (Button) row.findViewById(R.id.fav_colour);
 		colourB.setFocusable(false);
 		String c = favs.get(position).colour;

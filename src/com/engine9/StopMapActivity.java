@@ -97,13 +97,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		           (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		    SearchView searchView =(SearchView) findViewById(R.id.search);
 		    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-<<<<<<< HEAD
-		    
-		
-		    
-=======
+
 		    searchView.setIconifiedByDefault(false);
->>>>>>> f0d221b2b445c4dcea21f3a7b5504f13e205e9be
 		Intent i = getIntent();
 		
 		
@@ -224,8 +219,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				}
         		
         	});
-        	/*
-        	mMap.setOnCameraChangeListener(new OnCameraChangeListener(){
+        	
+        	/*mMap.setOnCameraChangeListener(new OnCameraChangeListener(){
 
 				@Override
 				public void onCameraChange(CameraPosition arg0) {
