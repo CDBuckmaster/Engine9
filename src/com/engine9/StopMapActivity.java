@@ -44,6 +44,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -62,6 +63,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	private JsonElement jData; //The Json data holding the stops
 	
 	private CountDownTimer cdt;
+	private ProgressBar pb;
+	private LatLng previousPosition;
 	
 	public Vector<Stop> stopVector = new Vector<Stop>(); //A vector for keeping stop info
 	
@@ -75,18 +78,40 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		actionBar.setTitle("Translink");
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		
-		/*cdt = new CountDownTimer(3000, 3000){
+		cdt = new CountDownTimer(3000, 3000){
 
 			@Override
 			public void onFinish() {
 				//updateStops();
-				
-				LatLng mapPosition = mMap.getCameraPosition().target;
-				Double radius = calculateRadius();
-				Log.e("DEBUG", mapPosition.toString() + " radius: " + radius.toString());
-				new StopRequest2().execute("http://deco3801-005.uqcloud.net/stops-from-latlon/?lat="+ 
-						mapPosition.latitude + "&lon=" + mapPosition.longitude + "&radius=" + radius);
-				
+				if(previousPosition != null){
+					
+					LatLng mapPosition = mMap.getCameraPosition().target;
+					//Log.e("DEBUG", String.valueOf(calcDistance(mapPosition, previousPosition)));
+					
+					
+					if(calcDistance(mapPosition, previousPosition)> 2000){
+						
+						previousPosition = mapPosition;
+						int radius = (int) calculateRadius();
+						if(radius > 2000){
+							radius = 2000;
+						}
+						Log.e("DEBUG", mapPosition.toString() + " radius: " + String.valueOf(radius));
+						new StopRequest2().execute("http://deco3801-005.uqcloud.net/stops-from-latlon/?lat="+ 
+								mapPosition.latitude + "&lon=" + mapPosition.longitude + "&radius=" + radius);
+					}
+				}
+				else{
+					LatLng mapPosition = mMap.getCameraPosition().target;
+					previousPosition = mapPosition;
+					int radius = (int) calculateRadius();
+					if(radius > 2000){
+						radius = 2000;
+					}
+					Log.e("DEBUG", mapPosition.toString() + " radius: " + String.valueOf(radius));
+					new StopRequest2().execute("http://deco3801-005.uqcloud.net/stops-from-latlon/?lat="+ 
+							mapPosition.latitude + "&lon=" + mapPosition.longitude + "&radius=" + radius);
+				}
 				
 			}
 
@@ -96,7 +121,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				
 			}
 			
-		};*/
+		};
 		
 		
 		
@@ -229,7 +254,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
         		
         	});
         	
-        	/*mMap.setOnCameraChangeListener(new OnCameraChangeListener(){
+        	mMap.setOnCameraChangeListener(new OnCameraChangeListener(){
 
 				@Override
 				public void onCameraChange(CameraPosition arg0) {
@@ -237,7 +262,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 					cdt.start();	
 				}
         		
-        	});*/
+        	});
         	
         }
 	}
@@ -424,6 +449,12 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	private class StopRequest2 extends Request{
 		
 		@Override
+		public void onPreExecute(){
+			super.onPreExecute();
+			//pb = new ProgressBar();
+		}
+		
+		@Override
 		public void onPostExecute(String result) {
 			try {
 				jData = JParser2.main(result);
@@ -481,6 +512,19 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	    
 	    return (metersPerPixel * widthInPixels);
 	    
+	}
+	
+	/**
+	 * Calculate the distance (in metres) between two LatLng points
+	 * */
+	private double calcDistance(LatLng start, LatLng end){
+		Double dLng = Math.toRadians(end.longitude - start.longitude);
+		Double dLat = Math.toRadians(end.latitude - start.latitude);
+		
+		Double angle = Math.pow((Math.sin(dLat /2)), 2) + Math.cos(start.latitude) * Math.cos(end.latitude) * Math.pow((Math.sin(dLng /2)), 2);
+		Double cir = 2 * Math.atan2(Math.sqrt(angle), Math.sqrt(1-angle));
+		
+		return 6373 * cir * 1000;
 	}
 }
 

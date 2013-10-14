@@ -470,16 +470,16 @@ public class MapActivity extends FragmentActivity {
 	}
 	
 	/**
-	 * Show the disance for user
+	 * Calculate the distance (in metres) between two LatLng points
 	 * */
 	private double calcDistance(LatLng start, LatLng end){
-		Double dLng = end.longitude - start.longitude;
-		Double dLat = end.latitude - start.latitude;
+		Double dLng = Math.toRadians(end.longitude - start.longitude);
+		Double dLat = Math.toRadians(end.latitude - start.latitude);
 		
 		Double angle = Math.pow((Math.sin(dLat /2)), 2) + Math.cos(start.latitude) * Math.cos(end.latitude) * Math.pow((Math.sin(dLng /2)), 2);
 		Double cir = 2 * Math.atan2(Math.sqrt(angle), Math.sqrt(1-angle));
 		
-		return 6373 * cir;
+		return 6373 * cir * 1000;
 	}
 	
 	/**
