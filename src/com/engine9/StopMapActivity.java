@@ -73,12 +73,12 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		      doMySearch(query);
 		    }
 		
-		
+		/*
 		String sLocation = i.getStringExtra("location");
 		if(sLocation != null && sLocation.length() != 0){
 			Log.e("debug", sLocation +"derp");
 			new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +sLocation);
-		}
+		}*/
 		//Check the Google Play Service whether is connected
 		else if(servicesConnected()){
 			//Create new Location Manager and set up location updates
