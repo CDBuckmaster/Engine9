@@ -170,7 +170,7 @@ public class MapActivity extends FragmentActivity {
 			line = mMap.addPolyline(new PolylineOptions()
 			.addAll(decodePoly(po.get("Path").getAsString()))
 			.width(10)
-			.color(Color.CYAN));
+			.color(0xFF2B8AEF));
 			
 		}
 	}

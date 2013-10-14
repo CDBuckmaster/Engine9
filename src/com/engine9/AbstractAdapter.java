@@ -1,6 +1,8 @@
 package com.engine9;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Vector;
 
@@ -51,16 +53,34 @@ public class AbstractAdapter extends ArrayAdapter<AbstractInfo> {
 		
 		TextView time = (TextView) row.findViewById(R.id.abstract_time);
 		TextView area = (TextView) row.findViewById(R.id.abstract_area);
+		area.setTextColor(0xFFFFFFFF);
 		
 		AbstractInfo current = stops.get(position);
 		
-		if(System.currentTimeMillis() < current.time){
-			time.setText(String.valueOf((current.time - System.currentTimeMillis())/60000) + " MIN");
+		Long t = (current.time - System.currentTimeMillis())/ 60000;
+		if(t == 0){
+			time.setText("Now");
 		}
-		else{
-			time.setText("PAST");
-			time.setTextColor(Color.RED);
+		else if(t < 0){
+			time.setText("Past");
+			time.setTextColor(Color.GRAY);
+			area.setTextColor(Color.GRAY);
 		}
+		else if(t > 300){
+			Date date = new  Date(current.time);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+			time.setText(dateFormat.format(date));
+		}
+		else if(t > 60){
+			int hours = (int) (t/60);
+			int minutes = (int) (t%60);
+			time.setText(String.valueOf(hours) + " hours " + String.valueOf(minutes) + " mins");
+		}
+		else
+		{
+			time.setText(String.valueOf(t) + " mins");
+		}
+		
 		
 		area.setText(current.description);
 		
