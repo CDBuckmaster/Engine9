@@ -130,11 +130,12 @@ public class TimetableActivity extends Activity {
 	 * Set the favourite button function
 	 * */
 	public void favOnlyButtonPush(View view) {
+		//The adapter for the ListView
+		TimeAdapter ta = (TimeAdapter) timeList.getAdapter();
+		
 		//Check to see if times isn't empty
 		if(times.size() != 0){
 				
-			//The adapter for the ListView
-			TimeAdapter ta = (TimeAdapter) timeList.getAdapter();
 				
 			if(!favsOnly){
 				favsOnly = true;
@@ -172,10 +173,23 @@ public class TimetableActivity extends Activity {
 			else{
 				favsOnly = false;
 				view.setBackgroundResource(R.drawable.starfull);
+				Log.e("DEBUG", String.valueOf(times.size()));
+				ArrayList temp = (ArrayList) times.clone();
 				ta.clear();
-				ta.addAll(times);
+				ta.addAll(temp);
+				times = (ArrayList<Listing>) temp.clone();
 				ta.notifyDataSetChanged();
 			}
+		}
+		else if(favsOnly){
+			favsOnly = false;
+			view.setBackgroundResource(R.drawable.starfull);
+			Log.e("DEBUG", String.valueOf(times.size()));
+			ArrayList temp = (ArrayList) times.clone();
+			ta.clear();
+			ta.addAll(temp);
+			times = (ArrayList<Listing>) temp.clone();
+			ta.notifyDataSetChanged();
 		}
 	}
 	
@@ -237,7 +251,7 @@ public class TimetableActivity extends Activity {
 		}
 		
 		adapter = new TimeAdapter(getApplicationContext(), 
-				times);
+				(ArrayList<Listing>) times.clone());
 		timeList.setAdapter(adapter);
 	}
 	
