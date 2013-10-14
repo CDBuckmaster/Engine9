@@ -68,7 +68,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		
 		if (Intent.ACTION_SEARCH.equals(i.getAction())) {
 		      String query = i.getStringExtra(SearchManager.QUERY);
-		     
+		      SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
+		      suggestions.saveRecentQuery(query, null);
 		      doMySearch(query);
 		    }
 		

@@ -80,6 +80,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.engine9.MainActivity" />
         </activity>
+        
+        
+        <provider android:name=".MySuggestionProvider"
+              android:authorities="com.engine9.MySuggestionProvider" />
     </application>
 
 </manifest>
