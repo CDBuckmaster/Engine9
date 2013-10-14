@@ -72,10 +72,12 @@
         </activity>
         <activity
             android:name="com.engine9.FavouriteActivity"
-            android:parentActivityName="com.engine9.MainActivity" >
-            <meta-data
+            android:parentActivityName="com.engine9.MainActivity" 
+            android:theme="@android:style/Theme.Holo">
+        	<meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.engine9.MainActivity" />
+                
         </activity>
         
         

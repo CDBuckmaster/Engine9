@@ -114,8 +114,8 @@ public class TimetableActivity extends Activity {
 				
 				//Check if they are within the favourites array
 				Boolean listCheck = false;
-				for(String fav: FavouriteManager.getFavourites(getApplicationContext())){
-					if(l.code.equals(fav)){
+				for(FavouriteInfo fav: FavouriteManager.getFavourites(getApplicationContext())){
+					if(l.code.equals(fav.name)){
 						listCheck = true;
 					}
 				}
@@ -136,14 +136,15 @@ public class TimetableActivity extends Activity {
 		}
 	}
 	
-
+	/*
 	public void onFavouriteButtonPush(View view) {
+		
 		TextView tv = (TextView) view.findViewById(R.id.code);
 		
 		if(!FavouriteManager.inFavourites(getApplicationContext(), tv.getText().toString())){
 			FavouriteManager.AddFavourite(tv.getText().toString(), getApplicationContext());
 		}
-	}
+	}*/
 
 	public String toString() {
 		return jData.toString();
@@ -186,7 +187,7 @@ public class TimetableActivity extends Activity {
 			if((d * 10  - System.currentTimeMillis())/ 60000 > -5)
 			{
 				Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt(), 
-						route.get("Vehicle").getAsInt(), trip.get("TripId").getAsString());
+						route.get("Vehicle").getAsInt(), trip.get("TripId").getAsString(), route.get("Name").getAsString());
 				times.add(l);
 			}
 			

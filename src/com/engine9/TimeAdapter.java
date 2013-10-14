@@ -71,6 +71,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		final String id = values.get(position).id;
 		final int type = values.get(position).type;
 		final String code = values.get(position).code;
+		final String route = values.get(position).route;
 		codeV.setText(code);
 		
 		directionV.setText(values.get(position).direction);
@@ -82,7 +83,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 			@Override
 			public void onClick(View view) {
 				if(!FavouriteManager.inFavourites(context, code)){
-					FavouriteManager.AddFavourite(code, context);
+					FavouriteManager.AddFavourite(code, route, context);
 				}
 				
 			}

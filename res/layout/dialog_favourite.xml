@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="238dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="23dp"
+        android:paddingLeft="5dp"
+        android:text="Please pick a colour:"
+        android:textColor="#FFFFFF" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:gravity="center_vertical" >
+
+        <Button
+            android:id="@+id/red_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="42dp"
+            android:layout_height="48dp"
+            android:background="#F53F3F" />
+
+        <Button
+            android:id="@+id/orange_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="42dp"
+            android:layout_height="48dp"
+            android:background="#FD9526" />
+
+        <Button
+            android:id="@+id/yellow_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="42dp"
+            android:layout_height="48dp"
+            android:background="#F8E54D" />
+
+        <Button
+            android:id="@+id/green_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="42dp"
+            android:layout_height="48dp"
+            android:background="#AEE631" />
+
+        <Button
+            android:id="@+id/light_blue_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="42dp"
+            android:layout_height="48dp"
+            android:background="#2FCCDC" />
+
+        <Button
+            android:id="@+id/dark_blue_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="42dp"
+            android:layout_height="48dp"
+            android:background="#2C81CC" />
+
+        <Button
+            android:id="@+id/purple_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="42dp"
+            android:layout_height="48dp"
+            android:background="#C968CC" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/description_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="Add a description"
+        android:inputType="textLongMessage"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>

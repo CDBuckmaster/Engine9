@@ -2,7 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="false"
     android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/fav_colour"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/fav_text"
