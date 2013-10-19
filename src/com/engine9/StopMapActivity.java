@@ -169,29 +169,25 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		setUpMap( null);
 	}
 	
-	@Override
-    protected void onNewIntent(Intent intent) {
-        // Because this activity has set launchMode="singleTop", the system calls this method
-        // to deliver the intent if this activity is currently the foreground activity when
-        // invoked again (when the user executes a search from this activity, we don't create
-        // a new instance of this activity, so the system delivers the search intent here)
-        handleIntent(intent);
-    }
+//	@Override
+//    protected void onNewIntent(Intent intent) {
+//        // Because this activity has set launchMode="singleTop", the system calls this method
+//        // to deliver the intent if this activity is currently the foreground activity when
+//        // invoked again (when the user executes a search from this activity, we don't create
+//        // a new instance of this activity, so the system delivers the search intent here)
+//        handleIntent(intent);
+//    }
 	
 	private void handleIntent(Intent intent) {
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            // handles a click on a search suggestion; launches activity to show word
-            Intent wordIntent = new Intent(this, WordActivity.class);
-            wordIntent.setData(intent.getData());
-            startActivity(wordIntent);
-        } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             // handles a search query
             String query = intent.getStringExtra(SearchManager.QUERY);
             doMySearch(query);
         }
     }
 	private void doMySearch(String query) {
-		new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +query);
+		String queryString="http://deco3801-005.uqcloud.net/stops-from-location/?location="+query;
+		new StopRequest().execute(queryString);
 	}
 	
 	@Override

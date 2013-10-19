@@ -107,7 +107,7 @@ public class LocationDatabase {
     public Cursor getWordMatches(String query, String[] columns) {
         String selection = KEY_WORD + " MATCH ?";
         String[] selectionArgs = new String[] {query+"*"};
-
+        
         return query(selection, selectionArgs, columns);
 
         /* This builds a query that looks like:

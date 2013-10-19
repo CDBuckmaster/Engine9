@@ -24,6 +24,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 /**
  * Provides access to the dictionary database.
@@ -92,20 +93,26 @@ public class DictionaryProvider extends ContentProvider {
         // Use the UriMatcher to see what kind of query we have and format the db query accordingly
         switch (sURIMatcher.match(uri)) {
             case SEARCH_SUGGEST:
+            	Log.e("NANO-DEBUG","search suggest	");
                 if (selectionArgs == null) {
                   throw new IllegalArgumentException(
                       "selectionArgs must be provided for the Uri: " + uri);
                 }
                 return getSuggestions(selectionArgs[0]);
             case SEARCH_WORDS:
+            	Log.e("NANO-DEBUG","search word");
                 if (selectionArgs == null) {
                   throw new IllegalArgumentException(
                       "selectionArgs must be provided for the Uri: " + uri);
                 }
+                
                 return search(selectionArgs[0]);
             case GET_WORD:
+            	Log.e("NANO-DEBUG","get word");
                 return getWord(uri);
             case REFRESH_SHORTCUT:
+            	
+            	Log.e("NANO-DEBUG","Refres");
                 return refreshShortcut(uri);
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
@@ -171,12 +178,16 @@ public class DictionaryProvider extends ContentProvider {
     public String getType(Uri uri) {
         switch (sURIMatcher.match(uri)) {
             case SEARCH_WORDS:
+            	Log.e("NANO-DEBUG","SEARCH_WORDS word");
                 return WORDS_MIME_TYPE;
             case GET_WORD:
+            	Log.e("NANO-DEBUG","GET_WORD");
                 return DEFINITION_MIME_TYPE;
             case SEARCH_SUGGEST:
+            	Log.e("NANO-DEBUG","SEARCH_SUGGEST");
                 return SearchManager.SUGGEST_MIME_TYPE;
             case REFRESH_SHORTCUT:
+            	Log.e("NANO-DEBUG","REFRESH_SHORTCUT");
                 return SearchManager.SHORTCUT_MIME_TYPE;
             default:
                 throw new IllegalArgumentException("Unknown URL " + uri);
