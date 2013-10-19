@@ -31,11 +31,13 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.database.Cursor;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -180,10 +182,27 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	private void handleIntent(Intent intent) {
 		
 		 if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			 String query=intent.getStringExtra(SearchManager.SUGGEST_COLUMN_TEXT_1);
-			 Log.e("NANO-DEBUG","handle view");
-			 Log.e("NANO-DEBUG","query:"+query);
-	         doMySearch(query);
+			 
+			 //Intent wordIntent = new Intent(this, this.getClass());
+	         //wordIntent.setData(intent.getData());
+	         //Log.e("NANO-DEBUG",intent.getAction());
+	         Log.e("NANO-DEBUG",intent.getData().toString());
+	         Uri uri = getIntent().getData();
+	         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+	        // startActivity(wordIntent);
+	         
+	         if (cursor == null) {
+	             finish();
+	         } else {
+	             cursor.moveToFirst();
+	             int wIndex = cursor.getColumnIndexOrThrow(LocationDatabase.KEY_WORD);
+	             int dIndex = cursor.getColumnIndexOrThrow(LocationDatabase.KEY_DEFINITION);
+
+	             Log.e("NANO-DEBUG",cursor.getString(wIndex));
+	             Log.e("NANO-DEBUG",cursor.getString(dIndex));
+	             doMySearch(cursor.getString(wIndex));
+	         }
+			
 		 }
 		 else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             Log.e("NANO-DEBUG","handle intent");
