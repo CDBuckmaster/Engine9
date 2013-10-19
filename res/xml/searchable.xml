@@ -1,6 +1,13 @@
-<searchable xmlns:android="http://schemas.android.com/apk/res/android" 
+<!-- <searchable xmlns:android="http://schemas.android.com/apk/res/android" 
    android:label="@string/search_label"
    android:hint="@string/search_hint"
    android:searchSuggestAuthority="com.engine9.MySuggestionProvider"
+   android:searchSuggestSelection=" ?" >
+</searchable>  -->
+
+<searchable xmlns:android="http://schemas.android.com/apk/res/android" 
+   android:label="@string/search_label"
+   android:hint="@string/search_hint"
+   android:searchSuggestAuthority="com.engine9.DictionaryProvider"
    android:searchSuggestSelection=" ?" >
 </searchable> 

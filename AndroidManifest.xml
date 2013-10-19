@@ -81,10 +81,8 @@
                 android:value="com.engine9.MainActivity" />
                 
         </activity>
-        
-        
-        <provider android:name=".MySuggestionProvider"
-              android:authorities="com.engine9.MySuggestionProvider" />
+        <provider android:name=".DictionaryProvider"
+                  android:authorities="com.engine9.DictionaryProvider" />
     </application>
 
 </manifest>

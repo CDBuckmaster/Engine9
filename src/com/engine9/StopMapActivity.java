@@ -36,6 +36,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.SearchRecentSuggestions;
@@ -124,33 +125,17 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 			
 		};
 		
-		
-		
-		
-		SearchManager searchManager =
-		           (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		    SearchView searchView =(SearchView) findViewById(R.id.search);
-		    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-		    searchView.setIconifiedByDefault(false);
-		Intent i = getIntent();
-		
-		
-		if (Intent.ACTION_SEARCH.equals(i.getAction())) {
-		      String query = i.getStringExtra(SearchManager.QUERY);
-		      SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
-		      suggestions.saveRecentQuery(query, null);
-		      doMySearch(query);
-		    }
-		
-		/*
-		String sLocation = i.getStringExtra("location");
-		if(sLocation != null && sLocation.length() != 0){
-			Log.e("debug", sLocation +"derp");
-			new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +sLocation);
-		}*/
+//		String sLocation = i.getStringExtra("location");
+//		if(sLocation != null && sLocation.length() != 0){
+//			Log.e("debug", sLocation +"derp");
+//			new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +sLocation);
+//		}
 		//Check the Google Play Service whether is connected
-		else if(servicesConnected()){
+		
+		
+		handleIntent(getIntent());
+		
+		if(servicesConnected()){
 			//Create new Location Manager and set up location updates
 			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
@@ -183,6 +168,28 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		
 		setUpMap( null);
 	}
+	
+	@Override
+    protected void onNewIntent(Intent intent) {
+        // Because this activity has set launchMode="singleTop", the system calls this method
+        // to deliver the intent if this activity is currently the foreground activity when
+        // invoked again (when the user executes a search from this activity, we don't create
+        // a new instance of this activity, so the system delivers the search intent here)
+        handleIntent(intent);
+    }
+	
+	private void handleIntent(Intent intent) {
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            // handles a click on a search suggestion; launches activity to show word
+            Intent wordIntent = new Intent(this, WordActivity.class);
+            wordIntent.setData(intent.getData());
+            startActivity(wordIntent);
+        } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            // handles a search query
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
+        }
+    }
 	private void doMySearch(String query) {
 		new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +query);
 	}
@@ -192,13 +199,25 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	    // Inflate the menu items for use in the action bar
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.stop_map_actions, menu);
+	    //get the search manager
+	    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(true);
+        }	    
+	    
 	    return super.onCreateOptionsMenu(menu);
 	}
+	
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
+		    case R.id.search:
+	            onSearchRequested();// start the search
+            return true;
 	        case R.id.action_favourite:
 	        	startActivity(new Intent(StopMapActivity.this, com.engine9.FavouriteActivity.class));
 	            return true;
