@@ -20,32 +20,29 @@ import com.engine9.R;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TimetableActivity extends Activity {
-	private String vehicleID;
-	/* The local store (save some timetable) allow user to do the quick search, but only 
-	 * allow  around 10 places/service (can add the time limit so that if user did not use
-	 * for a while, delete that)*/
-	//private LinkedHashMap<String, List<String>> timetable = new LinkedHashMap();
-	/* The global store (save all timetable) allow user to search, but really depends on
-	 * Internet so that it might be slow */
-	private JsonElement jData;
-	private ArrayList<Listing> times = new ArrayList<Listing>();
-
-	private Date time;
-	private DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+	private JsonElement jData; //To store the timetable based on the route
+	private ArrayList<Listing> times = new ArrayList<Listing>(); 
 	
 	private ListView timeList;
 	private TimeAdapter adapter;
@@ -62,13 +59,37 @@ public class TimetableActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_timetable);
 		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Timetable");
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		
 		//Grab url from intent and make request
 		Intent intent = getIntent();
 		String iurl = intent.getStringExtra("timeURL");
 		tRequest = new TimeRequest();
 		tRequest.execute(iurl);
 		
+		TextView description = (TextView) findViewById(R.id.time_description);
+		description.setText(intent.getStringExtra("description"));
+		
 		timeList = (ListView) findViewById(R.id.list_view);
+		timeList.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View view, int pos,
+					long arg3) {
+				Listing l = times.get(pos);
+				Intent i = new Intent(view.getContext(), MapActivity.class);
+				i.putExtra("route", "http://deco3801-005.uqcloud.net/cache/network/rest/route-map-path/?route=" + l.code + "&type=" + l.type);
+				i.putExtra("stops", "http://deco3801-005.uqcloud.net/stops-from-tripID/?tripID=" + l.id);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				view.getContext().startActivity(i);
+				
+			}
+			
+		});
 		
 	}
 	
@@ -103,6 +124,9 @@ public class TimetableActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Set the favourite button function
+	 * */
 	public void favOnlyButtonPush(View view) {
 		//Check to see if times isn't empty
 		if(times.size() != 0){
@@ -119,8 +143,8 @@ public class TimetableActivity extends Activity {
 				
 				//Check if they are within the favourites array
 				Boolean listCheck = false;
-				for(String fav: FavouriteManager.getFavourites(getApplicationContext())){
-					if(l.code.equals(fav)){
+				for(FavouriteInfo fav: FavouriteManager.getFavourites(getApplicationContext())){
+					if(l.code.equals(fav.name)){
 						listCheck = true;
 					}
 				}
@@ -141,61 +165,30 @@ public class TimetableActivity extends Activity {
 		}
 	}
 	
+	/*
 	public void onFavouriteButtonPush(View view) {
+		
 		TextView tv = (TextView) view.findViewById(R.id.code);
 		
 		if(!FavouriteManager.inFavourites(getApplicationContext(), tv.getText().toString())){
 			FavouriteManager.AddFavourite(tv.getText().toString(), getApplicationContext());
 		}
-	}
-
-
-	/**
-	 * Add and store the vehicle timetable to the local device
-	 * 	   @throws InvalidPointerException 
-	 * 	        if the vehicleID is invalid
-	 *     @throws NullPointerException
-	 * 	        if the vehicleID or time is empty or null
-	 * */
-	private void addTimetable(String vehicleID, List<String> time) 
-			throws InvalidPointerException {
-		if (vehicleID == null || vehicleID.length() == 0 || time == null || time.size() == 0) {
-			throw new NullPointerException();
-		}
-		if (vehicleID.length() > 4) {
-			throw new InvalidPointerException();
-		}
-		
-		//jData.add(vehicleID, (JsonElement) time);
-	}
+	}*/
 
 	public String toString() {
 		return jData.toString();
 	}
 
 	/**
-	 * Count the time and highlight the service if approaching within 5 mim
+	 * Update the timetable
 	 * */
-	private void timeCountDown() {
-
-	}
-
-	/**
-	 * Get the favourites from user define
-	 * */
-	private void getFav(){
-		
-	}
-	
-
-	
 	private void updateList(){
 		
 		ArrayList<Listing> toBeDeleted = new ArrayList<Listing>();
 		for(Listing l : times){
+			/* If the bus leaves the stop over 5 min, add to the remove list */
 			if((l.time* 10  - System.currentTimeMillis())/ 60000 < -5){
 				toBeDeleted.add(l);
-				
 			}
 		}
 		for(Listing li : toBeDeleted){
@@ -223,7 +216,7 @@ public class TimetableActivity extends Activity {
 			if((d * 10  - System.currentTimeMillis())/ 60000 > -5)
 			{
 				Listing l = new Listing(d, route.get("Code").getAsString(),  route.get("Direction").getAsInt(), 
-						route.get("Vehicle").getAsInt(), trip.get("TripId").getAsString());
+						route.get("Vehicle").getAsInt(), trip.get("TripId").getAsString(), route.get("Name").getAsString());
 				times.add(l);
 			}
 			
@@ -241,6 +234,12 @@ public class TimetableActivity extends Activity {
 	 * data can be handled specifically for this activity (to get Time info)
 	 * */
 	public class TimeRequest extends Request{
+		ProgressDialog dialog;
+		@Override
+		public void onPreExecute(){
+			dialog= ProgressDialog.show(TimetableActivity.this, "Downloading timetable","Please wait a moment", true);
+		}
+		
 		@Override
 		public void onPostExecute(String result) {
 			try {
@@ -248,6 +247,8 @@ public class TimetableActivity extends Activity {
 			} catch (Exception e) {
 				Log.e("Error", "Parsing error");
 				e.printStackTrace();
+				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
+				toast.show();
 			}
 			findTimes();
 			br = new BroadcastReceiver(){
@@ -264,7 +265,35 @@ public class TimetableActivity extends Activity {
 			
 			registerReceiver(br, new IntentFilter(Intent.ACTION_TIME_TICK));
 			registered = true;
+			dialog.dismiss();
 		}
+		
+		
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.stop_map_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_map:
+	        	startActivity(new Intent(TimetableActivity.this, StopMapActivity.class));
+	            return true;
+	        case R.id.action_favourite:
+	        	startActivity(new Intent(TimetableActivity.this, FavouriteActivity.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	
 	
 }

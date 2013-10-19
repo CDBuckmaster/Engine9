@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/action_favourite"
+          android:title="@string/favourite"
+          android:showAsAction="ifRoom" 
+          android:icon="@drawable/folderstar"/>
+    <item android:id="@+id/action_map"
+          android:title="@string/map"
+          android:showAsAction="ifRoom"
+          android:icon="@drawable/map2"/>
+</menu>

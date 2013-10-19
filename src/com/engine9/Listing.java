@@ -10,6 +10,7 @@ public class Listing{
 	public String direction;
 	public int type;
 	public String id;
+	public String route;
 	
 	/**
 	 * Set the vehicle information format
@@ -21,13 +22,14 @@ public class Listing{
 	 * @param _direction
 	 * 		the direction value to find the vehicle status
 	 * */
-	public Listing(long _time, String _code, int _direction, int _type, String _id) {
+	public Listing(long _time, String _code, int _direction, int _type, String _id, String _route) {
 		
 		time = _time;
 		code = _code;
 		direction = directionToString(_direction);
 		type = _type;
 		id = _id;
+		route = _route;
 	}
 	
 	/** 

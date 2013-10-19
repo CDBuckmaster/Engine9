@@ -25,11 +25,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,7 +47,7 @@ import android.os.Build;
 
 
 /***
- * Show the basic map and user can select
+ * Show the position for the vehicle during the trip
  * */
 public class MapActivity extends FragmentActivity {
 
@@ -63,42 +66,68 @@ public class MapActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Cuurent Journey");
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		
 		Intent i = getIntent();
-		String iURL = i.getStringExtra("route");
-		String sURL = i.getStringExtra("stops");
+		final String iURL = i.getStringExtra("route");
+		final String sURL = i.getStringExtra("stops");
 		new MapRequest().execute(iURL);
 		new StopRequest().execute(sURL);
 		
 		setUpMap( null);
+		
+		Button aButton = (Button) findViewById(R.id.map_to_abstract_button);
+		aButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				Intent ia = new Intent(getApplicationContext(), AbstractActivity.class);
+				ia.putExtra("stops", sURL);
+				ia.putExtra("route", iURL);
+				startActivity(ia);
+			}
+			
+		});
 
 	}
 	
 	protected void onPause(){
 		super.onPause();
-		cdt.cancel();
+		if(cdt != null){
+			cdt.cancel();
+		}
 	}
 	
 	protected void onStop(){
 		super.onPause();
-		cdt.cancel();
+		if(cdt != null){
+			cdt.cancel();
+		}
 	}
 	
-	/*protected void onResume(){
+	protected void onResume(){
 		super.onResume();
-		cdt.start();
-	}*/
+		if(cdt != null){
+			cdt.start();
+		}
+	}
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	/*@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
-	}
+	}*/
 
-
+	/*
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -114,7 +143,7 @@ public class MapActivity extends FragmentActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 
 	/**
 	 * Set initial map and use current location to should on the centre of screen.
@@ -131,18 +160,24 @@ public class MapActivity extends FragmentActivity {
 		}
 	}
 	
+	/**
+	 * Add the service route on the map
+	 * */
 	private void addPolyline(){
 		for (JsonElement p : jData.get("Paths").getAsJsonArray())
 		{
 			JsonObject po = p.getAsJsonObject();
 			line = mMap.addPolyline(new PolylineOptions()
 			.addAll(decodePoly(po.get("Path").getAsString()))
-			.width(5)
-			.color(Color.RED));
+			.width(10)
+			.color(Color.CYAN));
 			
 		}
 	}
 	
+	/**
+	 * Add service stop on the map
+	 * */
 	private void addStops(){
 		for (JsonElement j : sjData){
 			JsonObject jo = j.getAsJsonObject();
@@ -152,7 +187,7 @@ public class MapActivity extends FragmentActivity {
 			
 			Marker m = mMap.addMarker(new MarkerOptions()
 			.position(l)
-			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+			.icon(BitmapDescriptorFactory.fromResource(R.drawable.bluebus)));
 			
 			Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 19));
 			StopInfo sInfo = new StopInfo(m, t);
@@ -169,6 +204,12 @@ public class MapActivity extends FragmentActivity {
 	 * specifically for this activity (to get User location info)
 	 * */
 	public class MapRequest extends Request {
+		ProgressDialog dialog;
+		@Override
+		public void onPreExecute(){
+			dialog= ProgressDialog.show(MapActivity.this, "Downloading map info","Please wait a moment", true);
+		}
+		
 		@Override
 		public void onPostExecute(String result)
 		{
@@ -177,6 +218,8 @@ public class MapActivity extends FragmentActivity {
 				addPolyline();
 				pReady = true;
 				if(sReady && pReady){
+					sReady = false;
+					pReady = false;
 					updateBusPosition();
 					cdt = new CountDownTimer(10000, 10000){
 
@@ -202,10 +245,17 @@ public class MapActivity extends FragmentActivity {
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
 				toast.show();
 			}
+			
+			dialog.dismiss();
 		}
 	}
 	
 	public class StopRequest extends Request {
+		ProgressDialog dialog;
+		@Override
+		public void onPreExecute(){
+			dialog= ProgressDialog.show(MapActivity.this, "Downloading map info","Please wait a moment", true);
+		}
 		
 		@Override
 		public void onPostExecute(String result)
@@ -215,6 +265,8 @@ public class MapActivity extends FragmentActivity {
 				addStops();
 				sReady = true;
 				if(sReady && pReady){
+					sReady = false;
+					pReady = false;
 					updateBusPosition();
 					cdt = new CountDownTimer(10000, 10000){
 
@@ -238,11 +290,12 @@ public class MapActivity extends FragmentActivity {
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
 				toast.show();
 			}
+			dialog.dismiss();
 		}
 	}
-	/*
+	/**
 	 * Decode algorithm by Jeffrey Sambells
-	 */
+	 * */
 	private List<LatLng> decodePoly(String encoded) {
 	    List<LatLng> poly = new ArrayList<LatLng>();
 	    int index = 0, len = encoded.length();
@@ -275,15 +328,19 @@ public class MapActivity extends FragmentActivity {
 	    return poly;
 	}
 	
+	/**
+	 * Update the service location during the trip
+	 * */
 	private void updateBusPosition(){
 		
+		Log.e("DEBUG", "test");
 		List<LatLng> pList = line.getPoints();
 		Vector<StopInfo> stops = prevAndNextStop();
 		
 		if(stops.get(0).equals(stops.get(1))){
 			vehicle = mMap.addMarker(new MarkerOptions()
 				.position(stops.get(0).m.getPosition())
-				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
 			
 			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stops.get(0).m.getPosition(), 15));
 			vehicle.showInfoWindow();
@@ -299,29 +356,45 @@ public class MapActivity extends FragmentActivity {
 			Double targetDist = distRatio * distBetween;
 			
 			Double currentDist = 0.0;
+			Log.e("DEBUG", String.valueOf(stops.get(0).m.getPosition().longitude - stops.get(1).m.getPosition().longitude));
 			Log.e("DEBUG", String.valueOf(start) + " " + String.valueOf(end));
 			int j, k;
 			if(start < end){
 				j = start;
 				k = end;
+				for(int i =k; i > j; i--){
+					
+					currentDist += calcDistance(pList.get(i), pList.get(i-1));
+					
+					if(currentDist >= targetDist){
+						vehicle = mMap.addMarker(new MarkerOptions()
+							.position(pList.get(i - 1))
+							.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+						mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
+						vehicle.showInfoWindow();
+						break;
+					}
+				}
 			}
 			else{
 				j = end;
 				k = start;
-			}
-			for(int i =j; i < k; i++){
-				
-				currentDist += calcDistance(pList.get(i), pList.get(i+1));
-				
-				if(currentDist >= targetDist){
-					vehicle = mMap.addMarker(new MarkerOptions()
-						.position(pList.get(i))
-						.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-					mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
-					vehicle.showInfoWindow();
-					break;
+				for(int i =j; i < k; i++){
+					
+					currentDist += calcDistance(pList.get(i), pList.get(i+1));
+					
+					if(currentDist >= targetDist){
+						vehicle = mMap.addMarker(new MarkerOptions()
+							.position(pList.get(i + 1))
+							.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+						mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
+						vehicle.showInfoWindow();
+						break;
+					}
 				}
 			}
+			
+			
 		}
 		
 		
@@ -340,7 +413,17 @@ public class MapActivity extends FragmentActivity {
 					return retVect;
 				}
 				else{
-					retVect.add(markers.get(c - 1));
+					if(markers.get(c -1).time < i.time){
+						retVect.add(markers.get(c - 1));
+					}
+					else if(c != markers.size() - 1){
+						retVect.add(markers.get(c + 1));
+					}
+					else
+					{
+						break;
+					}
+					
 					retVect.add(i);
 					return retVect;
 				}
@@ -354,6 +437,9 @@ public class MapActivity extends FragmentActivity {
 		
 	}
 	
+	/**
+	 * Get the shortest route for user
+	 * */
 	private int findClosestPolylinePoint(LatLng position){
 		List<LatLng> pList = line.getPoints();
 		Double closest = 99999.0;
@@ -369,6 +455,9 @@ public class MapActivity extends FragmentActivity {
 		return closestP;
 	}
 	
+	/**
+	 * Calculate the distance between two points
+	 * */
 	private double calcPolylineDistance(int pos1, int pos2){
 		List<LatLng> pList = line.getPoints();
 		Double dist = 0.0;
@@ -380,16 +469,22 @@ public class MapActivity extends FragmentActivity {
 		return dist;
 	}
 	
+	/**
+	 * Calculate the distance (in metres) between two LatLng points
+	 * */
 	private double calcDistance(LatLng start, LatLng end){
-		Double dLng = end.longitude - start.longitude;
-		Double dLat = end.latitude - start.latitude;
+		Double dLng = Math.toRadians(end.longitude - start.longitude);
+		Double dLat = Math.toRadians(end.latitude - start.latitude);
 		
 		Double angle = Math.pow((Math.sin(dLat /2)), 2) + Math.cos(start.latitude) * Math.cos(end.latitude) * Math.pow((Math.sin(dLng /2)), 2);
 		Double cir = 2 * Math.atan2(Math.sqrt(angle), Math.sqrt(1-angle));
 		
-		return 6373 * cir;
+		return 6373 * cir * 1000;
 	}
 	
+	/**
+	 * Show the stops on the map
+	 * */
 	private class StopInfo
 	{
 		public Marker m;
@@ -399,6 +494,29 @@ public class MapActivity extends FragmentActivity {
 			this.m = m;
 			this.time = time;
 		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.stop_map_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_map:
+	        	startActivity(new Intent(MapActivity.this, StopMapActivity.class));
+	            return true;
+	        case R.id.action_favourite:
+	        	startActivity(new Intent(MapActivity.this, FavouriteActivity.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 
 	

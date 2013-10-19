@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" 
+    android:background="@color/background_color">
+
+    <Button
+        android:id="@+id/abstract_line"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="12dp"
+        android:layout_height="118dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/bluedotlinemid" />
+
+    <TextView
+        android:id="@+id/abstract_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#33b5e5" />
+
+    <TextView
+        android:id="@+id/abstract_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

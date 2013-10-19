@@ -12,8 +12,11 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -21,7 +24,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import android.app.ActionBar;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -31,8 +37,16 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 /**
@@ -48,19 +62,93 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	private Location currentLocation; //The user's current location
 	private LocationManager mLocationManager; //Used for getting location
 	private JsonElement jData; //The Json data holding the stops
+	
+	private CountDownTimer cdt;
+	private ProgressBar pb;
+	private LatLng previousPosition;
+	
 	public Vector<Stop> stopVector = new Vector<Stop>(); //A vector for keeping stop info
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stop_map);
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Translink");
+		actionBar.setDisplayHomeAsUpEnabled(false);
 		
+		cdt = new CountDownTimer(3000, 3000){
+
+			@Override
+			public void onFinish() {
+				//updateStops();
+				if(previousPosition != null){
+					
+					LatLng mapPosition = mMap.getCameraPosition().target;
+					//Log.e("DEBUG", String.valueOf(calcDistance(mapPosition, previousPosition)));
+					
+					Log.e("DEBUG", String.valueOf(calcDistance(mapPosition, previousPosition)));
+					if(calcDistance(mapPosition, previousPosition)> 1000){
+						
+						previousPosition = mapPosition;
+						int radius = (int) calculateRadius();
+						if(radius > 2500){
+							radius = 2500;
+						}
+						Log.e("DEBUG", mapPosition.toString() + " radius: " + String.valueOf(radius));
+						new StopRequest2().execute("http://deco3801-005.uqcloud.net/stops-from-latlon/?lat="+ 
+								mapPosition.latitude + "&lon=" + mapPosition.longitude + "&radius=" + radius);
+					}
+				}
+				else{
+					LatLng mapPosition = mMap.getCameraPosition().target;
+					previousPosition = mapPosition;
+					int radius = (int) calculateRadius();
+					if(radius > 2000){
+						radius = 2000;
+					}
+					Log.e("DEBUG", mapPosition.toString() + " radius: " + String.valueOf(radius));
+					new StopRequest2().execute("http://deco3801-005.uqcloud.net/stops-from-latlon/?lat="+ 
+							mapPosition.latitude + "&lon=" + mapPosition.longitude + "&radius=" + radius);
+				}
+				
+			}
+
+			@Override
+			public void onTick(long millisUntilFinished) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		};
+		
+		
+		
+		
+		SearchManager searchManager =
+		           (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		    SearchView searchView =(SearchView) findViewById(R.id.search);
+		    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+		    searchView.setIconifiedByDefault(false);
 		Intent i = getIntent();
+		
+		
+		if (Intent.ACTION_SEARCH.equals(i.getAction())) {
+		      String query = i.getStringExtra(SearchManager.QUERY);
+		      SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
+		      suggestions.saveRecentQuery(query, null);
+		      doMySearch(query);
+		    }
+		
+		/*
 		String sLocation = i.getStringExtra("location");
 		if(sLocation != null && sLocation.length() != 0){
 			Log.e("debug", sLocation +"derp");
 			new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +sLocation);
-		}
+		}*/
 		//Check the Google Play Service whether is connected
 		else if(servicesConnected()){
 			//Create new Location Manager and set up location updates
@@ -95,6 +183,30 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		
 		setUpMap( null);
 	}
+	private void doMySearch(String query) {
+		new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +query);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.stop_map_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_favourite:
+	        	startActivity(new Intent(StopMapActivity.this, com.engine9.FavouriteActivity.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+	
 	/*
 	@Override
     protected void onStart() {
@@ -133,11 +245,22 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 							//Open TimeTableActivity with new intent
 							Intent i = new Intent(com.engine9.StopMapActivity.this, com.engine9.TimetableActivity.class);
 							i.putExtra("timeURL", "http://deco3801-005.uqcloud.net/cache/network/rest/stop-timetables/?stopIds=" + s.stopId);
+							i.putExtra("description", s.address);
 							startActivity(i);
 							return true;
 						}
 					}
 					return false;
+				}
+        		
+        	});
+        	
+        	mMap.setOnCameraChangeListener(new OnCameraChangeListener(){
+
+				@Override
+				public void onCameraChange(CameraPosition arg0) {
+					cdt.cancel();
+					cdt.start();	
 				}
         		
         	});
@@ -265,17 +388,19 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	private void JsonToVector(JsonElement j){
 		//Casts result as JsonArray
 		JsonArray result  = j.getAsJsonArray();
-		
+		stopVector = new Vector<Stop>();
 		//Loops through JsonObjects in result
 		for(int i = 0; i < result.size(); i++){
 			
 			JsonObject stop = result.get(i).getAsJsonObject();
+			//JsonObject route = stop.get("0").getAsJsonObject();
 			
 			//Adds new stop data to stopVector
 			Stop s = new Stop(stop.get("StopId").getAsString(),
 					stop.get("Lat").getAsDouble(),
 					stop.get("Lng").getAsDouble(),
-					stop.get("Description").getAsString());
+					stop.get("Description").getAsString(),
+					2);
 			stopVector.add(s);
 		}
 	}
@@ -283,14 +408,33 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	/**
 	 * Adds markers to map from stopVector
 	 * */
-	private void addStopsToMap(){
+	private void addStopsToMap(Boolean moveCamera){
 		for(Stop s : stopVector){
-			Marker marker = mMap.addMarker(new MarkerOptions()
-					.position(new LatLng(s.lat, s.lon))
-					.title(s.address));
-			s.markerId = marker.getId();
+			if(s.vehicle == 2){
+				Marker marker = mMap.addMarker(new MarkerOptions()
+						.position(new LatLng(s.lat, s.lon))
+						.title(s.address)
+						.icon(BitmapDescriptorFactory.fromResource(R.drawable.greybus)));
+				s.markerId = marker.getId();
+			}
+			else if(s.vehicle == 3){
+				Marker marker = mMap.addMarker(new MarkerOptions()
+				.position(new LatLng(s.lat, s.lon))
+				.title(s.address)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.greytrain)));
+				s.markerId = marker.getId();
+			}
+			else if(s.vehicle == 4){
+				Marker marker = mMap.addMarker(new MarkerOptions()
+				.position(new LatLng(s.lat, s.lon))
+				.title(s.address)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.greyferry)));
+				s.markerId = marker.getId();
+			}
 		}
+		if(moveCamera){
 		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(stopVector.get(0).lat, stopVector.get(0).lon ), 15));
+		}
 	}
 	
 	/**
@@ -299,17 +443,53 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	 * data can be handled specifically for this activity (to get Stop info)
 	 * */
 	private class StopRequest extends Request{
+		ProgressDialog dialog;
+		@Override
+		public void onPreExecute(){
+			dialog= ProgressDialog.show(StopMapActivity.this, "Downloading stops","Please wait a moment", true);
+		}
+		
 		@Override
 		public void onPostExecute(String result) {
 			try {
 				jData = JParser2.main(result);
 				JsonToVector(jData);
-				addStopsToMap();
+				addStopsToMap(true);
 				
 			} catch (Exception e) {
-				Log.e("Error", "Parsing error");
+				Log.e("Error", result);
 				e.printStackTrace();
+				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
+				toast.show();
 			}
+			dialog.dismiss();
+		}
+	}
+	
+	private class StopRequest2 extends Request{
+		
+		@Override
+		public void onPreExecute(){
+			super.onPreExecute();
+			//pb = new ProgressBar();
+		}
+		
+		@Override
+		public void onPostExecute(String result) {
+			try {
+				jData = JParser2.main(result);
+				JsonToVector(jData);
+				mMap.clear();
+				addStopsToMap(false);
+				
+			} catch (Exception e) {
+				if(result.length() > 0){
+				Log.e("Error", result);}
+				e.printStackTrace();
+				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
+				toast.show();
+			}
+			
 		}
 	}
 	
@@ -322,13 +502,52 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		Double lon;
 		String stopId;
 		String address;
+		int vehicle;
 		
-		public Stop(String stopId, Double lat, Double lon, String address){
+		public Stop(String stopId, Double lat, Double lon, String address, int vehicle){
 			this.stopId = stopId;
 			this.lat = lat;
 			this.lon = lon;
 			this.address = address;
+			this.vehicle = vehicle;
 		}
+	}
+	
+	private double calculateRadius() {
+		double widthInPixels;
+		
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		int height = displaymetrics.heightPixels;
+		int width = displaymetrics.widthPixels;
+		if(width < height){
+			widthInPixels = height;
+		}
+		else{
+			widthInPixels = width;
+		}
+		
+	    double equatorLength = 40075004; // in meters
+	    double metersPerPixel = equatorLength / 256;
+	    for(int i = 1; i < mMap.getCameraPosition().zoom; i++){
+	    	metersPerPixel /= 2;
+	    }
+	    
+	    return (metersPerPixel * widthInPixels);
+	    
+	}
+	
+	/**
+	 * Calculate the distance (in metres) between two LatLng points
+	 * */
+	private double calcDistance(LatLng start, LatLng end){
+		Double dLng = Math.toRadians(end.longitude - start.longitude);
+		Double dLat = Math.toRadians(end.latitude - start.latitude);
+		
+		Double angle = Math.pow((Math.sin(dLat /2)), 2) + Math.cos(start.latitude) * Math.cos(end.latitude) * Math.pow((Math.sin(dLng /2)), 2);
+		Double cir = 2 * Math.atan2(Math.sqrt(angle), Math.sqrt(1-angle));
+		
+		return 6373 * cir * 1000;
 	}
 }
 
