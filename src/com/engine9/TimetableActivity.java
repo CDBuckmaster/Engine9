@@ -50,6 +50,8 @@ public class TimetableActivity extends Activity {
 	private BroadcastReceiver br;
 	private Boolean registered = false;
 	
+	private Boolean favsOnly = false;
+	
 	public TimeRequest tRequest;
 	
 	//Temporary favourites array
@@ -130,38 +132,48 @@ public class TimetableActivity extends Activity {
 	public void favOnlyButtonPush(View view) {
 		//Check to see if times isn't empty
 		if(times.size() != 0){
-			
-			//A list to hold listing that will be deleted
-			ArrayList<Listing> removeList = new ArrayList<Listing>();
-			
+				
 			//The adapter for the ListView
 			TimeAdapter ta = (TimeAdapter) timeList.getAdapter();
-			
-			//Loop through every listing
-			for(int i = 0; i < timeList.getCount(); i ++ ){
-				Listing l = (Listing) ta.getItem(i);
 				
-				//Check if they are within the favourites array
-				Boolean listCheck = false;
-				for(FavouriteInfo fav: FavouriteManager.getFavourites(getApplicationContext())){
-					if(l.code.equals(fav.name)){
-						listCheck = true;
+			if(!favsOnly){
+				view.setBackgroundResource(R.drawable.staroutline);
+				
+				//A list to hold listing that will be deleted
+				ArrayList<Listing> removeList = new ArrayList<Listing>();
+				
+				//Loop through every listing
+				for(int i = 0; i < timeList.getCount(); i ++ ){
+					Listing l = (Listing) ta.getItem(i);
+					
+					//Check if they are within the favourites array
+					Boolean listCheck = false;
+					for(FavouriteInfo fav: FavouriteManager.getFavourites(getApplicationContext())){
+						if(l.code.equals(fav.name)){
+							listCheck = true;
+						}
+					}
+					
+					//Add non-favourite lists to the removeList
+					if(!listCheck){
+						removeList.add(l);
 					}
 				}
 				
-				//Add non-favourite lists to the removeList
-				if(!listCheck){
-					removeList.add(l);
+				//Remove everything in removeList
+				for(int j = 0; j < removeList.size(); j++){
+					ta.remove(removeList.get(j));
 				}
+				
+				//Update ListView
+				ta.notifyDataSetChanged();
 			}
-			
-			//Remove everything in removeList
-			for(int j = 0; j < removeList.size(); j++){
-				ta.remove(removeList.get(j));
+			else{
+				view.setBackgroundResource(R.drawable.starfull);
+				ta.clear();
+				ta.addAll(times);
+				ta.notifyDataSetChanged();
 			}
-			
-			//Update ListView
-			ta.notifyDataSetChanged();
 		}
 	}
 	

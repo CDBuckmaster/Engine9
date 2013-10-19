@@ -4,15 +4,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/fav_button"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:onClick="favOnlyButtonPush"
-        android:text="Favourite routes only" />
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/fav_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/starfull"
+            android:onClick="favOnlyButtonPush" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/time_description"
