@@ -9,5 +9,9 @@
    android:label="@string/search_label"
    android:hint="@string/search_hint"
    android:searchSuggestAuthority="com.engine9.DictionaryProvider"
-   android:searchSuggestSelection=" ?" >
+   android:searchSuggestIntentData="content://com.engine9.DictionaryProvider/dictionary"
+   android:searchSuggestSelection=" ?"
+   android:searchSuggestIntentAction="android.intent.action.VIEW"
+   android:searchSuggestThreshold="1"   
+    >
 </searchable> 

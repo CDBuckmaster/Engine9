@@ -37,9 +37,9 @@ public class DictionaryProvider extends ContentProvider {
 
     // MIME types used for searching words or looking up a single definition
     public static final String WORDS_MIME_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
-                                                  "/vnd.example.android.searchabledict";
+                                                  "/vnd.com.engine9";
     public static final String DEFINITION_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
-                                                       "/vnd.example.android.searchabledict";
+                                                       "/vnd.com.engine9";
 
     private LocationDatabase mDictionary;
 
@@ -93,7 +93,7 @@ public class DictionaryProvider extends ContentProvider {
         // Use the UriMatcher to see what kind of query we have and format the db query accordingly
         switch (sURIMatcher.match(uri)) {
             case SEARCH_SUGGEST:
-            	Log.e("NANO-DEBUG","search suggest	");
+            	Log.e("NANO-DEBUG","search suggest	"+uri.toString());
                 if (selectionArgs == null) {
                   throw new IllegalArgumentException(
                       "selectionArgs must be provided for the Uri: " + uri);
@@ -120,13 +120,12 @@ public class DictionaryProvider extends ContentProvider {
     }
 
     private Cursor getSuggestions(String query) {
-      query = query.toLowerCase();
+    	query = query.toLowerCase();
       String[] columns = new String[] {
           BaseColumns._ID,
           LocationDatabase.KEY_WORD,
           LocationDatabase.KEY_DEFINITION,
-       /* SearchManager.SUGGEST_COLUMN_SHORTCUT_ID,
-                        (only if you want to refresh shortcuts) */
+       /* SearchManager.SUGGEST_COLUMN_SHORTCUT_ID,//(only if you want to refresh shortcuts) */
           SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
 
       return mDictionary.getWordMatches(query, columns);
@@ -164,7 +163,6 @@ public class DictionaryProvider extends ContentProvider {
           BaseColumns._ID,
           LocationDatabase.KEY_WORD,
           LocationDatabase.KEY_DEFINITION,
-          SearchManager.SUGGEST_COLUMN_SHORTCUT_ID,
           SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
 
       return mDictionary.getWord(rowId, columns);

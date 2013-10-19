@@ -138,8 +138,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		if(servicesConnected()){
 			//Create new Location Manager and set up location updates
 			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-	        		0, 0, this);
+	        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0, 0, this);
 	        
 	        //Tries to get the current location
 	        currentLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -169,24 +168,34 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		setUpMap( null);
 	}
 	
-//	@Override
-//    protected void onNewIntent(Intent intent) {
-//        // Because this activity has set launchMode="singleTop", the system calls this method
-//        // to deliver the intent if this activity is currently the foreground activity when
-//        // invoked again (when the user executes a search from this activity, we don't create
-//        // a new instance of this activity, so the system delivers the search intent here)
-//        handleIntent(intent);
-//    }
+	@Override
+    protected void onNewIntent(Intent intent) {
+        // Because this activity has set launchMode="singleTop", the system calls this method
+        // to deliver the intent if this activity is currently the foreground activity when
+        // invoked again (when the user executes a search from this activity, we don't create
+        // a new instance of this activity, so the system delivers the search intent here)
+        handleIntent(intent);
+    }
 	
 	private void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            // handles a search query
-            String query = intent.getStringExtra(SearchManager.QUERY);
+		
+		 if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			 String query=intent.getStringExtra(SearchManager.SUGGEST_COLUMN_TEXT_1);
+			 Log.e("NANO-DEBUG","handle view");
+			 Log.e("NANO-DEBUG","query:"+query);
+	         doMySearch(query);
+		 }
+		 else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            Log.e("NANO-DEBUG","handle intent");
+        	//String query=intent.getStringExtra(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
+        	String query=intent.getStringExtra(SearchManager.QUERY);
+        	Log.e("NANO-DEBUG","query:"+query);
             doMySearch(query);
         }
     }
 	private void doMySearch(String query) {
 		String queryString="http://deco3801-005.uqcloud.net/stops-from-location/?location="+query;
+		Log.e("NANO-DEBUG",queryString);
 		new StopRequest().execute(queryString);
 	}
 	
@@ -212,11 +221,13 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 		    case R.id.search:
-	            onSearchRequested();// start the search
+	           onSearchRequested();// start the search
             return true;
+
 	        case R.id.action_favourite:
 	        	startActivity(new Intent(StopMapActivity.this, com.engine9.FavouriteActivity.class));
 	            return true;
+	        
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
