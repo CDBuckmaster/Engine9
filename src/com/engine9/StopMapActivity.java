@@ -126,7 +126,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		
 		
 		
-		
+		/*
 		SearchManager searchManager =
 		           (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		    SearchView searchView =(SearchView) findViewById(R.id.search);
@@ -150,7 +150,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 			new StopRequest().execute("http://deco3801-005.uqcloud.net/stops-from-location/?location=" +sLocation);
 		}*/
 		//Check the Google Play Service whether is connected
-		else if(servicesConnected()){
+		if(servicesConnected()){
 			//Create new Location Manager and set up location updates
 			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
