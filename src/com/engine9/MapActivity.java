@@ -70,7 +70,7 @@ public class MapActivity extends FragmentActivity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle("Cuurent Journey");
+		actionBar.setTitle("Current Journey");
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		
 		Intent i = getIntent();
@@ -170,7 +170,7 @@ public class MapActivity extends FragmentActivity {
 			line = mMap.addPolyline(new PolylineOptions()
 			.addAll(decodePoly(po.get("Path").getAsString()))
 			.width(10)
-			.color(Color.CYAN));
+			.color(0xFF2B8AEF));
 			
 		}
 	}
@@ -340,7 +340,7 @@ public class MapActivity extends FragmentActivity {
 		if(stops.get(0).equals(stops.get(1))){
 			vehicle = mMap.addMarker(new MarkerOptions()
 				.position(stops.get(0).m.getPosition())
-				.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.bluebus)));
 			
 			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stops.get(0).m.getPosition(), 15));
 			vehicle.showInfoWindow();
@@ -369,7 +369,7 @@ public class MapActivity extends FragmentActivity {
 					if(currentDist >= targetDist){
 						vehicle = mMap.addMarker(new MarkerOptions()
 							.position(pList.get(i - 1))
-							.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+							.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
 						mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
 						vehicle.showInfoWindow();
 						break;
@@ -386,7 +386,7 @@ public class MapActivity extends FragmentActivity {
 					if(currentDist >= targetDist){
 						vehicle = mMap.addMarker(new MarkerOptions()
 							.position(pList.get(i + 1))
-							.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+							.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
 						mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
 						vehicle.showInfoWindow();
 						break;

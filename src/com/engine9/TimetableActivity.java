@@ -139,7 +139,7 @@ public class TimetableActivity extends Activity {
 				
 			if(!favsOnly){
 				favsOnly = true;
-				view.setBackgroundResource(R.drawable.staroutline);
+				view.setBackgroundResource(R.drawable.starfull);
 				
 				//A list to hold listing that will be deleted
 				ArrayList<Listing> removeList = new ArrayList<Listing>();
@@ -172,7 +172,7 @@ public class TimetableActivity extends Activity {
 			}
 			else{
 				favsOnly = false;
-				view.setBackgroundResource(R.drawable.starfull);
+				view.setBackgroundResource(R.drawable.staroutline);
 				Log.e("DEBUG", String.valueOf(times.size()));
 				ArrayList temp = (ArrayList) times.clone();
 				ta.clear();
@@ -183,7 +183,7 @@ public class TimetableActivity extends Activity {
 		}
 		else if(favsOnly){
 			favsOnly = false;
-			view.setBackgroundResource(R.drawable.starfull);
+			view.setBackgroundResource(R.drawable.staroutline);
 			Log.e("DEBUG", String.valueOf(times.size()));
 			ArrayList temp = (ArrayList) times.clone();
 			ta.clear();
