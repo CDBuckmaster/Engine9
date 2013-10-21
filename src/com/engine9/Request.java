@@ -37,8 +37,8 @@ public class Request extends AsyncTask<String, String, String> {
 				URL url = new URL(arg0[0]);
 
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setReadTimeout(10000);
-				conn.setConnectTimeout(15000);
+				conn.setReadTimeout(20000);
+				conn.setConnectTimeout(20000);
 				conn.setRequestMethod("GET");
 				conn.setDoInput(true);
 
@@ -61,6 +61,7 @@ public class Request extends AsyncTask<String, String, String> {
 			}
 		} catch (Exception e){
 			Log.e("DEBUG", e.toString());
+			e.printStackTrace();
 			return null;
 		}
 	}
