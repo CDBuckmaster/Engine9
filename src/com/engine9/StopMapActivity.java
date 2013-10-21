@@ -53,7 +53,9 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 /**
- * This class will hole the stop information and show them on the map
+ * This class displays available stops on a map, which users can click on for timetables and routes
+ * Users can navigate and load stops by either using the search function or by navigating across the
+ * map
  * */
 
 public class StopMapActivity extends FragmentActivity implements
@@ -82,6 +84,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		actionBar.setTitle("Translink");
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		
+		//Timer to activate after a user hasn't moved the map's camera after 3 seconds
+		//It also checks to see if the previous position isn't too close.
 		cdt = new CountDownTimer(3000, 3000){
 
 			@Override
@@ -134,7 +138,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		
 		
 		
-		
+		//Checks if Google Play services are connected
+		//Code from google tutorial: http://developer.android.com/training/location/retrieve-current.html
 		if(servicesConnected()){
 			//Create new Location Manager and set up location updates
 			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -510,6 +515,12 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		}
 	}
 	
+	/**
+	 * It extends the Request class (which handles getRequests)
+	 * the onPostExecute function is overwritten so that the returned JSON
+	 * data can be handled specifically for this activity (to get Stop info)
+	 * copy of StopRequest, but doesn't change the camera when stops are downloaded
+	 * */
 	private class StopRequest2 extends Request{
 		
 		@Override
@@ -560,6 +571,12 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		}
 	}
 	
+	/**
+	 * Calculates the radius of the screen in metres
+	 * Special thanks to this StackOverflow page: 
+	 * http://stackoverflow.com/questions/6002563/android-how-do-i-set-the-zoom-level-of-map-view-to-1-km-radius-around-my-curren
+	 * @return The radius of the screen in metres
+	 */
 	private double calculateRadius() {
 		double widthInPixels;
 		
@@ -586,6 +603,9 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	
 	/**
 	 * Calculate the distance (in metres) between two LatLng points
+	 * @param start First LatLng point
+	 * @param end Second LatLng point
+	 * @return The distance in metres
 	 * */
 	private double calcDistance(LatLng start, LatLng end){
 		Double dLng = Math.toRadians(end.longitude - start.longitude);
