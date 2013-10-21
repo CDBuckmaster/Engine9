@@ -65,6 +65,7 @@ public class AbstractActivity extends Activity {
 		ar = new AbstractRequest();
 		ar.execute(sURL);
 		
+		//Switches to the map view of the route when clicked
 		Button aButton = (Button) findViewById(R.id.abstract_to_map_button);
 		aButton.setOnClickListener(new OnClickListener(){
 

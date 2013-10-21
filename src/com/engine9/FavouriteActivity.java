@@ -29,6 +29,7 @@ public class FavouriteActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favourite);
 		
+		//Setup actionbar
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
@@ -41,6 +42,7 @@ public class FavouriteActivity extends Activity {
 				FavouriteManager.getFavourites(getApplicationContext()));
 		favList.setAdapter(adapter);
 		
+		//Creates dialog box when favourite is long clicked
 		favList.setOnItemLongClickListener(new OnItemLongClickListener(){
 
 			@Override

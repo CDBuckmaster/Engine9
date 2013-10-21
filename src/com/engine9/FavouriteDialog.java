@@ -14,6 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+/**
+ * Class for the favourites dialog box (when a user long clicks a favourite in FavouriteActivity)
+ * @author callumbuckmaster
+ *
+ */
 public class FavouriteDialog extends DialogFragment {
 
 	public String title = "Service: ";
@@ -29,6 +34,7 @@ public class FavouriteDialog extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View v = inflater.inflate(R.layout.dialog_favourite, null);
 		
+		//User can click on coloured buttons to give the selected favourite a colour
 		final Button red = (Button) v.findViewById(R.id.red_button);
 		
 		final Button orange = (Button) v.findViewById(R.id.orange_button);
@@ -244,6 +250,7 @@ public class FavouriteDialog extends DialogFragment {
 		final TextView description = (TextView) v.findViewById(R.id.description_text);
 		description.setText(fi.description);
 		
+		//Create the dialog window
 		thisDialog =  new AlertDialog.Builder(getActivity()).setTitle(title)
 				.setView(v)
                .setPositiveButton(R.string.pos, new DialogInterface.OnClickListener() {
@@ -272,6 +279,12 @@ public class FavouriteDialog extends DialogFragment {
         return thisDialog;
     }
 	
+	/**
+	 * Converts dp to pixels, so that the height of the buttons 
+	 * can be changed relative to the device
+	 * @param dip The length in dps
+	 * @return The length in pixels
+	 */
 	private int dpToPixels(int dip){
 		final float scale = getActivity().getResources().getDisplayMetrics().density;
 		return (int) (dip * scale + 0.5f);

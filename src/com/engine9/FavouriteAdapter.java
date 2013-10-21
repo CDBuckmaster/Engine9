@@ -58,6 +58,7 @@ public class FavouriteAdapter extends ArrayAdapter<FavouriteInfo> {
 		Button delB = (Button) row.findViewById(R.id.delete_fav);
 		delB.setFocusable(false);
 		
+		//Set name
 		final String code;
 		if(favs.size() > 0){
 			code = favs.get(position).name;
@@ -68,6 +69,7 @@ public class FavouriteAdapter extends ArrayAdapter<FavouriteInfo> {
 			code = "";
 		}
 		
+		//Favourite is deleted when star button is clicked
 		delB.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -84,6 +86,7 @@ public class FavouriteAdapter extends ArrayAdapter<FavouriteInfo> {
 		TextView routeV = (TextView) row.findViewById(R.id.fav_route);
 		routeV.setText(favs.get(position).route);
 		
+		//If the favourite has a description, display it, otherwise keep it invisible
 		TextView description = (TextView) row.findViewById(R.id.fav_description);
 		if(!favs.get(position).description.equals(" ")){
 			description.setText(favs.get(position).description);
@@ -94,6 +97,7 @@ public class FavouriteAdapter extends ArrayAdapter<FavouriteInfo> {
 			description.setVisibility(View.GONE);
 		}
 		
+		//Set the favourite colour
 		Button colourB = (Button) row.findViewById(R.id.fav_colour);
 		colourB.setFocusable(false);
 		String c = favs.get(position).colour;
