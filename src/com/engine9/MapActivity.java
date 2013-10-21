@@ -68,12 +68,14 @@ public class MapActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		
+		//Setup the actionbar
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle("Current Journey");
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		
+		//Get data from intent
 		Intent i = getIntent();
 		final String iURL = i.getStringExtra("route");
 		final String sURL = i.getStringExtra("stops");
@@ -82,8 +84,10 @@ public class MapActivity extends FragmentActivity {
 		new MapRequest().execute(iURL);
 		new StopRequest().execute(sURL);
 		
+		//Set up the map
 		setUpMap( null);
 		
+		//Switches to the abstract view of the route when clicked
 		Button aButton = (Button) findViewById(R.id.map_to_abstract_button);
 		aButton.setOnClickListener(new OnClickListener(){
 
@@ -100,6 +104,10 @@ public class MapActivity extends FragmentActivity {
 
 	}
 	
+	/**
+	 * Handles when Activity is paused, stops timer
+	 * @see android.support.v4.app.FragmentActivity#onPause()
+	 **/
 	protected void onPause(){
 		super.onPause();
 		if(cdt != null){
@@ -107,6 +115,10 @@ public class MapActivity extends FragmentActivity {
 		}
 	}
 	
+	/**
+	 * Handles when Activity is stopped, stops timer
+	 * @see android.support.v4.app.FragmentActivity#onStop()
+	 **/
 	protected void onStop(){
 		super.onPause();
 		if(cdt != null){
@@ -114,6 +126,10 @@ public class MapActivity extends FragmentActivity {
 		}
 	}
 	
+	/**
+	 * Handles when Activity is resumed, starts timer
+	 * @see android.support.v4.app.FragmentActivity#onResume()
+	 **/
 	protected void onResume(){
 		super.onResume();
 		if(cdt != null){
@@ -496,7 +512,9 @@ public class MapActivity extends FragmentActivity {
 	}
 	
 	/**
-	 * Get the shortest route for user
+	 * Given a LatLng coordinate, it finds the closest point in the polyline
+	 * @param position The coordinate as a LatLng object
+	 * @return The position in the polyline of the closest point
 	 * */
 	private int findClosestPolylinePoint(LatLng position){
 		List<LatLng> pList = line.getPoints();
@@ -514,7 +532,10 @@ public class MapActivity extends FragmentActivity {
 	}
 	
 	/**
-	 * Calculate the distance between two points
+	 * Calculate the distance between two points in the polyline
+	 * @param pos1 Position of first point in polyline
+	 * @param pos2 Position of second point in polyline
+	 * @return The distance in meters between the two points (as the crow flies)
 	 * */
 	private double calcPolylineDistance(int pos1, int pos2){
 		List<LatLng> pList = line.getPoints();
@@ -529,6 +550,9 @@ public class MapActivity extends FragmentActivity {
 	
 	/**
 	 * Calculate the distance (in metres) between two LatLng points
+	 * @param start First LatLng point
+	 * @param end Second LatLng point
+	 * @return The distance in metres
 	 * */
 	private double calcDistance(LatLng start, LatLng end){
 		Double dLng = Math.toRadians(end.longitude - start.longitude);
@@ -541,7 +565,7 @@ public class MapActivity extends FragmentActivity {
 	}
 	
 	/**
-	 * Show the stops on the map
+	 * A class for pairing markers and their corresponding departure time
 	 * */
 	private class StopInfo
 	{

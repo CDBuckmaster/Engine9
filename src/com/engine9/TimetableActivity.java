@@ -128,7 +128,8 @@ public class TimetableActivity extends Activity {
 	}
 	
 	/**
-	 * Set the favourite button function
+	 * When the favourites only button is pushed, toggles between the list showing all
+	 * times or only showing those for favourited routes.
 	 * */
 	public void favOnlyButtonPush(View view) {
 		//The adapter for the ListView
