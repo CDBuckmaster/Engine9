@@ -83,7 +83,7 @@ public class TimetableActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View view, int pos,
 					long arg3) {
 				Listing l = times.get(pos);
-				Intent i = new Intent(view.getContext(), MapActivity.class);
+				Intent i = new Intent(view.getContext(), AbstractActivity.class);
 				i.putExtra("route", "http://deco3801-005.uqcloud.net/cache/network/rest/route-map-path/?route=" + l.code + "&type=" + l.type);
 				i.putExtra("stops", "http://deco3801-005.uqcloud.net/stops-from-tripID/?tripID=" + l.id);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

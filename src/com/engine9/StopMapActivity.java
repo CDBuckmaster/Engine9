@@ -443,7 +443,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 					stop.get("Lat").getAsDouble(),
 					stop.get("Lng").getAsDouble(),
 					stop.get("Description").getAsString(),
-					2);
+					1);
 			stopVector.add(s);
 		}
 	}
@@ -453,21 +453,21 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	 * */
 	private void addStopsToMap(Boolean moveCamera){
 		for(Stop s : stopVector){
-			if(s.vehicle == 2){
+			if(s.vehicle == 1){
 				Marker marker = mMap.addMarker(new MarkerOptions()
 						.position(new LatLng(s.lat, s.lon))
 						.title(s.address)
 						.icon(BitmapDescriptorFactory.fromResource(R.drawable.greybus)));
 				s.markerId = marker.getId();
 			}
-			else if(s.vehicle == 3){
+			else if(s.vehicle == 2){
 				Marker marker = mMap.addMarker(new MarkerOptions()
 				.position(new LatLng(s.lat, s.lon))
 				.title(s.address)
 				.icon(BitmapDescriptorFactory.fromResource(R.drawable.greytrain)));
 				s.markerId = marker.getId();
 			}
-			else if(s.vehicle == 4){
+			else if(s.vehicle == 3){
 				Marker marker = mMap.addMarker(new MarkerOptions()
 				.position(new LatLng(s.lat, s.lon))
 				.title(s.address)
