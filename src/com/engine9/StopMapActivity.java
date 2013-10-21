@@ -289,6 +289,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 							Intent i = new Intent(com.engine9.StopMapActivity.this, com.engine9.TimetableActivity.class);
 							i.putExtra("timeURL", "http://deco3801-005.uqcloud.net/cache/network/rest/stop-timetables/?stopIds=" + s.stopId);
 							i.putExtra("description", s.address);
+							Log.e("DEBUG", s.stopId);
 							startActivity(i);
 							return true;
 						}

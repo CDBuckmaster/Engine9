@@ -61,6 +61,7 @@ public class AbstractActivity extends Activity {
 		Intent i = getIntent();
 		final String sURL = i.getStringExtra("stops");
 		final String iURL = i.getStringExtra("route");
+		final int serviceType = i.getIntExtra("service", 2);
 		ar = new AbstractRequest();
 		ar.execute(sURL);
 		
@@ -72,7 +73,7 @@ public class AbstractActivity extends Activity {
 				Intent ia = new Intent(getApplicationContext(), MapActivity.class);
 				ia.putExtra("stops", sURL);
 				ia.putExtra("route", iURL);
-				
+				ia.putExtra("service", serviceType);
 				startActivity(ia);
 			}
 			

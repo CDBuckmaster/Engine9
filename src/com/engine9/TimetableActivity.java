@@ -86,6 +86,7 @@ public class TimetableActivity extends Activity {
 				Intent i = new Intent(view.getContext(), AbstractActivity.class);
 				i.putExtra("route", "http://deco3801-005.uqcloud.net/cache/network/rest/route-map-path/?route=" + l.code + "&type=" + l.type);
 				i.putExtra("stops", "http://deco3801-005.uqcloud.net/stops-from-tripID/?tripID=" + l.id);
+				i.putExtra("service", l.type);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				view.getContext().startActivity(i);
 				

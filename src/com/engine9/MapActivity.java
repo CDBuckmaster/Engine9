@@ -60,6 +60,7 @@ public class MapActivity extends FragmentActivity {
 	private Boolean pReady = false;
 	private CountDownTimer cdt;
 	private Marker vehicle;
+	private int serviceType;
 
 
 	@Override
@@ -76,6 +77,8 @@ public class MapActivity extends FragmentActivity {
 		Intent i = getIntent();
 		final String iURL = i.getStringExtra("route");
 		final String sURL = i.getStringExtra("stops");
+		serviceType = i.getIntExtra("service", 2);
+		Log.e("DEBUG", String.valueOf(serviceType));
 		new MapRequest().execute(iURL);
 		new StopRequest().execute(sURL);
 		
@@ -89,6 +92,7 @@ public class MapActivity extends FragmentActivity {
 				Intent ia = new Intent(getApplicationContext(), AbstractActivity.class);
 				ia.putExtra("stops", sURL);
 				ia.putExtra("route", iURL);
+				ia.putExtra("service", serviceType);
 				startActivity(ia);
 			}
 			
@@ -184,14 +188,33 @@ public class MapActivity extends FragmentActivity {
 			
 			LatLng l = new LatLng(jo.get("Lat").getAsDouble(), jo.get("Lng").getAsDouble());
 			
-			
-			Marker m = mMap.addMarker(new MarkerOptions()
-			.position(l)
-			.icon(BitmapDescriptorFactory.fromResource(R.drawable.bluebus)));
-			
-			Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 19));
-			StopInfo sInfo = new StopInfo(m, t);
-			markers.add(sInfo);
+			if(serviceType == 2){
+				Marker m = mMap.addMarker(new MarkerOptions()
+				.position(l)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.bluebus)));
+				
+				Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 19));
+				StopInfo sInfo = new StopInfo(m, t);
+				markers.add(sInfo);
+			}
+			else if(serviceType == 3){
+				Marker m = mMap.addMarker(new MarkerOptions()
+				.position(l)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.bluetrain)));
+				
+				Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 19));
+				StopInfo sInfo = new StopInfo(m, t);
+				markers.add(sInfo);
+			}
+			else{
+				Marker m = mMap.addMarker(new MarkerOptions()
+				.position(l)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.blueferry)));
+				
+				Long t = Long.parseLong(jo.get("time").getAsString().substring(6, 19));
+				StopInfo sInfo = new StopInfo(m, t);
+				markers.add(sInfo);
+			}
 			
 			
 		}
@@ -338,10 +361,21 @@ public class MapActivity extends FragmentActivity {
 		Vector<StopInfo> stops = prevAndNextStop();
 		
 		if(stops.get(0).equals(stops.get(1))){
-			vehicle = mMap.addMarker(new MarkerOptions()
-				.position(stops.get(0).m.getPosition())
-				.icon(BitmapDescriptorFactory.fromResource(R.drawable.bluebus)));
-			
+			if(serviceType == 2){
+				vehicle = mMap.addMarker(new MarkerOptions()
+					.position(stops.get(0).m.getPosition())
+					.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
+			}
+			else if(serviceType == 3){
+				vehicle = mMap.addMarker(new MarkerOptions()
+					.position(stops.get(0).m.getPosition())
+					.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentrain)));
+			}
+			else{
+				vehicle = mMap.addMarker(new MarkerOptions()
+					.position(stops.get(0).m.getPosition())
+					.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenferry)));
+			}
 			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stops.get(0).m.getPosition(), 15));
 			vehicle.showInfoWindow();
 		}
@@ -367,9 +401,21 @@ public class MapActivity extends FragmentActivity {
 					currentDist += calcDistance(pList.get(i), pList.get(i-1));
 					
 					if(currentDist >= targetDist){
-						vehicle = mMap.addMarker(new MarkerOptions()
-							.position(pList.get(i - 1))
-							.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
+						if(serviceType == 2){
+							vehicle = mMap.addMarker(new MarkerOptions()
+								.position(stops.get(0).m.getPosition())
+								.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
+						}
+						else if(serviceType == 3){
+							vehicle = mMap.addMarker(new MarkerOptions()
+								.position(stops.get(0).m.getPosition())
+								.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentrain)));
+						}
+						else{
+							vehicle = mMap.addMarker(new MarkerOptions()
+								.position(stops.get(0).m.getPosition())
+								.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenferry)));
+						}
 						mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
 						vehicle.showInfoWindow();
 						break;
@@ -384,9 +430,21 @@ public class MapActivity extends FragmentActivity {
 					currentDist += calcDistance(pList.get(i), pList.get(i+1));
 					
 					if(currentDist >= targetDist){
-						vehicle = mMap.addMarker(new MarkerOptions()
-							.position(pList.get(i + 1))
-							.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
+						if(serviceType == 2){
+							vehicle = mMap.addMarker(new MarkerOptions()
+								.position(stops.get(0).m.getPosition())
+								.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
+						}
+						else if(serviceType == 3){
+							vehicle = mMap.addMarker(new MarkerOptions()
+								.position(stops.get(0).m.getPosition())
+								.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentrain)));
+						}
+						else{
+							vehicle = mMap.addMarker(new MarkerOptions()
+								.position(stops.get(0).m.getPosition())
+								.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenferry)));
+						}
 						mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pList.get(i), 15));
 						vehicle.showInfoWindow();
 						break;
