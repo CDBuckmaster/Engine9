@@ -76,6 +76,7 @@ public class TimetableActivity extends Activity {
 		TextView description = (TextView) findViewById(R.id.time_description);
 		description.setText(intent.getStringExtra("description"));
 		
+		//When a time is clicked, show the path in a new activity
 		timeList = (ListView) findViewById(R.id.list_view);
 		timeList.setOnItemClickListener(new OnItemClickListener(){
 
@@ -210,7 +211,7 @@ public class TimetableActivity extends Activity {
 	}
 
 	/**
-	 * Update the timetable
+	 * Update the timetable, updating times and removing old entries
 	 * */
 	private void updateList(){
 		
@@ -228,7 +229,9 @@ public class TimetableActivity extends Activity {
 		adapter.notifyDataSetChanged();
 	}
 	
-	//Test function (will be modified later) that outputs all relevant data from JSON file
+	/**
+	 * Reads the JSON data and creates a list of times from it.
+	 */
 	private void findTimes() {
 		JsonArray st =jData.getAsJsonObject().getAsJsonArray("StopTimetables"); //Get the Stop info
 		//Get the particular trip info

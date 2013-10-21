@@ -17,6 +17,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * Subclass of ArrayAdapter, creates a series of views for a ListView based on a vector of AbstractInfos
+ * @author callumbuckmaster
+ *
+ */
 public class AbstractAdapter extends ArrayAdapter<AbstractInfo> {
 
 	private Vector<AbstractInfo> stops;
@@ -57,6 +62,7 @@ public class AbstractAdapter extends ArrayAdapter<AbstractInfo> {
 		
 		AbstractInfo current = stops.get(position);
 		
+		//Set the text representing the time of departure
 		Long t = (current.time - System.currentTimeMillis())/ 60000;
 		if(t == 0){
 			time.setText("Now");
@@ -84,6 +90,7 @@ public class AbstractAdapter extends ArrayAdapter<AbstractInfo> {
 		
 		area.setText(current.description);
 		
+		//Display the graphical line, changing the image based on vehicle position
 		Button line = (Button) row.findViewById(R.id.abstract_line);
 		if(position == 0){
 			if(System.currentTimeMillis() < current.time){
