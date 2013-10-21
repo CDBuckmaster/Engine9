@@ -165,7 +165,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	        }
 		}
 		
-		setUpMap( null);
+		setUpMap(new LatLng(-27, 153));
 	}
 	
 	@Override
