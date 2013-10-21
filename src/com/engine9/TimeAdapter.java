@@ -55,10 +55,9 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		return arg0;
 	}
 	
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Creates a view representing an element of values array list
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-	 * @param position 
 	 */
 	@Override
 	public View getView(int position, View convert, ViewGroup parent) {
@@ -80,6 +79,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 		final String route = values.get(position).route;
 		codeV.setText(code);
 		
+		//Set the estimated departure time of the service
 		directionV.setText(route);
 		Long time = (values.get(position).time * 10  - System.currentTimeMillis())/ 60000;
 		if(time == 0){
@@ -103,7 +103,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 			timeV.setText(String.valueOf(time) + " mins");
 		}
 		
-		
+		//Button for saving or removing route from favourites
 		final Button favButton  = (Button) row.findViewById(R.id.add_fav_button);
 		favButton.setFocusable(false);
 		if(FavouriteManager.inFavourites(context, code)){
@@ -133,6 +133,7 @@ public class TimeAdapter extends ArrayAdapter<Listing> {
 			
 		});
 		
+		//Sets the color of favourited routes
 		final Button colour = (Button) row.findViewById(R.id.time_colour);
 		colour.setFocusable(false);
 		String c = FavouriteManager.getColour(context, code);
