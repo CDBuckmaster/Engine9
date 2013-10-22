@@ -26,6 +26,9 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
+                android:layout_gravity="fill_vertical"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/starfull" />
 
             <TextView
@@ -42,8 +45,10 @@
                 android:id="@+id/fav_route"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="fill"
                 android:paddingLeft="10dp"
                 android:text="route" />
+
         </LinearLayout>
 
         <TextView
