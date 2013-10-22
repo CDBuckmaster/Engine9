@@ -58,11 +58,22 @@ public class FavouriteActivity extends Activity {
 					
 				}
 				return false;
+				
+				//doquery(query);
 			}
 			
 		});
 		
 		//favText = (EditText) findViewById(R.id.fav_text1); 
+	}
+	
+	void doquery(String name, String route){ 
+		if(FavouriteManager.inFavourites(getApplicationContext(), name)){
+			FavouriteManager.AddFavourite(name,route, getApplicationContext()); 
+			adapter.clear();
+			adapter.addAll(FavouriteManager.getFavourites(getApplicationContext()));
+			adapter.notifyDataSetChanged();
+		}
 	}
 	
 	@Override
