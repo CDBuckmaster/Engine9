@@ -444,7 +444,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 					stop.get("Lat").getAsDouble(),
 					stop.get("Lng").getAsDouble(),
 					stop.get("Description").getAsString(),
-					1);
+					stop.get("ServiceType").getAsInt());
 			stopVector.add(s);
 		}
 	}
@@ -502,7 +502,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				addStopsToMap(true);
 				
 			} catch (Exception e) {
-				Log.e("Error", result);
+				//Log.e("Error", result);
 				e.printStackTrace();
 				Toast toast = Toast.makeText(getApplicationContext(), "Error receiving request", Toast.LENGTH_SHORT);
 				toast.show();
