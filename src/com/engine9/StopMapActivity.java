@@ -165,7 +165,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	        }
 		}
 		
-		setUpMap(new LatLng(-27, 153));
+		setUpMap(new LatLng(-27.4679, 153.0278));
 	}
 	
 	@Override
@@ -213,6 +213,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	private void doMySearch(String query) {
 		String queryString="http://deco3801-005.uqcloud.net/stops-from-location/?location="+query;
 		Log.e("NANO-DEBUG",queryString);
+		
 		new StopRequest().execute(queryString);
 	}
 	

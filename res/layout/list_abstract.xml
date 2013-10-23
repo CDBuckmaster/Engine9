@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" 
-    android:background="@color/background_color">
+    android:layout_marginRight="true"
+    android:background="@color/background_color"
+    android:orientation="horizontal" >
 
     <Button
         android:id="@+id/abstract_line"
@@ -17,18 +18,20 @@
         android:id="@+id/abstract_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        
         android:layout_marginLeft="15dp"
         android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#33b5e5" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#33b5e5"/>
 
     <TextView
         android:id="@+id/abstract_area"
-        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
+        android:layout_width="wrap_content"
+        android:padding_rightt="10dp"
         android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/white" />
-
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/white"/>
+    
 </LinearLayout>
