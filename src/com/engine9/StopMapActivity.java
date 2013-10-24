@@ -133,7 +133,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		//Check the Google Play Service whether is connected
 		
 		
-		handleIntent(getIntent());
+		
 		
 		if(servicesConnected()){
 			//Create new Location Manager and set up location updates
@@ -166,6 +166,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 		}
 		
 		setUpMap(new LatLng(-27.4679, 153.0278));
+		handleIntent(getIntent());
 	}
 	
 	@Override
@@ -195,16 +196,13 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	             cursor.moveToFirst();
 	             int wIndex = cursor.getColumnIndexOrThrow(LocationDatabase.KEY_WORD);
 	             int dIndex = cursor.getColumnIndexOrThrow(LocationDatabase.KEY_DEFINITION);
-
-	             Log.e("NANO-DEBUG",cursor.getString(wIndex));
-	             Log.e("NANO-DEBUG",cursor.getString(dIndex));
+	             
 	             doMySearch(cursor.getString(wIndex));
 	         }
 			
 		 }
 		 else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            Log.e("NANO-DEBUG","handle intent");
-        	//String query=intent.getStringExtra(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
+            //This part look fine.
         	String query=intent.getStringExtra(SearchManager.QUERY);
         	Log.e("NANO-DEBUG","query:"+query);
             doMySearch(query);
