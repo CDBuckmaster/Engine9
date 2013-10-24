@@ -1,4 +1,4 @@
-package com.engine9;
+package engine9.allaboard;
 
 import com.engine9.R;
 import android.os.Bundle;
@@ -23,22 +23,22 @@ public class MainActivity extends Activity {
 	}
 	
 	public void timeButtonPush(View view){
-		Intent i = new Intent(com.engine9.MainActivity.this, com.engine9.StopMapActivity.class);
+		Intent i = new Intent(engine9.allaboard.MainActivity.this, engine9.allaboard.StopMapActivity.class);
 		TextView tv = (TextView) findViewById(R.id.time_text);
 		i.putExtra("location", tv.getText().toString());
 		startActivity(i);
 	}
 	
 	public void mapButtonPush(View view){
-		startActivity(new Intent(com.engine9.MainActivity.this, com.engine9.MapActivity.class));
+		startActivity(new Intent(engine9.allaboard.MainActivity.this, engine9.allaboard.MapActivity.class));
 	}
 	
 	public void abstractButtonPush(View view){
-		startActivity(new Intent(com.engine9.MainActivity.this, com.engine9.AbstractActivity.class));
+		startActivity(new Intent(engine9.allaboard.MainActivity.this, engine9.allaboard.AbstractActivity.class));
 	}
 
 	public void favButtonPush(View view) {
-		startActivity(new Intent(com.engine9.MainActivity.this, com.engine9.FavouriteActivity.class));
+		startActivity(new Intent(engine9.allaboard.MainActivity.this, engine9.allaboard.FavouriteActivity.class));
 	}
 
 }

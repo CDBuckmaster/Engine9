@@ -1,4 +1,4 @@
-package com.engine9;
+package engine9.allaboard;
 
 public class FavouriteInfo {
 

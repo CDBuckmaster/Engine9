@@ -25,7 +25,6 @@
 
     <TextView
         android:id="@+id/abstract_area"
-        android:layout_alignParentRight="true"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:paddingRight="10dp"

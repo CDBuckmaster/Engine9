@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.engine9;
+package engine9.allaboard;
 
 import android.app.SearchManager;
 import android.content.ContentValues;
@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+
+import com.engine9.R;
 
 /**
  * Contains logic to return specific words from the dictionary, and

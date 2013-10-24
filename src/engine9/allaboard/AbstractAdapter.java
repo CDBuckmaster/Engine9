@@ -1,10 +1,12 @@
-package com.engine9;
+package engine9.allaboard;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Vector;
+
+import com.engine9.R;
 
 import android.content.Context;
 import android.graphics.Color;

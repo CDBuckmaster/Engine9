@@ -1,4 +1,4 @@
-package com.engine9;
+package engine9.allaboard;
 
 /**
  * An exception indicating an invalid primeter

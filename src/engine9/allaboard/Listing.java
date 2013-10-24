@@ -1,4 +1,4 @@
-package com.engine9;
+package engine9.allaboard;
 
 /**
  * It is a class to store the vehicle time data with its code and direction. 

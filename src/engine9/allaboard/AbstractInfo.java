@@ -1,4 +1,4 @@
-package com.engine9;
+package engine9.allaboard;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;

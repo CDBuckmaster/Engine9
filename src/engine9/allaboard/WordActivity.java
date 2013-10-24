@@ -1,4 +1,4 @@
-package com.engine9;
+package engine9.allaboard;
 /*
  * Copyright (C) 2010 The Android Open Source Project
  *
@@ -17,6 +17,8 @@ package com.engine9;
 
 
 
+
+import com.engine9.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

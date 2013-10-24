@@ -1,4 +1,6 @@
-package com.engine9;
+package engine9.allaboard;
+
+import com.engine9.R;
 
 import android.app.ActionBar;
 import android.app.Activity;

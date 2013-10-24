@@ -1,15 +1,15 @@
 <!-- <searchable xmlns:android="http://schemas.android.com/apk/res/android" 
    android:label="@string/search_label"
    android:hint="@string/search_hint"
-   android:searchSuggestAuthority="com.engine9.MySuggestionProvider"
+   android:searchSuggestAuthority="engine9.allaboard.MySuggestionProvider"
    android:searchSuggestSelection=" ?" >
 </searchable>  -->
 
 <searchable xmlns:android="http://schemas.android.com/apk/res/android" 
    android:label="@string/search_label"
    android:hint="@string/search_hint"
-   android:searchSuggestAuthority="com.engine9.DictionaryProvider"
-   android:searchSuggestIntentData="content://com.engine9.DictionaryProvider/dictionary"
+   android:searchSuggestAuthority="engine9.allaboard.DictionaryProvider"
+   android:searchSuggestIntentData="content://engine9.allaboard.DictionaryProvider/dictionary"
    android:searchSuggestSelection=" ?"
    android:searchSuggestIntentAction="android.intent.action.VIEW"
    android:searchSuggestThreshold="1"   

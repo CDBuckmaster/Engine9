@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.engine9;
+package engine9.allaboard;
 
 import android.app.SearchManager;
 import android.content.ContentProvider;
@@ -32,7 +32,7 @@ import android.util.Log;
 public class DictionaryProvider extends ContentProvider {
     String TAG = "DictionaryProvider";
 
-    public static String AUTHORITY = "com.engine9.DictionaryProvider";
+    public static String AUTHORITY = "engine9.allaboard.DictionaryProvider";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/dictionary");
 
     // MIME types used for searching words or looking up a single definition

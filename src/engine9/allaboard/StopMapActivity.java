@@ -1,4 +1,4 @@
-package com.engine9;
+package engine9.allaboard;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
+import com.engine9.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -241,7 +242,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
             return true;
 
 	        case R.id.action_favourite:
-	        	startActivity(new Intent(StopMapActivity.this, com.engine9.FavouriteActivity.class));
+	        	startActivity(new Intent(StopMapActivity.this, engine9.allaboard.FavouriteActivity.class));
 	            return true;
 	        
 	        default:
@@ -285,7 +286,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 					for(Stop s : stopVector){
 						if(s.markerId.equals(m.getId())){
 							//Open TimeTableActivity with new intent
-							Intent i = new Intent(com.engine9.StopMapActivity.this, com.engine9.TimetableActivity.class);
+							Intent i = new Intent(engine9.allaboard.StopMapActivity.this, engine9.allaboard.TimetableActivity.class);
 							i.putExtra("timeURL", "http://deco3801-005.uqcloud.net/cache/network/rest/stop-timetables/?stopIds=" + s.stopId);
 							i.putExtra("description", s.address);
 							Log.e("DEBUG", s.stopId);

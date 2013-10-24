@@ -1,7 +1,9 @@
-package com.engine9;
+package engine9.allaboard;
 
 import java.util.ArrayList;
 import java.util.Vector;
+
+import com.engine9.R;
 
 import android.content.Context;
 import android.util.Log;
