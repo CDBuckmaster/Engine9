@@ -219,7 +219,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    // Inflate the menu items for use in the action bar
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.stop_map_actions, menu);
+	    inflater.inflate(R.menu.stop_map_actions_with_search, menu);
 	    //get the search manager
 	    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
