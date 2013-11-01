@@ -14,7 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-//Converts a Vector of strings into a list of strings
+/**
+ * *Converts a Vector of strings into a list of strings
+ */
 public class FavouriteAdapter extends ArrayAdapter<FavouriteInfo> {
 	
 	private Context context;
@@ -40,10 +42,9 @@ public class FavouriteAdapter extends ArrayAdapter<FavouriteInfo> {
 		return 0;
 	}
 	
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Creates a view representing an element of values array list
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-	 * @param position 
 	 */
 	@Override
 	public View getView(int position, View convert, ViewGroup parent) {
