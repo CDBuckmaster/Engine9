@@ -213,7 +213,7 @@ public class MapActivity extends FragmentActivity {
 				StopInfo sInfo = new StopInfo(m, t);
 				markers.add(sInfo);
 			}
-			else if(serviceType == 3){
+			else if(serviceType == 8){
 				Marker m = mMap.addMarker(new MarkerOptions()
 				.position(l)
 				.icon(BitmapDescriptorFactory.fromResource(R.drawable.bluetrain)));
@@ -382,7 +382,7 @@ public class MapActivity extends FragmentActivity {
 					.position(stops.get(0).m.getPosition())
 					.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
 			}
-			else if(serviceType == 3){
+			else if(serviceType == 8){
 				vehicle = mMap.addMarker(new MarkerOptions()
 					.position(stops.get(0).m.getPosition())
 					.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentrain)));
@@ -422,7 +422,7 @@ public class MapActivity extends FragmentActivity {
 								.position(stops.get(0).m.getPosition())
 								.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
 						}
-						else if(serviceType == 3){
+						else if(serviceType == 8){
 							vehicle = mMap.addMarker(new MarkerOptions()
 								.position(stops.get(0).m.getPosition())
 								.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentrain)));
@@ -451,7 +451,7 @@ public class MapActivity extends FragmentActivity {
 								.position(stops.get(0).m.getPosition())
 								.icon(BitmapDescriptorFactory.fromResource(R.drawable.greenbus)));
 						}
-						else if(serviceType == 3){
+						else if(serviceType == 8){
 							vehicle = mMap.addMarker(new MarkerOptions()
 								.position(stops.get(0).m.getPosition())
 								.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentrain)));
