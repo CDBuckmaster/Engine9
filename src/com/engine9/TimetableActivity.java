@@ -54,9 +54,6 @@ public class TimetableActivity extends Activity {
 	
 	public TimeRequest tRequest;
 	
-	//Temporary favourites array
-	//private String[] favourites = {"412", "411"};
-
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_timetable);
